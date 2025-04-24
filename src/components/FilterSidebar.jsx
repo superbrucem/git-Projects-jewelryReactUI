@@ -57,22 +57,35 @@ const FilterContent = styled(AccordionDetails)(({ theme }) => ({
   padding: '0 16px 16px 16px',
 }));
 
-const NavList = styled(List)(({ theme }) => ({
-  padding: 0,
-  backgroundColor: 'white',
-  marginBottom: 0,
-  borderRadius: '4px 4px 0 0',
+const NavContainer = styled(Paper)(({ theme }) => ({
+  width: '100%',
+  borderRadius: '4px',
   overflow: 'hidden',
   border: '1px solid rgba(0, 0, 0, 0.1)',
-  borderBottom: 'none',
+  backgroundColor: '#fff',
+  boxShadow: '0 2px 8px rgba(0,0,0,0.05)',
+  marginBottom: '20px'
+}));
+
+const NavHeader = styled(Typography)(({ theme }) => ({
+  padding: '12px 16px',
+  fontWeight: 600,
+  fontSize: '0.9rem',
+  borderBottom: '1px solid rgba(0, 0, 0, 0.1)',
+  backgroundColor: 'rgba(0, 0, 0, 0.02)',
+  display: 'flex',
+  justifyContent: 'space-between',
+  alignItems: 'center',
+}));
+
+const NavList = styled(List)(({ theme }) => ({
+  padding: '8px 0',
+  backgroundColor: 'white',
 }));
 
 const NavItem = styled(ListItem)(({ theme }) => ({
   padding: 0,
-  borderBottom: '1px solid rgba(0, 0, 0, 0.08)',
-  '&:last-child': {
-    borderBottom: 'none',
-  },
+  margin: '2px 0',
 }));
 
 const NavLink = styled(Link)(({ theme }) => ({
@@ -82,7 +95,7 @@ const NavLink = styled(Link)(({ theme }) => ({
   fontSize: '0.85rem',
   width: '100%',
   textAlign: 'left',
-  padding: '14px 16px',
+  padding: '8px 16px 8px 32px', // Increased left padding to match the Collections alignment
   display: 'block',
   '&:hover': {
     backgroundColor: 'rgba(0, 0, 0, 0.03)',
@@ -106,34 +119,37 @@ const FilterSidebar = () => {
   };
 
   return (
-    <Box sx={{ boxShadow: '0 2px 8px rgba(0,0,0,0.05)' }}>
+    <Box>
       {/* Navigation Links */}
-      <NavList>
-        <NavItem>
-          <NavLink to="/" onClick={(e) => handleNavigation(e, '/')}>HOME</NavLink>
-        </NavItem>
-        <NavItem>
-          <NavLink to="/collections" onClick={(e) => handleNavigation(e, '/collections')}>COLLECTIONS</NavLink>
-        </NavItem>
-        <NavItem>
-          <NavLink to="/signature" onClick={(e) => handleNavigation(e, '/signature')}>SIGNATURE</NavLink>
-        </NavItem>
-        <NavItem>
-          <NavLink to="/videos" onClick={(e) => handleNavigation(e, '/videos')}>VIDEOS</NavLink>
-        </NavItem>
-        <NavItem>
-          <NavLink to="/about" onClick={(e) => handleNavigation(e, '/about')}>ABOUT</NavLink>
-        </NavItem>
-        <NavItem>
-          <NavLink to="/contact" onClick={(e) => handleNavigation(e, '/contact')}>CONTACT</NavLink>
-        </NavItem>
-        <NavItem>
-          <NavLink to="/testimonials" onClick={(e) => handleNavigation(e, '/testimonials')}>TESTIMONIALS</NavLink>
-        </NavItem>
-      </NavList>
+      <NavContainer>
+        <NavHeader>Navigation</NavHeader>
+        <NavList>
+          <NavItem>
+            <NavLink to="/" onClick={(e) => handleNavigation(e, '/')}>Home</NavLink>
+          </NavItem>
+          <NavItem>
+            <NavLink to="/collections" onClick={(e) => handleNavigation(e, '/collections')}>Collections</NavLink>
+          </NavItem>
+          <NavItem>
+            <NavLink to="/signature" onClick={(e) => handleNavigation(e, '/signature')}>Signature</NavLink>
+          </NavItem>
+          <NavItem>
+            <NavLink to="/videos" onClick={(e) => handleNavigation(e, '/videos')}>Videos</NavLink>
+          </NavItem>
+          <NavItem>
+            <NavLink to="/about" onClick={(e) => handleNavigation(e, '/about')}>About</NavLink>
+          </NavItem>
+          <NavItem>
+            <NavLink to="/contact" onClick={(e) => handleNavigation(e, '/contact')}>Contact</NavLink>
+          </NavItem>
+          <NavItem>
+            <NavLink to="/testimonials" onClick={(e) => handleNavigation(e, '/testimonials')}>Testimonials</NavLink>
+          </NavItem>
+        </NavList>
+      </NavContainer>
 
+      {/* Collections Section */}
       <FilterContainer>
-        {/* Collections Section */}
         <FilterSection defaultExpanded>
           <FilterHeader expandIcon={<ExpandMoreIcon />}>
             <Typography variant="subtitle1" fontWeight={600}>
