@@ -17,6 +17,7 @@ import { styled } from '@mui/material/styles';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { useFilter } from '../context/FilterContext';
 import { Link, useNavigate } from 'react-router-dom';
+import collectionsData from '../data/collections_sidemenu.json';
 
 // Styled components
 const FilterContainer = styled(Paper)(({ theme }) => ({
@@ -54,7 +55,7 @@ const FilterHeader = styled(AccordionSummary)(({ theme }) => ({
 }));
 
 const FilterContent = styled(AccordionDetails)(({ theme }) => ({
-  padding: '0 16px 16px 16px',
+  padding: '0 12px 12px 12px',
 }));
 
 const NavContainer = styled(Paper)(({ theme }) => ({
@@ -67,15 +68,21 @@ const NavContainer = styled(Paper)(({ theme }) => ({
   marginBottom: '20px'
 }));
 
-const NavHeader = styled(Typography)(({ theme }) => ({
+// Use AccordionSummary for NavHeader to match the Collections section
+const NavHeader = styled(AccordionSummary)(({ theme }) => ({
   padding: '12px 16px',
-  fontWeight: 600,
-  fontSize: '0.9rem',
+  minHeight: '48px',
+  '&.Mui-expanded': {
+    minHeight: '48px',
+  },
+  '& .MuiAccordionSummary-content': {
+    margin: '0',
+    '&.Mui-expanded': {
+      margin: '0',
+    }
+  },
   borderBottom: '1px solid rgba(0, 0, 0, 0.1)',
   backgroundColor: 'rgba(0, 0, 0, 0.02)',
-  display: 'flex',
-  justifyContent: 'space-between',
-  alignItems: 'center',
 }));
 
 const NavList = styled(List)(({ theme }) => ({
@@ -122,30 +129,38 @@ const FilterSidebar = () => {
     <Box>
       {/* Navigation Links */}
       <NavContainer>
-        <NavHeader>Navigation</NavHeader>
-        <NavList>
-          <NavItem>
-            <NavLink to="/" onClick={(e) => handleNavigation(e, '/')}>Home</NavLink>
-          </NavItem>
-          <NavItem>
-            <NavLink to="/collections" onClick={(e) => handleNavigation(e, '/collections')}>Collections</NavLink>
-          </NavItem>
-          <NavItem>
-            <NavLink to="/signature" onClick={(e) => handleNavigation(e, '/signature')}>Signature</NavLink>
-          </NavItem>
-          <NavItem>
-            <NavLink to="/videos" onClick={(e) => handleNavigation(e, '/videos')}>Videos</NavLink>
-          </NavItem>
-          <NavItem>
-            <NavLink to="/about" onClick={(e) => handleNavigation(e, '/about')}>About</NavLink>
-          </NavItem>
-          <NavItem>
-            <NavLink to="/contact" onClick={(e) => handleNavigation(e, '/contact')}>Contact</NavLink>
-          </NavItem>
-          <NavItem>
-            <NavLink to="/testimonials" onClick={(e) => handleNavigation(e, '/testimonials')}>Testimonials</NavLink>
-          </NavItem>
-        </NavList>
+        <FilterSection defaultExpanded>
+          <NavHeader expandIcon={<ExpandMoreIcon />}>
+            <Typography variant="subtitle1" fontWeight={600}>
+              Navigation
+            </Typography>
+          </NavHeader>
+          <FilterContent>
+            <NavList>
+              <NavItem>
+                <NavLink to="/" onClick={(e) => handleNavigation(e, '/')}>Home</NavLink>
+              </NavItem>
+              <NavItem>
+                <NavLink to="/collections" onClick={(e) => handleNavigation(e, '/collections')}>Collections</NavLink>
+              </NavItem>
+              <NavItem>
+                <NavLink to="/signature" onClick={(e) => handleNavigation(e, '/signature')}>Signature</NavLink>
+              </NavItem>
+              <NavItem>
+                <NavLink to="/videos" onClick={(e) => handleNavigation(e, '/videos')}>Videos</NavLink>
+              </NavItem>
+              <NavItem>
+                <NavLink to="/about" onClick={(e) => handleNavigation(e, '/about')}>About</NavLink>
+              </NavItem>
+              <NavItem>
+                <NavLink to="/contact" onClick={(e) => handleNavigation(e, '/contact')}>Contact</NavLink>
+              </NavItem>
+              <NavItem>
+                <NavLink to="/testimonials" onClick={(e) => handleNavigation(e, '/testimonials')}>Testimonials</NavLink>
+              </NavItem>
+            </NavList>
+          </FilterContent>
+        </FilterSection>
       </NavContainer>
 
       {/* Collections Section */}
@@ -158,29 +173,38 @@ const FilterSidebar = () => {
           </FilterHeader>
           <FilterContent>
             <RadioGroup
-              value={Object.entries(filters.collections).find(([_, value]) => value)[0]}
-              onChange={(e) => handleRadioChange('collections', e.target.value)}
+              value={Object.entries(filters.collections).find(([_, value]) => value)?.[0] || 'all'}
+              onChange={(e) => {
+                handleRadioChange('collections', e.target.value);
+                navigate(`/collections?category=${e.target.value}`);
+              }}
             >
-              <FormControlLabel
-                value="all"
-                control={<Radio size="small" />}
-                label={<Typography sx={{ color: '#8B4513', fontWeight: 500 }}>All Collections</Typography>}
-              />
-              <FormControlLabel
-                value="5-elements"
-                control={<Radio size="small" />}
-                label={<Typography sx={{ color: '#006400' }}>5 Elements</Typography>}
-              />
-              <FormControlLabel
-                value="greek-gods"
-                control={<Radio size="small" />}
-                label={<Typography sx={{ color: '#006400' }}>Greek Gods</Typography>}
-              />
-              <FormControlLabel
-                value="underworld"
-                control={<Radio size="small" />}
-                label={<Typography sx={{ color: '#006400' }}>Underworld</Typography>}
-              />
+              {collectionsData.map((collection) => (
+                <FormControlLabel
+                  key={collection.id}
+                  value={collection.id}
+                  control={<Radio size="small" sx={{ padding: '4px' }} />}
+                  label={
+                    <Typography
+                      sx={{
+                        color: collection.id === 'all' ? '#8B4513' : '#006400',
+                        fontWeight: collection.id === 'all' ? 500 : 400,
+                        fontSize: '0.75rem', // Smaller font size
+                        lineHeight: 1.2, // Tighter line height
+                        marginLeft: '-4px', // Pull text slightly closer to radio button
+                        pl: collection.id !== 'all' ? 1 : 0 // Add indentation for all items except "All Collections"
+                      }}
+                    >
+                      {collection.label}
+                    </Typography>
+                  }
+                  sx={{
+                    margin: 0,
+                    padding: '4px 0', // Slightly more vertical padding for better spacing
+                    ml: 1 // Add left margin for all items
+                  }}
+                />
+              ))}
             </RadioGroup>
           </FilterContent>
         </FilterSection>
