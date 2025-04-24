@@ -25,9 +25,8 @@ export const CartProvider = ({ children }) => {
 
   const [cartTotal, setCartTotal] = useState(0);
   const [currency, setCurrency] = useState(() => {
-    // Load currency preference from localStorage
-    const savedCurrency = localStorage.getItem('currency');
-    return savedCurrency || 'USD';
+    // Always use CAD as the default currency
+    return 'CAD';
   });
 
   // Update localStorage whenever cart changes

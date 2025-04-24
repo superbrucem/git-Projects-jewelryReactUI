@@ -18,13 +18,7 @@ import {
   DialogActions,
   Snackbar,
   Alert,
-  Badge as MuiBadge,
-  ToggleButtonGroup,
-  ToggleButton,
-  FormControl,
-  InputLabel,
-  Select,
-  MenuItem
+  Badge as MuiBadge
 } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import DeleteIcon from '@mui/icons-material/Delete';
@@ -48,7 +42,6 @@ const Cart = () => {
     cart,
     cartTotal,
     currency,
-    setCurrency,
     convertPrice,
     getFormattedPrice,
     removeFromCart,
@@ -143,7 +136,7 @@ const Cart = () => {
                       primary={item.name}
                       secondary={
                         <Typography variant="body2" color="text.primary">
-                          ${item.price.toFixed(2)}
+                          {getFormattedPrice(item.price)}
                         </Typography>
                       }
                     />
@@ -167,20 +160,7 @@ const Cart = () => {
             </List>
 
             <Box sx={{ mt: 'auto' }}>
-              <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 2 }}>
-                <FormControl size="small" sx={{ minWidth: 120 }}>
-                  <InputLabel id="currency-select-label">Currency</InputLabel>
-                  <Select
-                    labelId="currency-select-label"
-                    id="currency-select"
-                    value={currency}
-                    label="Currency"
-                    onChange={(e) => setCurrency(e.target.value)}
-                  >
-                    <MenuItem value="USD">USD ($)</MenuItem>
-                    <MenuItem value="CAD">CAD (C$)</MenuItem>
-                  </Select>
-                </FormControl>
+              <Box sx={{ display: 'flex', justifyContent: 'flex-end', alignItems: 'center', mb: 2 }}>
                 <Typography variant="h6">
                   Total: {getFormattedPrice(cartTotal)}
                 </Typography>
@@ -226,8 +206,27 @@ const Cart = () => {
 
           <Box sx={{ mt: 3 }}>
             <Typography variant="h6" gutterBottom>
-              Pay with PayPal
+              Payment Options
             </Typography>
+            <Typography variant="body2" color="text.secondary" sx={{ mb: 2 }}>
+              All prices are in CAD.
+            </Typography>
+
+            {/* Direct payment button for Canadian customers */}
+            <Button
+              variant="contained"
+              color="primary"
+              fullWidth
+              sx={{ mb: 2, py: 1.5, backgroundColor: '#0070ba', '&:hover': { backgroundColor: '#005ea6' } }}
+              onClick={handleCheckoutSuccess}
+            >
+              Pay with Credit/Debit Card ({getFormattedPrice(cartTotal)})
+            </Button>
+
+            <Typography variant="body2" color="text.secondary" sx={{ mt: 3, mb: 1 }}>
+              Or use PayPal:
+            </Typography>
+
             <PayPalButton
               amount={convertPrice(cartTotal)}
               currency={currency}

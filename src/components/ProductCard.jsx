@@ -14,7 +14,9 @@ import {
   DialogActions,
   TextField,
   IconButton,
-  Chip
+  Chip,
+  Divider,
+  Tooltip
 } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
@@ -22,6 +24,11 @@ import VisibilityIcon from '@mui/icons-material/Visibility';
 import AddIcon from '@mui/icons-material/Add';
 import RemoveIcon from '@mui/icons-material/Remove';
 import CloseIcon from '@mui/icons-material/Close';
+import FacebookIcon from '@mui/icons-material/Facebook';
+import InstagramIcon from '@mui/icons-material/Instagram';
+import PinterestIcon from '@mui/icons-material/Pinterest';
+import TwitterIcon from '@mui/icons-material/Twitter';
+import WhatsAppIcon from '@mui/icons-material/WhatsApp';
 import { useCart } from '../context/CartContext';
 
 const StyledCard = styled(Card)(({ theme }) => ({
@@ -207,6 +214,62 @@ const ProductCard = ({ product, onAddToCart }) => {
         >
           ADD TO CART
         </AddToCartButton>
+
+        {/* Social Sharing */}
+        <Box sx={{ mt: 2, pt: 1, borderTop: '1px solid #eee' }}>
+          <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+            <Typography variant="caption" color="text.secondary" sx={{ fontSize: '0.7rem' }}>
+              Share:
+            </Typography>
+            <Box sx={{ display: 'flex', gap: 0.5 }}>
+              <Tooltip title="Share on Facebook">
+                <IconButton
+                  size="small"
+                  sx={{ color: '#3b5998', padding: '4px' }}
+                  onClick={() => window.open(`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(window.location.href)}`, '_blank')}
+                >
+                  <FacebookIcon sx={{ fontSize: '1rem' }} />
+                </IconButton>
+              </Tooltip>
+              <Tooltip title="Share on Instagram">
+                <IconButton
+                  size="small"
+                  sx={{ color: '#C13584', padding: '4px' }}
+                  onClick={() => window.open('https://www.instagram.com/', '_blank')}
+                >
+                  <InstagramIcon sx={{ fontSize: '1rem' }} />
+                </IconButton>
+              </Tooltip>
+              <Tooltip title="Share on Pinterest">
+                <IconButton
+                  size="small"
+                  sx={{ color: '#E60023', padding: '4px' }}
+                  onClick={() => window.open(`https://pinterest.com/pin/create/button/?url=${encodeURIComponent(window.location.href)}&media=${encodeURIComponent(product.image)}&description=${encodeURIComponent(product.name)}`, '_blank')}
+                >
+                  <PinterestIcon sx={{ fontSize: '1rem' }} />
+                </IconButton>
+              </Tooltip>
+              <Tooltip title="Share on Twitter">
+                <IconButton
+                  size="small"
+                  sx={{ color: '#1DA1F2', padding: '4px' }}
+                  onClick={() => window.open(`https://twitter.com/intent/tweet?text=${encodeURIComponent(product.name)}&url=${encodeURIComponent(window.location.href)}`, '_blank')}
+                >
+                  <TwitterIcon sx={{ fontSize: '1rem' }} />
+                </IconButton>
+              </Tooltip>
+              <Tooltip title="Share on WhatsApp">
+                <IconButton
+                  size="small"
+                  sx={{ color: '#25D366', padding: '4px' }}
+                  onClick={() => window.open(`https://wa.me/?text=${encodeURIComponent(product.name + ' - ' + window.location.href)}`, '_blank')}
+                >
+                  <WhatsAppIcon sx={{ fontSize: '1rem' }} />
+                </IconButton>
+              </Tooltip>
+            </Box>
+          </Box>
+        </Box>
       </CardContent>
 
       {/* Quick View Dialog */}
@@ -305,6 +368,62 @@ const ProductCard = ({ product, onAddToCart }) => {
               >
                 ADD TO CART
               </Button>
+
+              {/* Social Sharing in Quick View */}
+              <Box sx={{ mt: 3, pt: 2, borderTop: '1px solid #eee' }}>
+                <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
+                  <Typography variant="body2" color="text.secondary">
+                    Share:
+                  </Typography>
+                  <Box sx={{ display: 'flex', gap: 1 }}>
+                    <Tooltip title="Share on Facebook">
+                      <IconButton
+                        size="small"
+                        sx={{ color: '#3b5998' }}
+                        onClick={() => window.open(`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(window.location.href)}`, '_blank')}
+                      >
+                        <FacebookIcon fontSize="small" />
+                      </IconButton>
+                    </Tooltip>
+                    <Tooltip title="Share on Instagram">
+                      <IconButton
+                        size="small"
+                        sx={{ color: '#C13584' }}
+                        onClick={() => window.open('https://www.instagram.com/', '_blank')}
+                      >
+                        <InstagramIcon fontSize="small" />
+                      </IconButton>
+                    </Tooltip>
+                    <Tooltip title="Share on Pinterest">
+                      <IconButton
+                        size="small"
+                        sx={{ color: '#E60023' }}
+                        onClick={() => window.open(`https://pinterest.com/pin/create/button/?url=${encodeURIComponent(window.location.href)}&media=${encodeURIComponent(product.image)}&description=${encodeURIComponent(product.name)}`, '_blank')}
+                      >
+                        <PinterestIcon fontSize="small" />
+                      </IconButton>
+                    </Tooltip>
+                    <Tooltip title="Share on Twitter">
+                      <IconButton
+                        size="small"
+                        sx={{ color: '#1DA1F2' }}
+                        onClick={() => window.open(`https://twitter.com/intent/tweet?text=${encodeURIComponent(product.name)}&url=${encodeURIComponent(window.location.href)}`, '_blank')}
+                      >
+                        <TwitterIcon fontSize="small" />
+                      </IconButton>
+                    </Tooltip>
+                    <Tooltip title="Share on WhatsApp">
+                      <IconButton
+                        size="small"
+                        sx={{ color: '#25D366' }}
+                        onClick={() => window.open(`https://wa.me/?text=${encodeURIComponent(product.name + ' - ' + window.location.href)}`, '_blank')}
+                      >
+                        <WhatsAppIcon fontSize="small" />
+                      </IconButton>
+                    </Tooltip>
+                  </Box>
+                </Box>
+              </Box>
             </Box>
           </Box>
         </DialogContent>

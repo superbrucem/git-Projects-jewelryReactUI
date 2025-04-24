@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { Box, Typography, CircularProgress, Button } from '@mui/material';
 
-const PayPalButton = ({ amount, currency = 'USD', onSuccess, onError }) => {
+const PayPalButton = ({ amount, currency = 'CAD', onSuccess, onError }) => {
   const paypalRef = useRef();
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -18,9 +18,9 @@ const PayPalButton = ({ amount, currency = 'USD', onSuccess, onError }) => {
       return;
     }
 
-    // Load the PayPal script
+    // Load the PayPal script with additional parameters
     const script = document.createElement('script');
-    script.src = `https://www.paypal.com/sdk/js?client-id=${PAYPAL_CLIENT_ID}&currency=${currency}`;
+    script.src = `https://www.paypal.com/sdk/js?client-id=${PAYPAL_CLIENT_ID}&currency=${currency}&locale=en_CA&buyer-country=CA&components=buttons,funding-eligibility`;
     script.async = true;
 
     script.onload = () => {
@@ -56,7 +56,11 @@ const PayPalButton = ({ amount, currency = 'USD', onSuccess, onError }) => {
           layout: 'vertical',
           color: 'gold',
           shape: 'rect',
-          label: 'paypal'
+          label: 'pay'
+        },
+        funding: {
+          allowed: [window.paypal.FUNDING.CARD],
+          disallowed: []
         },
         createOrder: (data, actions) => {
           return actions.order.create({
@@ -69,6 +73,17 @@ const PayPalButton = ({ amount, currency = 'USD', onSuccess, onError }) => {
                 },
               },
             ],
+            application_context: {
+              shipping_preference: 'NO_SHIPPING',
+              user_action: 'PAY_NOW',
+              locale: 'en-CA',
+              brand_name: 'Ottawa Opal Shop',
+              country_code: 'CA',
+              payment_method: {
+                payee_preferred: 'IMMEDIATE_PAYMENT_REQUIRED'
+              },
+              landing_page: 'BILLING'
+            }
           });
         },
         onApprove: async (data, actions) => {
@@ -136,16 +151,8 @@ const PayPalButton = ({ amount, currency = 'USD', onSuccess, onError }) => {
           Could not initialize PayPal checkout
         </Typography>
         <Typography variant="body2" color="text.secondary" gutterBottom sx={{ mb: 2 }}>
-          This is a demo application. Please use the button below to simulate payment.
+          Please use the Credit/Debit Card payment option above.
         </Typography>
-        <Button
-          variant="contained"
-          color="primary"
-          onClick={handleSimulatePayment}
-          sx={{ mt: 1 }}
-        >
-          Simulate Successful Payment
-        </Button>
       </Box>
     );
   }
@@ -154,19 +161,18 @@ const PayPalButton = ({ amount, currency = 'USD', onSuccess, onError }) => {
     <Box sx={{ my: 3 }}>
       <Box ref={paypalRef} sx={{ mb: 2 }} />
 
-      {/* Fallback button for development/testing */}
-      <Typography variant="body2" color="text.secondary" gutterBottom sx={{ textAlign: 'center', mb: 1 }}>
-        This is a demo application. You can also use the button below:
-      </Typography>
-      <Button
-        variant="contained"
-        color="primary"
-        onClick={handleSimulatePayment}
-        fullWidth
-        sx={{ mt: 1 }}
-      >
-        Simulate Successful Payment
-      </Button>
+      {/* Hidden in production - only for development */}
+      <Box sx={{ display: 'none' }}>
+        <Button
+          variant="contained"
+          color="primary"
+          onClick={handleSimulatePayment}
+          fullWidth
+          sx={{ mt: 1 }}
+        >
+          Simulate Successful Payment
+        </Button>
+      </Box>
     </Box>
   );
 };
