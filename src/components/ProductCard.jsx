@@ -179,15 +179,15 @@ const ProductCard = ({ product, onAddToCart }) => {
         )}
       </ProductImageContainer>
 
-      <CardContent sx={{ flexGrow: 1, pb: 1 }}>
+      <CardContent sx={{ flexGrow: 1, pb: 1, px: { xs: 1, sm: 2 } }}>
         <Typography
           variant="body2"
           component="div"
           sx={{
-            height: 40,
+            height: { xs: 36, sm: 40 },
             overflow: 'hidden',
             fontWeight: 500,
-            fontSize: '0.9rem',
+            fontSize: { xs: '0.8rem', sm: '0.9rem' },
             lineHeight: 1.2,
             mb: 1
           }}
@@ -199,7 +199,7 @@ const ProductCard = ({ product, onAddToCart }) => {
           color="error"
           fontWeight="bold"
           sx={{
-            fontSize: '1.1rem',
+            fontSize: { xs: '0.95rem', sm: '1.1rem' },
             mb: 1
           }}
         >
@@ -207,64 +207,94 @@ const ProductCard = ({ product, onAddToCart }) => {
         </Typography>
         <AddToCartButton
           variant="contained"
-          startIcon={<ShoppingCartIcon sx={{ fontSize: '1rem' }} />}
+          startIcon={<ShoppingCartIcon sx={{ fontSize: { xs: '0.8rem', sm: '1rem' } }} />}
           onClick={handleAddToCart}
           disabled={!product.inStock || product.stock === 0}
-          sx={{ py: 1 }}
+          sx={{
+            py: { xs: 0.5, sm: 1 },
+            fontSize: { xs: '0.7rem', sm: '0.8rem' }
+          }}
         >
           ADD TO CART
         </AddToCartButton>
 
         {/* Social Sharing */}
         <Box sx={{ mt: 2, pt: 1, borderTop: '1px solid #eee' }}>
-          <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-            <Typography variant="caption" color="text.secondary" sx={{ fontSize: '0.7rem' }}>
+          <Box sx={{
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'space-between',
+            flexWrap: { xs: 'wrap', sm: 'nowrap' }
+          }}>
+            <Typography variant="caption" color="text.secondary" sx={{
+              fontSize: { xs: '0.65rem', sm: '0.7rem' },
+              mr: { xs: 1, sm: 0 }
+            }}>
               Share:
             </Typography>
-            <Box sx={{ display: 'flex', gap: 0.5 }}>
+            <Box sx={{
+              display: 'flex',
+              gap: { xs: 0.2, sm: 0.5 },
+              flexWrap: 'nowrap'
+            }}>
               <Tooltip title="Share on Facebook">
                 <IconButton
                   size="small"
-                  sx={{ color: '#3b5998', padding: '4px' }}
+                  sx={{
+                    color: '#3b5998',
+                    padding: { xs: '2px', sm: '4px' }
+                  }}
                   onClick={() => window.open(`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(window.location.href)}`, '_blank')}
                 >
-                  <FacebookIcon sx={{ fontSize: '1rem' }} />
+                  <FacebookIcon sx={{ fontSize: { xs: '0.8rem', sm: '1rem' } }} />
                 </IconButton>
               </Tooltip>
               <Tooltip title="Share on Instagram">
                 <IconButton
                   size="small"
-                  sx={{ color: '#C13584', padding: '4px' }}
+                  sx={{
+                    color: '#C13584',
+                    padding: { xs: '2px', sm: '4px' }
+                  }}
                   onClick={() => window.open('https://www.instagram.com/', '_blank')}
                 >
-                  <InstagramIcon sx={{ fontSize: '1rem' }} />
+                  <InstagramIcon sx={{ fontSize: { xs: '0.8rem', sm: '1rem' } }} />
                 </IconButton>
               </Tooltip>
               <Tooltip title="Share on Pinterest">
                 <IconButton
                   size="small"
-                  sx={{ color: '#E60023', padding: '4px' }}
+                  sx={{
+                    color: '#E60023',
+                    padding: { xs: '2px', sm: '4px' }
+                  }}
                   onClick={() => window.open(`https://pinterest.com/pin/create/button/?url=${encodeURIComponent(window.location.href)}&media=${encodeURIComponent(product.image)}&description=${encodeURIComponent(product.name)}`, '_blank')}
                 >
-                  <PinterestIcon sx={{ fontSize: '1rem' }} />
+                  <PinterestIcon sx={{ fontSize: { xs: '0.8rem', sm: '1rem' } }} />
                 </IconButton>
               </Tooltip>
               <Tooltip title="Share on Twitter">
                 <IconButton
                   size="small"
-                  sx={{ color: '#1DA1F2', padding: '4px' }}
+                  sx={{
+                    color: '#1DA1F2',
+                    padding: { xs: '2px', sm: '4px' }
+                  }}
                   onClick={() => window.open(`https://twitter.com/intent/tweet?text=${encodeURIComponent(product.name)}&url=${encodeURIComponent(window.location.href)}`, '_blank')}
                 >
-                  <TwitterIcon sx={{ fontSize: '1rem' }} />
+                  <TwitterIcon sx={{ fontSize: { xs: '0.8rem', sm: '1rem' } }} />
                 </IconButton>
               </Tooltip>
               <Tooltip title="Share on WhatsApp">
                 <IconButton
                   size="small"
-                  sx={{ color: '#25D366', padding: '4px' }}
+                  sx={{
+                    color: '#25D366',
+                    padding: { xs: '2px', sm: '4px' }
+                  }}
                   onClick={() => window.open(`https://wa.me/?text=${encodeURIComponent(product.name + ' - ' + window.location.href)}`, '_blank')}
                 >
-                  <WhatsAppIcon sx={{ fontSize: '1rem' }} />
+                  <WhatsAppIcon sx={{ fontSize: { xs: '0.8rem', sm: '1rem' } }} />
                 </IconButton>
               </Tooltip>
             </Box>

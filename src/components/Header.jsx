@@ -36,6 +36,9 @@ const TopBar = styled(Box)(({ theme }) => ({
   alignItems: 'center',
   borderBottom: '1px solid rgba(255, 255, 255, 0.08)',
   fontSize: '0.75rem',
+  [theme.breakpoints.down('sm')]: {
+    display: 'none', // Hide on mobile devices
+  },
 }));
 
 const MainBar = styled(Box)(({ theme }) => ({
@@ -67,9 +70,7 @@ const SearchBox = styled('div')(({ theme }) => ({
     backgroundColor: 'white',
   },
   marginLeft: 0,
-  // Make the search box wide but leave some space before the animation
   width: '100%',
-  maxWidth: 'calc(100% - 120px)', // Leave more space to prevent overlapping with the animation
   display: 'flex',
   alignItems: 'center',
   transition: 'all 0.3s ease',
@@ -77,6 +78,9 @@ const SearchBox = styled('div')(({ theme }) => ({
   '&:focus-within': {
     backgroundColor: 'white',
     boxShadow: '0 0 0 2px rgba(240, 193, 75, 0.3)',
+  },
+  [theme.breakpoints.down('sm')]: {
+    maxWidth: '100%',
   },
 }));
 
@@ -97,7 +101,7 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 
 const NavItem = styled(RouterLink)(({ theme }) => ({
   color: 'white',
-  padding: '8px 14px', // Reduced padding
+  padding: '8px 10px', // Further reduced padding for mobile
   cursor: 'pointer',
   fontSize: '0.75rem', // Smaller font
   fontWeight: 500,
@@ -121,6 +125,11 @@ const NavItem = styled(RouterLink)(({ theme }) => ({
     height: '2px',
     backgroundColor: '#f0c14b',
     transition: 'width 0.3s ease',
+  },
+  [theme.breakpoints.down('sm')]: {
+    padding: '6px 8px',
+    fontSize: '0.7rem',
+    flex: '0 0 auto',
   }
 }));
 
@@ -542,9 +551,21 @@ const Header = () => {
           width: '100%',
           maxWidth: { xs: '100%', sm: '100%', md: '100%', lg: '1440px', xl: '1920px' }
         }}>
-          <Toolbar disableGutters sx={{ justifyContent: 'space-between', minHeight: '56px' /* Reduced from default 64px */ }}>
+          <Toolbar disableGutters sx={{
+            justifyContent: 'space-between',
+            minHeight: '56px', /* Reduced from default 64px */
+            flexDirection: { xs: 'column', sm: 'row' },
+            py: { xs: 2, sm: 0 }
+          }}>
             {/* Logo */}
-            <Box sx={{ display: 'flex', alignItems: 'center', width: '30%' }}>
+            <Box sx={{
+              display: 'flex',
+              alignItems: 'center',
+              width: { xs: '100%', sm: '40%', md: '30%' },
+              justifyContent: { xs: 'center', sm: 'flex-start' },
+              mb: { xs: 1, sm: 0 },
+              order: { xs: 1, sm: 1 }
+            }}>
               <Typography
                 variant="h4"
                 component="div"
@@ -586,17 +607,31 @@ const Header = () => {
             </Box>
 
             {/* Search, Account, Cart */}
-            <Box sx={{ display: 'flex', gap: 2, alignItems: 'center', width: '70%', justifyContent: 'flex-end' }}>
-              <SearchBox>
+            <Box sx={{
+              display: 'flex',
+              gap: { xs: 1, sm: 2 },
+              alignItems: 'center',
+              width: { xs: '100%', sm: '60%', md: '70%' },
+              justifyContent: { xs: 'center', sm: 'flex-end' },
+              flexWrap: { xs: 'wrap', sm: 'nowrap' },
+              order: { xs: 2, sm: 2 },
+              mt: { xs: 1, sm: 0 }
+            }}>
+              <SearchBox sx={{
+                maxWidth: { xs: 'calc(100% - 80px)', sm: 'calc(100% - 120px)' },
+                width: { xs: '100%', sm: '100%' }
+              }}>
                 <SearchForm />
               </SearchBox>
 
-              <StyledIconButton aria-label="account">
-                <PersonIcon />
-              </StyledIconButton>
+              <Box sx={{ display: 'flex', gap: { xs: 1, sm: 2 } }}>
+                <StyledIconButton aria-label="account" size={isMobile ? "small" : "medium"}>
+                  <PersonIcon fontSize={isMobile ? "small" : "medium"} />
+                </StyledIconButton>
 
-              {/* Direct cart icon without the Cart component */}
-              <CartIconWithBadge />
+                {/* Direct cart icon without the Cart component */}
+                <CartIconWithBadge />
+              </Box>
 
               {/* Hidden Cart component */}
               <Box sx={{ display: 'none' }}>
@@ -616,7 +651,15 @@ const Header = () => {
           width: '100%',
           maxWidth: { xs: '100%', sm: '100%', md: '100%', lg: '1440px', xl: '1920px' }
         }}>
-          <Stack direction="row" justifyContent="center">
+          <Stack
+            direction={{ xs: 'row', sm: 'row' }}
+            justifyContent="center"
+            flexWrap={{ xs: 'wrap', sm: 'nowrap' }}
+            sx={{
+              overflowX: { xs: 'auto', sm: 'visible' },
+              py: { xs: 1, sm: 0 }
+            }}
+          >
             <NavItem to="/">HOME</NavItem>
             <NavItem to="/collections">COLLECTIONS</NavItem>
             <NavItem to="/signature">SIGNATURE</NavItem>
