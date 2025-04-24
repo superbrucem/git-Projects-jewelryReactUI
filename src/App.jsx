@@ -3,6 +3,7 @@ import CssBaseline from '@mui/material/CssBaseline'
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
 import { theme } from './theme/theme'
 import Layout from './components/Layout'
+import { CartProvider } from './context/CartContext'
 
 // Pages
 import HomePage from './pages/HomePage'
@@ -26,9 +27,10 @@ function App() {
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
-      <Router>
-        <Layout>
-          <Routes>
+      <CartProvider>
+        <Router>
+          <Layout>
+            <Routes>
             <Route path="/" element={<HomePage />} />
             <Route path="/collections" element={<CollectionsPage />} />
             <Route path="/signature" element={<SignaturePage />} />
@@ -45,9 +47,10 @@ function App() {
             <Route path="/warranty" element={<WarrantyPage />} />
             <Route path="/faq" element={<FAQPage />} />
             <Route path="/privacy-policy" element={<PrivacyPolicyPage />} />
-          </Routes>
-        </Layout>
-      </Router>
+            </Routes>
+          </Layout>
+        </Router>
+      </CartProvider>
     </ThemeProvider>
   )
 }

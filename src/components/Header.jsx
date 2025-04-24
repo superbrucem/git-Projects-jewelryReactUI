@@ -7,7 +7,7 @@ import {
   Container,
   InputBase,
   IconButton,
-  Badge,
+  Badge as MuiBadge,
   Stack,
   styled,
   useTheme,
@@ -23,6 +23,8 @@ import InstagramIcon from '@mui/icons-material/Instagram';
 import PhoneIcon from '@mui/icons-material/Phone';
 import EmailIcon from '@mui/icons-material/Email';
 import LocalMallOutlinedIcon from '@mui/icons-material/LocalMallOutlined';
+import Cart from './Cart';
+import { useCart } from '../context/CartContext';
 
 // Styled components
 const TopBar = styled(Box)(({ theme }) => ({
@@ -409,6 +411,46 @@ const StyledIconButton = styled(IconButton)(({ theme }) => ({
   },
 }));
 
+// Cart icon with dynamic badge count
+const CartIconWithBadge = () => {
+  const { cart } = useCart();
+
+  // Calculate total cart items (sum of quantities)
+  const totalItems = cart.reduce((total, item) => total + item.quantity, 0);
+
+  return (
+    <StyledIconButton
+      aria-label="shopping cart"
+      component="div"
+      sx={{
+        position: 'relative',
+        color: 'white',
+        transition: 'all 0.2s ease',
+        padding: '6px',
+        '&:hover': {
+          color: '#f0c14b',
+          backgroundColor: 'rgba(255, 255, 255, 0.05)',
+        }
+      }}
+      onClick={() => document.querySelector('.cart-open-button').click()}
+    >
+      <MuiBadge
+        badgeContent={totalItems}
+        color="error"
+        sx={{
+          '& .MuiBadge-badge': {
+            backgroundColor: '#f0c14b',
+            color: '#1d2b39',
+            fontWeight: 'bold',
+          }
+        }}
+      >
+        <ShoppingCartIcon />
+      </MuiBadge>
+    </StyledIconButton>
+  );
+};
+
 const Header = () => {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('md'));
@@ -527,21 +569,13 @@ const Header = () => {
                 <PersonIcon />
               </StyledIconButton>
 
-              <StyledIconButton aria-label="shopping cart">
-                <Badge
-                  badgeContent={0}
-                  color="secondary"
-                  sx={{
-                    '& .MuiBadge-badge': {
-                      backgroundColor: '#f0c14b',
-                      color: '#1d2b39',
-                      fontWeight: 'bold'
-                    }
-                  }}
-                >
-                  <LocalMallOutlinedIcon />
-                </Badge>
-              </StyledIconButton>
+              {/* Direct cart icon without the Cart component */}
+              <CartIconWithBadge />
+
+              {/* Hidden Cart component */}
+              <Box sx={{ display: 'none' }}>
+                <Cart />
+              </Box>
             </Box>
           </Toolbar>
         </Container>
