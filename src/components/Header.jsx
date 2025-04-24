@@ -129,64 +129,71 @@ const GoldBar = styled(Box)(({ theme }) => ({
 }));
 
 const OpalIcon = styled(Box)(({ theme }) => ({
-  // Styled to match the reference image
+  // Styled to match the opal image
   width: '22px',
-  height: '22px',
-  borderRadius: '50%',
-  background: 'linear-gradient(135deg, #00e5ff 0%, #00796b 100%)',
-  boxShadow: '0 0 20px rgba(0, 229, 255, 0.9)',
+  height: '28px', // Taller to match teardrop/pear shape
+  borderRadius: '50% 50% 50% 50% / 60% 60% 40% 40%', // Teardrop/pear shape
+  background: 'linear-gradient(135deg, rgba(255, 255, 255, 0.8) 0%, rgba(220, 220, 220, 0.6) 100%)',
+  boxShadow: '0 0 20px rgba(218, 165, 32, 0.6)',
   margin: '0 8px', // Reduced margin from 12px to 8px
   position: 'relative',
-  overflow: 'visible',
-  animation: 'pulseOpal 4s ease-in-out infinite',
-  '@keyframes pulseOval': {
+  overflow: 'hidden',
+  animation: 'pulseOpal 6s ease-in-out infinite',
+  '@keyframes pulseOpal': {
     '0%': {
-      boxShadow: '0 0 20px rgba(0, 229, 255, 0.9)',
-      transform: 'scale(1)',
+      boxShadow: '0 0 20px rgba(218, 165, 32, 0.6)',
+      transform: 'scale(0.95)',
     },
-    '50%': {
-      boxShadow: '0 0 30px rgba(0, 229, 255, 1)',
+    '33%': {
+      boxShadow: '0 0 25px rgba(199, 21, 133, 0.7)',
       transform: 'scale(1.05)',
     },
+    '66%': {
+      boxShadow: '0 0 20px rgba(0, 128, 0, 0.6)',
+      transform: 'scale(0.95)',
+    },
     '100%': {
-      boxShadow: '0 0 20px rgba(0, 229, 255, 0.9)',
-      transform: 'scale(1)',
+      boxShadow: '0 0 20px rgba(218, 165, 32, 0.6)',
+      transform: 'scale(0.95)',
     },
   },
   '&::before': {
     content: '""',
     position: 'absolute',
-    top: '-25%',
-    left: '-25%',
-    width: '150%',
-    height: '150%',
-    borderRadius: '50%',
-    background: 'radial-gradient(circle, rgba(0, 229, 255, 0.3) 0%, transparent 70%)',
-    animation: 'pulseGlow 3s ease-in-out infinite alternate',
+    top: '0',
+    left: '0',
+    width: '100%',
+    height: '100%',
+    borderRadius: 'inherit',
+    background: 'linear-gradient(45deg, rgba(218, 165, 32, 0.7) 0%, rgba(199, 21, 133, 0.7) 25%, rgba(0, 128, 0, 0.7) 50%, rgba(218, 165, 32, 0.7) 75%, rgba(199, 21, 133, 0.7) 100%)',
+    backgroundSize: '400% 400%',
+    animation: 'colorShift 8s ease-in-out infinite',
+    opacity: 0.8,
   },
-  '@keyframes pulseGlow': {
+  '@keyframes colorShift': {
     '0%': {
-      opacity: 0.7,
-      transform: 'scale(1)',
+      backgroundPosition: '0% 50%',
+    },
+    '50%': {
+      backgroundPosition: '100% 50%',
     },
     '100%': {
-      opacity: 1,
-      transform: 'scale(1.1)',
+      backgroundPosition: '0% 50%',
     },
   },
   '&::after': {
     content: '""',
     position: 'absolute',
-    top: '15%',
-    left: '15%',
-    width: '70%',
-    height: '70%',
-    borderRadius: '50%',
-    background: 'radial-gradient(circle at 30% 30%, #00e5ff, #006064)',
+    top: '10%',
+    left: '10%',
+    width: '80%',
+    height: '80%',
+    borderRadius: 'inherit',
+    background: 'radial-gradient(ellipse at 30% 30%, rgba(255, 255, 255, 0.9), rgba(255, 255, 255, 0.4) 70%, transparent 100%)',
     filter: 'blur(1px)',
-    animation: 'glowOval 5s ease-in-out infinite alternate',
+    animation: 'glowOpal 5s ease-in-out infinite alternate',
   },
-  '@keyframes glowOval': {
+  '@keyframes glowOpal': {
     '0%': {
       opacity: 0.8,
       filter: 'blur(1px)',
@@ -200,6 +207,51 @@ const OpalIcon = styled(Box)(({ theme }) => ({
       filter: 'blur(1px)',
     },
   },
+  // Color flashes
+  '& .color-flash': {
+    position: 'absolute',
+    width: '10px',
+    height: '10px',
+    borderRadius: '50%',
+    filter: 'blur(2px)',
+    opacity: 0.7,
+    zIndex: 1,
+  },
+  '& .flash-yellow': {
+    background: 'rgba(218, 165, 32, 0.7)',
+    top: '30%',
+    left: '40%',
+    animation: 'flashPulse 4s ease-in-out infinite alternate',
+    animationDelay: '0s',
+  },
+  '& .flash-pink': {
+    background: 'rgba(199, 21, 133, 0.7)',
+    top: '50%',
+    left: '30%',
+    animation: 'flashPulse 4.5s ease-in-out infinite alternate',
+    animationDelay: '0.5s',
+  },
+  '& .flash-green': {
+    background: 'rgba(0, 128, 0, 0.7)',
+    top: '60%',
+    left: '50%',
+    animation: 'flashPulse 5s ease-in-out infinite alternate',
+    animationDelay: '1s',
+  },
+  '@keyframes flashPulse': {
+    '0%': {
+      opacity: 0.4,
+      transform: 'scale(0.8)',
+    },
+    '50%': {
+      opacity: 0.8,
+      transform: 'scale(1.2)',
+    },
+    '100%': {
+      opacity: 0.4,
+      transform: 'scale(0.8)',
+    },
+  },
   // Inner diamond/highlight
   '& .diamond-inner': {
     position: 'absolute',
@@ -208,7 +260,7 @@ const OpalIcon = styled(Box)(({ theme }) => ({
     backgroundColor: 'rgba(255, 255, 255, 0.95)',
     borderRadius: '50%',
     boxShadow: '0 0 8px rgba(255, 255, 255, 0.9)',
-    top: '30%',
+    top: '25%',
     left: '30%',
     opacity: 0.9,
     zIndex: 3,
@@ -227,13 +279,13 @@ const OpalIcon = styled(Box)(({ theme }) => ({
   // Outer glow particles
   '& .diamond': {
     position: 'absolute',
-    width: '4px',
-    height: '4px',
+    width: '3px',
+    height: '3px',
     backgroundColor: 'rgba(255, 255, 255, 0.95)',
     borderRadius: '50%',
     boxShadow: '0 0 8px rgba(255, 255, 255, 0.9)',
     opacity: 0,
-    zIndex: -1,
+    zIndex: 4,
   },
   '& .diamond-1': {
     left: '50%',
@@ -249,6 +301,16 @@ const OpalIcon = styled(Box)(({ theme }) => ({
     left: '70%',
     bottom: '50%',
     animation: 'diamondFloat3 3s ease-out infinite 1s',
+  },
+  '& .diamond-4': {
+    left: '40%',
+    bottom: '50%',
+    animation: 'diamondSideFloat1 2.2s ease-out infinite 0.2s',
+  },
+  '& .diamond-5': {
+    left: '60%',
+    bottom: '50%',
+    animation: 'diamondSideFloat2 2.7s ease-out infinite 0.7s',
   },
   '@keyframes diamondFloat1': {
     '0%': {
@@ -298,6 +360,40 @@ const OpalIcon = styled(Box)(({ theme }) => ({
     },
     '100%': {
       transform: 'translateY(-22px) scale(0)',
+      opacity: 0,
+    },
+  },
+  '@keyframes diamondSideFloat1': {
+    '0%': {
+      transform: 'translate(0, 0) scale(0)',
+      opacity: 0,
+    },
+    '10%': {
+      opacity: 1,
+      transform: 'translate(5px, -5px) scale(1)',
+    },
+    '90%': {
+      opacity: 0.7,
+    },
+    '100%': {
+      transform: 'translate(15px, -15px) scale(0)',
+      opacity: 0,
+    },
+  },
+  '@keyframes diamondSideFloat2': {
+    '0%': {
+      transform: 'translate(0, 0) scale(0)',
+      opacity: 0,
+    },
+    '10%': {
+      opacity: 1,
+      transform: 'translate(-5px, -5px) scale(1)',
+    },
+    '90%': {
+      opacity: 0.7,
+    },
+    '100%': {
+      transform: 'translate(-15px, -15px) scale(0)',
       opacity: 0,
     },
   },
@@ -390,17 +486,27 @@ const Header = () => {
                 }}
               >
                 <OpalIcon>
+                  <Box className="color-flash flash-yellow" />
+                  <Box className="color-flash flash-pink" />
+                  <Box className="color-flash flash-green" />
                   <Box className="diamond-inner" />
                   <Box className="diamond diamond-1" />
                   <Box className="diamond diamond-2" />
                   <Box className="diamond diamond-3" />
+                  <Box className="diamond diamond-4" />
+                  <Box className="diamond diamond-5" />
                 </OpalIcon>
                 OTTAWA OPAL SHOP
                 <OpalIcon>
+                  <Box className="color-flash flash-yellow" />
+                  <Box className="color-flash flash-pink" />
+                  <Box className="color-flash flash-green" />
                   <Box className="diamond-inner" />
                   <Box className="diamond diamond-1" />
                   <Box className="diamond diamond-2" />
                   <Box className="diamond diamond-3" />
+                  <Box className="diamond diamond-4" />
+                  <Box className="diamond diamond-5" />
                 </OpalIcon>
               </Typography>
             </Box>

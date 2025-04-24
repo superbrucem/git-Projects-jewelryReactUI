@@ -13,7 +13,6 @@ const CarouselContainer = styled(Paper)(({ theme }) => ({
   position: 'relative',
   overflow: 'hidden',
   borderRadius: theme.shape.borderRadius,
-  marginBottom: theme.spacing(4),
   boxShadow: '0 4px 12px rgba(0, 0, 0, 0.1)',
 }));
 
@@ -55,7 +54,7 @@ const CarouselCaption = styled(Box)(({ theme }) => ({
 
 const ImageCarousel = () => {
   const [activeIndex, setActiveIndex] = useState(0);
-  
+
   const slides = [
     {
       image: fiveElements,
@@ -79,7 +78,7 @@ const ImageCarousel = () => {
     const interval = setInterval(() => {
       setActiveIndex((current) => (current === slides.length - 1 ? 0 : current + 1));
     }, 8000);
-    
+
     return () => clearInterval(interval);
   }, [slides.length]);
 
