@@ -14,8 +14,8 @@ import {
   useMediaQuery
 } from '@mui/material';
 import { Link as RouterLink, useNavigate } from 'react-router-dom';
-import ScrollingBanner from './ScrollingBanner';
 import SearchIcon from '@mui/icons-material/Search';
+import { keyframes } from '@mui/material';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import PersonIcon from '@mui/icons-material/Person';
 import FacebookIcon from '@mui/icons-material/Facebook';
@@ -26,19 +26,44 @@ import LocalMallOutlinedIcon from '@mui/icons-material/LocalMallOutlined';
 import Cart from './Cart';
 import { useCart } from '../context/CartContext';
 
+// Animation for scrolling text
+const scroll = keyframes`
+  0% {
+    transform: translateX(100%);
+  }
+  100% {
+    transform: translateX(-100%);
+  }
+`;
+
+// Diamond shape for decoration
+const Diamond = styled(Box)(({ theme }) => ({
+  display: 'inline-block',
+  width: '8px',
+  height: '8px',
+  backgroundColor: '#1d2b39', // Dark blue from the theme
+  transform: 'rotate(45deg)',
+  margin: '0 12px',
+}));
+
+// Scrolling text container
+const ScrollingTextContainer = styled(Box)(({ theme }) => ({
+  display: 'flex',
+  whiteSpace: 'nowrap',
+  animation: `${scroll} 40s linear infinite`, // Faster scrolling (was 65s)
+}));
+
 // Styled components
 const TopBar = styled(Box)(({ theme }) => ({
-  backgroundColor: '#1d2b39',
-  color: 'white',
-  padding: '4px 0',
+  backgroundColor: '#f0c14b', // Yellow/gold color from the image
+  color: '#1d2b39', // Dark blue text
+  padding: 0,
   display: 'flex',
-  justifyContent: 'space-between',
+  justifyContent: 'center',
   alignItems: 'center',
-  borderBottom: '1px solid rgba(255, 255, 255, 0.08)',
   fontSize: '0.75rem',
-  [theme.breakpoints.down('sm')]: {
-    display: 'none', // Hide on mobile devices
-  },
+  width: '100%',
+  overflow: 'hidden',
 }));
 
 const MainBar = styled(Box)(({ theme }) => ({
@@ -498,51 +523,43 @@ const Header = () => {
 
   return (
     <>
-      {/* Top bar with contact info and social links */}
+      {/* Top bar with scrolling banner */}
       <TopBar>
-        <Container maxWidth="xl" sx={{
-          display: 'flex',
-          justifyContent: 'space-between',
-          width: '100%',
-          maxWidth: { xs: '100%', sm: '100%', md: '100%', lg: '1440px', xl: '1920px' }
+        <Box className="shipping-banner" sx={{
+          py: 0.5,
+          overflow: 'hidden',
+          width: '100%'
         }}>
-          <Box sx={{ display: 'flex', alignItems: 'center', gap: 3 }}>
-            <Box sx={{ display: 'flex', alignItems: 'center' }}>
-              <PhoneIcon sx={{ mr: 0.8, color: 'rgba(255, 255, 255, 0.7)', fontSize: '0.9rem' }} />
-              <Typography variant="body2" sx={{ fontWeight: 400, letterSpacing: '0.3px', fontSize: '0.75rem' }}>
-                +1 (613) 555-1234
+          <ScrollingTextContainer>
+            {[
+              'FREE SHIPPING ON ALL ORDERS OVER $99.95',
+              'PERFECT FOR SPECIAL OCCASIONS',
+              'UNIQUE HANDCRAFTED JEWELRY',
+              'FREE GIFT WRAPPING',
+              'CALL US: +1 (613) 555-1234',
+              'EMAIL: Ottawa_Opal_Shop@hotmail.com'
+            ].map((message, index) => (
+              <Typography
+                key={index}
+                variant="body2"
+                component="span"
+                sx={{
+                  color: '#1d2b39',
+                  fontWeight: 600,
+                  textTransform: 'uppercase',
+                  letterSpacing: '0.5px',
+                  display: 'flex',
+                  alignItems: 'center',
+                  mx: 6,
+                  fontSize: '0.75rem',
+                  whiteSpace: 'nowrap',
+                }}
+              >
+                ♦ {message} ♦
               </Typography>
-            </Box>
-            <Box sx={{ display: 'flex', alignItems: 'center' }}>
-              <EmailIcon sx={{ mr: 0.8, color: 'rgba(255, 255, 255, 0.7)', fontSize: '0.9rem' }} />
-              <Typography variant="body2" sx={{ fontWeight: 400, letterSpacing: '0.3px', fontSize: '0.75rem' }}>
-                Ottawa_Opal_Shop@hotmail.com
-              </Typography>
-            </Box>
-          </Box>
-          <Box>
-            <Typography
-              variant="body2"
-              sx={{
-                textTransform: 'uppercase',
-                fontWeight: 600,
-                letterSpacing: '1px',
-                color: '#f0c14b',
-                fontSize: '0.75rem'
-              }}
-            >
-              FREE SHIPPING ON ALL ORDERS OVER $99.95
-            </Typography>
-          </Box>
-          <Box sx={{ display: 'flex', gap: 1 }}>
-            <StyledIconButton size="small" sx={{ padding: '4px' }}>
-              <FacebookIcon sx={{ fontSize: '0.9rem' }} />
-            </StyledIconButton>
-            <StyledIconButton size="small" sx={{ padding: '4px' }}>
-              <InstagramIcon sx={{ fontSize: '0.9rem' }} />
-            </StyledIconButton>
-          </Box>
-        </Container>
+            ))}
+          </ScrollingTextContainer>
+        </Box>
       </TopBar>
 
       {/* Main header with logo and search */}
@@ -641,35 +658,6 @@ const Header = () => {
           </Toolbar>
         </Container>
       </MainBar>
-
-      {/* Scrolling Banner */}
-      <ScrollingBanner messages={['PERFECT FOR SPECIAL OCCASIONS', 'UNIQUE HANDCRAFTED JEWELRY', 'FREE GIFT WRAPPING']} />
-
-      {/* Navigation bar */}
-      <NavBar>
-        <Container maxWidth="xl" sx={{
-          width: '100%',
-          maxWidth: { xs: '100%', sm: '100%', md: '100%', lg: '1440px', xl: '1920px' }
-        }}>
-          <Stack
-            direction={{ xs: 'row', sm: 'row' }}
-            justifyContent="center"
-            flexWrap={{ xs: 'wrap', sm: 'nowrap' }}
-            sx={{
-              overflowX: { xs: 'auto', sm: 'visible' },
-              py: { xs: 1, sm: 0 }
-            }}
-          >
-            <NavItem to="/">HOME</NavItem>
-            <NavItem to="/collections">COLLECTIONS</NavItem>
-            <NavItem to="/signature">SIGNATURE</NavItem>
-            <NavItem to="/videos">VIDEOS</NavItem>
-            <NavItem to="/about">ABOUT</NavItem>
-            <NavItem to="/contact">CONTACT</NavItem>
-            <NavItem to="/testimonials">TESTIMONIALS</NavItem>
-          </Stack>
-        </Container>
-      </NavBar>
 
       {/* Gold accent bar */}
       <GoldBar />

@@ -4,6 +4,7 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
 import { theme } from './theme/theme'
 import Layout from './components/Layout'
 import { CartProvider } from './context/CartContext'
+import { FilterProvider } from './context/FilterContext'
 
 // Pages
 import HomePage from './pages/HomePage'
@@ -27,29 +28,15 @@ function App() {
     <ThemeProvider theme={theme}>
       <CssBaseline />
       <CartProvider>
-        <Router>
-          <Layout>
-            <Routes>
-            <Route path="/" element={<HomePage />} />
-            <Route path="/collections" element={<CollectionsPage />} />
-            <Route path="/collections/:subcategory" element={<CollectionsPage />} />
-            <Route path="/signature" element={<SignaturePage />} />
-            <Route path="/signature/:subcategory" element={<SignaturePage />} />
-            <Route path="/signature/:collection/:subcategory" element={<SignaturePage />} />
-            <Route path="/videos" element={<VideosPage />} />
-            <Route path="/about" element={<AboutPage />} />
-            <Route path="/contact" element={<ContactPage />} />
-            <Route path="/testimonials" element={<TestimonialsPage />} />
-            <Route path="/customer-service" element={<CustomerServicePage />} />
-            <Route path="/shipping-returns" element={<ShippingReturnsPage />} />
-            <Route path="/product-care" element={<ProductCarePage />} />
-            <Route path="/warranty" element={<WarrantyPage />} />
-            <Route path="/faq" element={<FAQPage />} />
-            <Route path="/privacy-policy" element={<PrivacyPolicyPage />} />
-            <Route path="/search" element={<SearchPage />} />
-            </Routes>
-          </Layout>
-        </Router>
+        <FilterProvider>
+          <Router>
+            <Layout>
+              <Routes>
+                <Route path="/*" element={<HomePage />} />
+              </Routes>
+            </Layout>
+          </Router>
+        </FilterProvider>
       </CartProvider>
     </ThemeProvider>
   )
