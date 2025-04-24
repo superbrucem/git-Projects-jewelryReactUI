@@ -453,6 +453,7 @@ const Header = () => {
           <Stack direction="row" justifyContent="center">
             <NavItem to="/">HOME</NavItem>
             <NavItem to="/collections">COLLECTIONS</NavItem>
+            <NavItem to="/signature">SIGNATURE</NavItem>
             <NavItem to="/videos">VIDEOS</NavItem>
             <NavItem to="/about">ABOUT</NavItem>
             <NavItem to="/contact">CONTACT</NavItem>

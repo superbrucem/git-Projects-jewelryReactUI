@@ -7,6 +7,10 @@ import Layout from './components/Layout'
 // Pages
 import HomePage from './pages/HomePage'
 import CollectionsPage from './pages/CollectionsPage'
+import SignaturePage from './pages/SignaturePage'
+import SignatureElementsPage from './pages/SignatureElementsPage'
+import SignatureGreekGodsPage from './pages/SignatureGreekGodsPage'
+import SignatureUnderworldPage from './pages/SignatureUnderworldPage'
 import VideosPage from './pages/VideosPage'
 import AboutPage from './pages/AboutPage'
 import ContactPage from './pages/ContactPage'
@@ -27,6 +31,10 @@ function App() {
           <Routes>
             <Route path="/" element={<HomePage />} />
             <Route path="/collections" element={<CollectionsPage />} />
+            <Route path="/signature" element={<SignaturePage />} />
+            <Route path="/signature/5-elements" element={<SignatureElementsPage />} />
+            <Route path="/signature/greek-gods" element={<SignatureGreekGodsPage />} />
+            <Route path="/signature/underworld" element={<SignatureUnderworldPage />} />
             <Route path="/videos" element={<VideosPage />} />
             <Route path="/about" element={<AboutPage />} />
             <Route path="/contact" element={<ContactPage />} />

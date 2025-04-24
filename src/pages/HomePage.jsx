@@ -2,6 +2,8 @@ import React from 'react';
 import { Box, Container, Typography, Paper, Grid, Divider } from '@mui/material';
 import OpalAnimation from '../components/OpalAnimation';
 import CategoryMenu from '../components/CategoryMenu';
+import SignatureMenu from '../components/SignatureMenu';
+import ImageCarousel from '../components/ImageCarousel';
 
 const HomePage = () => {
   return (
@@ -14,11 +16,17 @@ const HomePage = () => {
         {/* Left sidebar with category menu */}
         <Grid item xs={12} md={3} lg={2.5}>
           <CategoryMenu />
+          <SignatureMenu />
         </Grid>
 
         {/* Main content area */}
         <Grid item xs={12} md={9} lg={9.5}>
           <Paper elevation={0} sx={{ p: 4, borderRadius: 2, backgroundColor: 'rgba(255, 255, 255, 0.9)' }}>
+            {/* Image Carousel */}
+            <Box sx={{ mb: 4 }}>
+              <ImageCarousel />
+            </Box>
+
             <Grid container spacing={3} alignItems="center">
               <Grid item xs={12} md={7}>
                 <Typography variant="h3" component="h1" gutterBottom>
@@ -32,10 +40,10 @@ const HomePage = () => {
                 </Typography>
                 <Box sx={{ mt: 4 }}>
                   <Typography variant="h5" gutterBottom>
-                    Featured Collections Coming Soon
+                    Signature Collections
                   </Typography>
                   <Typography variant="body1">
-                    We're currently updating our online catalog with our latest collections. Please check back soon or visit our physical store.
+                    Explore our exclusive signature collections featuring unique designs inspired by nature, mythology, and the elements.
                   </Typography>
                 </Box>
               </Grid>
