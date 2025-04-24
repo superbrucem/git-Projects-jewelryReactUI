@@ -1,0 +1,35 @@
+[
+  {
+    "id": "5-elements",
+    "label": "5 ELEMENTS",
+    "subcategories": [
+      "Fire",
+      "Water",
+      "Earth",
+      "Air",
+      "Aether"
+    ]
+  },
+  {
+    "id": "greek-gods",
+    "label": "GREEK GODS",
+    "subcategories": [
+      "Zeus",
+      "Poseidon",
+      "Athena",
+      "Apollo",
+      "Aphrodite"
+    ]
+  },
+  {
+    "id": "underworld",
+    "label": "UNDERWORLD",
+    "subcategories": [
+      "Hades",
+      "Persephone",
+      "Cerberus",
+      "Styx",
+      "Elysium"
+    ]
+  }
+]

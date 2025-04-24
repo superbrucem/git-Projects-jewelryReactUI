@@ -13,6 +13,7 @@ import { styled } from '@mui/material/styles';
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { Link } from 'react-router-dom';
+import collectionsData from '../data/collections_sidemenu.json';
 
 // Styled components
 const CategoryContainer = styled(Paper)(({ theme }) => ({
@@ -84,14 +85,19 @@ const StyledLink = styled(Link)(({ theme }) => ({
 
 // Main component
 const CategoryMenu = () => {
-  // State to track which categories are expanded
-  const [expanded, setExpanded] = useState({
-    'gemstone-a-m': false,
-    'gemstone-n-z': false,
-    'garnet': false,
-    'sapphire': false,
-    'topaz-quartz': false,
+  // Filter out the 'all' category
+  const categories = collectionsData.filter(cat => cat.id !== 'all');
+
+  // Initialize expanded state based on categories from JSON
+  const initialExpandedState = {};
+  categories.forEach(cat => {
+    // Extract the key from the id (remove 'natural-' prefix if present)
+    const key = cat.id.replace('natural-', '');
+    initialExpandedState[key] = false;
   });
+
+  // State to track which categories are expanded
+  const [expanded, setExpanded] = useState(initialExpandedState);
 
   // Toggle category expansion
   const handleToggle = (category) => {
@@ -110,173 +116,85 @@ const CategoryMenu = () => {
       </CategoryHeader>
 
       <List disablePadding>
-        {/* Natural Gemstone A-M */}
-        <CategoryItem onClick={() => handleToggle('gemstone-a-m')}>
-          <ListItemText primary="NATURAL GEMSTONE A-M" />
-          <ListItemIcon sx={{ minWidth: 'auto' }}>
-            {expanded['gemstone-a-m'] ? <ExpandMoreIcon /> : <ChevronRightIcon />}
-          </ListItemIcon>
-        </CategoryItem>
-        <Collapse in={expanded['gemstone-a-m']} timeout="auto" unmountOnExit>
-          <SubCategoryList>
-            <StyledLink to="/collections/amethyst">
-              <SubCategoryItem>
-                <ListItemText primary="Amethyst" />
-              </SubCategoryItem>
-            </StyledLink>
-            <StyledLink to="/collections/aquamarine">
-              <SubCategoryItem>
-                <ListItemText primary="Aquamarine" />
-              </SubCategoryItem>
-            </StyledLink>
-            <StyledLink to="/collections/citrine">
-              <SubCategoryItem>
-                <ListItemText primary="Citrine" />
-              </SubCategoryItem>
-            </StyledLink>
-            <StyledLink to="/collections/emerald">
-              <SubCategoryItem>
-                <ListItemText primary="Emerald" />
-              </SubCategoryItem>
-            </StyledLink>
-            <StyledLink to="/collections/garnet">
-              <SubCategoryItem>
-                <ListItemText primary="Garnet" />
-              </SubCategoryItem>
-            </StyledLink>
-            <StyledLink to="/collections/jade">
-              <SubCategoryItem>
-                <ListItemText primary="Jade" />
-              </SubCategoryItem>
-            </StyledLink>
-            <StyledLink to="/collections/lapis-lazuli">
-              <SubCategoryItem>
-                <ListItemText primary="Lapis Lazuli" />
-              </SubCategoryItem>
-            </StyledLink>
-            <StyledLink to="/collections/moonstone">
-              <SubCategoryItem>
-                <ListItemText primary="Moonstone" />
-              </SubCategoryItem>
-            </StyledLink>
-          </SubCategoryList>
-        </Collapse>
+        {categories.map(category => {
+          // Extract the key from the id (remove 'natural-' prefix if present)
+          const key = category.id.replace('natural-', '');
 
-        {/* Natural Gemstone N-Z */}
-        <CategoryItem onClick={() => handleToggle('gemstone-n-z')}>
-          <ListItemText primary="NATURAL GEMSTONE N-Z" />
-          <ListItemIcon sx={{ minWidth: 'auto' }}>
-            {expanded['gemstone-n-z'] ? <ExpandMoreIcon /> : <ChevronRightIcon />}
-          </ListItemIcon>
-        </CategoryItem>
-        <Collapse in={expanded['gemstone-n-z']} timeout="auto" unmountOnExit>
-          <SubCategoryList>
-            <StyledLink to="/collections/opal">
-              <SubCategoryItem>
-                <ListItemText primary="Opal" />
-              </SubCategoryItem>
-            </StyledLink>
-            <StyledLink to="/collections/peridot">
-              <SubCategoryItem>
-                <ListItemText primary="Peridot" />
-              </SubCategoryItem>
-            </StyledLink>
-            <StyledLink to="/collections/ruby">
-              <SubCategoryItem>
-                <ListItemText primary="Ruby" />
-              </SubCategoryItem>
-            </StyledLink>
-            <StyledLink to="/collections/tanzanite">
-              <SubCategoryItem>
-                <ListItemText primary="Tanzanite" />
-              </SubCategoryItem>
-            </StyledLink>
-            <StyledLink to="/collections/tourmaline">
-              <SubCategoryItem>
-                <ListItemText primary="Tourmaline" />
-              </SubCategoryItem>
-            </StyledLink>
-          </SubCategoryList>
-        </Collapse>
+          // Generate a display name for the "View All" link
+          let viewAllText = `View All ${category.label.replace('NATURAL ', '')}`;
 
-        {/* Natural Garnet */}
-        <CategoryItem onClick={() => handleToggle('garnet')}>
-          <ListItemText primary="NATURAL GARNET" />
-          <ListItemIcon sx={{ minWidth: 'auto' }}>
-            {expanded['garnet'] ? <ExpandMoreIcon /> : <ChevronRightIcon />}
-          </ListItemIcon>
-        </CategoryItem>
-        <Collapse in={expanded['garnet']} timeout="auto" unmountOnExit>
-          <SubCategoryList>
-            <StyledLink to="/collections/garnet-red">
-              <SubCategoryItem>
-                <ListItemText primary="Red Garnet" />
-              </SubCategoryItem>
-            </StyledLink>
-            <StyledLink to="/collections/garnet-green">
-              <SubCategoryItem>
-                <ListItemText primary="Green Garnet" />
-              </SubCategoryItem>
-            </StyledLink>
-          </SubCategoryList>
-        </Collapse>
+          // Special cases for specific categories
+          if (key === 'garnet') viewAllText = 'View All Garnets';
+          if (key === 'sapphire') viewAllText = 'View All Sapphires';
+          if (key === 'diamond') viewAllText = 'View All Diamonds';
+          if (key === 'topaz-quartz') viewAllText = 'View All Topaz & Quartz';
 
-        {/* Natural Sapphire */}
-        <CategoryItem onClick={() => handleToggle('sapphire')}>
-          <ListItemText primary="NATURAL SAPPHIRE" />
-          <ListItemIcon sx={{ minWidth: 'auto' }}>
-            {expanded['sapphire'] ? <ExpandMoreIcon /> : <ChevronRightIcon />}
-          </ListItemIcon>
-        </CategoryItem>
-        <Collapse in={expanded['sapphire']} timeout="auto" unmountOnExit>
-          <SubCategoryList>
-            <StyledLink to="/collections/sapphire-blue">
-              <SubCategoryItem>
-                <ListItemText primary="Blue Sapphire" />
-              </SubCategoryItem>
-            </StyledLink>
-            <StyledLink to="/collections/sapphire-pink">
-              <SubCategoryItem>
-                <ListItemText primary="Pink Sapphire" />
-              </SubCategoryItem>
-            </StyledLink>
-            <StyledLink to="/collections/sapphire-yellow">
-              <SubCategoryItem>
-                <ListItemText primary="Yellow Sapphire" />
-              </SubCategoryItem>
-            </StyledLink>
-          </SubCategoryList>
-        </Collapse>
+          return (
+            <React.Fragment key={category.id}>
+              {/* Category Header */}
+              <CategoryItem
+                onClick={() => handleToggle(key)}
+                sx={{
+                  backgroundColor: expanded[key] ? 'rgba(0, 0, 0, 0.03)' : 'transparent',
+                  '&:hover': {
+                    backgroundColor: 'rgba(0, 0, 0, 0.05)',
+                  }
+                }}
+              >
+                <Box sx={{ display: 'flex', justifyContent: 'space-between', width: '100%', alignItems: 'center' }}>
+                  <ListItemText
+                    primary={category.label}
+                    sx={{
+                      '& .MuiTypography-root': {
+                        fontWeight: 500,
+                        fontSize: '0.85rem',
+                      }
+                    }}
+                  />
+                  <ListItemIcon sx={{ minWidth: 'auto' }}>
+                    {expanded[key] ? <ExpandMoreIcon /> : <ChevronRightIcon />}
+                  </ListItemIcon>
+                </Box>
+              </CategoryItem>
 
-        {/* Natural Topaz - Quartz */}
-        <CategoryItem onClick={() => handleToggle('topaz-quartz')}>
-          <ListItemText primary="NATURAL TOPAZ - QUARTZ" />
-          <ListItemIcon sx={{ minWidth: 'auto' }}>
-            {expanded['topaz-quartz'] ? <ExpandMoreIcon /> : <ChevronRightIcon />}
-          </ListItemIcon>
-        </CategoryItem>
-        <Collapse in={expanded['topaz-quartz']} timeout="auto" unmountOnExit>
-          <SubCategoryList>
-            <StyledLink to="/collections/topaz">
-              <SubCategoryItem>
-                <ListItemText primary="Topaz" />
-              </SubCategoryItem>
-            </StyledLink>
-            <StyledLink to="/collections/quartz">
-              <SubCategoryItem>
-                <ListItemText primary="Quartz" />
-              </SubCategoryItem>
-            </StyledLink>
-          </SubCategoryList>
-        </Collapse>
+              {/* View All link */}
+              {expanded[key] && (
+                <Box
+                  sx={{
+                    p: 1,
+                    backgroundColor: 'rgba(0, 0, 0, 0.01)',
+                    cursor: 'pointer',
+                    borderBottom: '1px solid rgba(0, 0, 0, 0.04)',
+                    '&:hover': {
+                      backgroundColor: 'rgba(0, 0, 0, 0.05)',
+                    }
+                  }}
+                  onClick={() => window.location.href = `/collections?category=${category.id}`}
+                >
+                  <Typography variant="body2" sx={{ pl: 3, py: 1, fontSize: '0.8rem' }}>
+                    {viewAllText}
+                  </Typography>
+                </Box>
+              )}
 
-        {/* Natural Diamond */}
-        <CategoryItem onClick={() => handleToggle('diamond')}>
-          <ListItemText primary="NATURAL DIAMOND" />
-          <ListItemIcon sx={{ minWidth: 'auto' }}>
-            <ChevronRightIcon />
-          </ListItemIcon>
-        </CategoryItem>
+              {/* Subcategories */}
+              <Collapse in={expanded[key]} timeout="auto" unmountOnExit>
+                <SubCategoryList>
+                  {category.subcategories.map(subcategory => {
+                    const subcategorySlug = subcategory.toLowerCase().replace(/\s+/g, '-');
+                    return (
+                      <StyledLink key={subcategorySlug} to={`/collections/${subcategorySlug}`}>
+                        <SubCategoryItem>
+                          <ListItemText primary={subcategory} />
+                        </SubCategoryItem>
+                      </StyledLink>
+                    );
+                  })}
+                </SubCategoryList>
+              </Collapse>
+            </React.Fragment>
+          );
+        })}
       </List>
     </CategoryContainer>
   );

@@ -11,13 +11,16 @@ const PaginatedProductGrid = ({ products, itemsPerPage = 8 }) => {
   const { addToCart } = useCart();
   const [currentPage, setCurrentPage] = useState(1);
 
+  // Debug products
+  console.log('PaginatedProductGrid received products:', products?.length, products?.map(p => p.category));
+
   // Calculate total pages
-  const totalPages = Math.ceil(products.length / itemsPerPage);
+  const totalPages = Math.ceil((products?.length || 0) / itemsPerPage);
 
   // Get current products
   const indexOfLastItem = currentPage * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
-  const currentProducts = products.slice(indexOfFirstItem, indexOfLastItem);
+  const currentProducts = products?.length ? products.slice(indexOfFirstItem, indexOfLastItem) : [];
 
   // Change page
   const goToPage = (pageNumber) => {
@@ -161,6 +164,17 @@ const PaginatedProductGrid = ({ products, itemsPerPage = 8 }) => {
       </Stack>
     </Box>
   );
+
+  // Check if there are products to display
+  if (!products || products.length === 0) {
+    return (
+      <Box sx={{ textAlign: 'center', py: 4 }}>
+        <Typography variant="h6" color="text.secondary">
+          No products available in this collection.
+        </Typography>
+      </Box>
+    );
+  }
 
   return (
     <Box>

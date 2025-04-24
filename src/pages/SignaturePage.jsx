@@ -1,87 +1,89 @@
-import React, { useState } from 'react';
-import { Box, Container, Typography, Paper, Grid, Tabs, Tab, List, ListItem, ListItemText, Divider } from '@mui/material';
-import { Link } from 'react-router-dom';
-import { styled } from '@mui/material/styles';
+import React, { useEffect, useState } from 'react';
+import { Box, Container, Typography, Paper, Grid, Divider, Button } from '@mui/material';
+import { useParams, useLocation, useNavigate } from 'react-router-dom';
 import PaginatedProductGrid from '../components/PaginatedProductGrid';
 import products from '../data/products';
+import signatureCollections from '../data/signature_sidemenu.json';
 
-const StyledLink = styled(Link)(({ theme }) => ({
-  textDecoration: 'none',
-  color: theme.palette.primary.main,
-  '&:hover': {
-    textDecoration: 'underline',
-  },
-}));
+// Filter products by category
+const elementsProducts = products.filter(p => p.category === '5-elements');
+const greekGodsProducts = products.filter(p => p.category === 'greek-gods');
+const underworldProducts = products.filter(p => p.category === 'underworld');
 
-const CollectionItem = styled(ListItem)(({ theme }) => ({
-  padding: '12px 16px',
-  borderBottom: '1px solid rgba(0, 0, 0, 0.08)',
-  '&:last-child': {
-    borderBottom: 'none',
-  },
-}));
+// Debug logs
+console.log('All products:', products.length);
+console.log('5 Elements products:', elementsProducts.length);
+console.log('Greek Gods products:', greekGodsProducts.length);
+console.log('Underworld products:', underworldProducts.length);
 
-// Define signature collections
-const signatureCollections = [
+// Add "all" collection to the signature collections
+const allSignatureCollections = [
   {
     id: 'all',
     label: 'All Signature Collections',
-    products: products,
+    products: products.filter(p => ['5-elements', 'greek-gods', 'underworld'].includes(p.category)),
     description: 'Our exclusive Signature Collections feature our most exquisite and unique pieces, each one personally selected and designed by our master jewelers.'
   },
-  {
-    id: '5-elements',
-    label: '5 Elements',
-    products: products.filter(p => p.category === '5-elements'),
-    description: 'Our 5 Elements Collection is inspired by the classical elements of nature: Earth, Water, Fire, Air, and Aether. Each piece embodies the essence and symbolism of these fundamental elements.',
-    items: [
-      { name: 'Earth Element Pendant', description: 'Crafted with natural stones and earthy tones' },
-      { name: 'Water Element Bracelet', description: 'Featuring blue sapphires and flowing design elements' },
-      { name: 'Fire Element Earrings', description: 'Set with vibrant rubies and orange sapphires' },
-      { name: 'Air Element Ring', description: 'Delicate design with white diamonds and open spaces' },
-      { name: 'Aether Element Necklace', description: 'Mystical design with opals and moonstone' }
-    ]
-  },
-  {
-    id: 'greek-gods',
-    label: 'Greek Gods',
-    products: products.filter(p => p.category === 'greek-gods'),
-    description: 'Our Greek Gods Collection draws inspiration from the rich mythology and divine figures of ancient Greece, bringing their timeless power and beauty to modern jewelry design.',
-    items: [
-      { name: 'Zeus Thunderbolt Pendant', description: 'Powerful design with white diamonds and yellow gold' },
-      { name: 'Poseidon Trident Bracelet', description: 'Featuring blue sapphires and aquamarines' },
-      { name: 'Athena Wisdom Ring', description: 'Elegant design with owl motif and olive branch details' },
-      { name: 'Apollo Sun Earrings', description: 'Radiant design with citrine and yellow sapphires' },
-      { name: 'Aphrodite Love Necklace', description: 'Romantic design with pink sapphires and rose gold' }
-    ]
-  },
-  {
-    id: 'underworld',
-    label: 'Underworld',
-    products: products.filter(p => p.category === 'underworld'),
-    description: 'Our Underworld Collection explores the mysterious and captivating realm of the subterranean world from various mythologies, creating bold and enigmatic jewelry that makes a statement.',
-    items: [
-      { name: 'Hades Crown Ring', description: 'Dramatic design with black diamonds and white gold' },
-      { name: 'Persephone Pomegranate Pendant', description: 'Featuring red garnets and black rhodium plating' },
-      { name: 'Cerberus Guardian Bracelet', description: 'Bold design with three-headed dog motif and onyx stones' },
-      { name: 'River Styx Necklace', description: 'Flowing design with black pearls and smoky quartz' },
-      { name: 'Elysium Fields Earrings', description: 'Ethereal design with moonstones and white opals' }
-    ]
-  }
+  ...signatureCollections
 ];
 
-const SignaturePage = () => {
-  const [selectedCollection, setSelectedCollection] = useState('all');
+// Collection descriptions
+const collectionDescriptions = {
+  '5-elements': 'Our 5 Elements Collection is inspired by the classical elements of nature: Earth, Water, Fire, Air, and Aether. Each piece embodies the essence and symbolism of these fundamental elements.',
+  'greek-gods': 'Our Greek Gods Collection draws inspiration from the rich mythology and divine figures of ancient Greece, bringing their timeless power and beauty to modern jewelry design.',
+  'underworld': 'Our Underworld Collection explores the mysterious and captivating realm of the subterranean world from various mythologies, creating bold and enigmatic jewelry that makes a statement.'
+};
 
-  const handleCollectionChange = (event, newValue) => {
-    setSelectedCollection(newValue);
-  };
+const SignaturePage = () => {
+  const { collection: collectionParam, subcategory } = useParams();
+  const location = useLocation();
+  const navigate = useNavigate();
+
+  // Get collection from query parameter if not in URL path
+  const queryParams = new URLSearchParams(location.search);
+  const collectionQuery = queryParams.get('collection');
+
+  // Determine which collection to show
+  const [selectedCollection, setSelectedCollection] = useState('all');
+  const [selectedSubcategory, setSelectedSubcategory] = useState(null);
+
+  useEffect(() => {
+    // Check if we have a collection in the URL path or query
+    if (collectionParam) {
+      setSelectedCollection(collectionParam);
+    } else if (collectionQuery) {
+      setSelectedCollection(collectionQuery);
+    } else {
+      setSelectedCollection('all');
+    }
+
+    // Check if we have a subcategory
+    if (subcategory) {
+      setSelectedSubcategory(subcategory);
+    } else {
+      setSelectedSubcategory(null);
+    }
+  }, [collectionParam, collectionQuery, subcategory]);
 
   // Get the current collection
-  const currentCollection = signatureCollections.find(c => c.id === selectedCollection) || signatureCollections[0];
+  const currentCollection = allSignatureCollections.find(c => c.id === selectedCollection) || allSignatureCollections[0];
 
-  // Filter products based on selected collection
-  const filteredProducts = currentCollection.products || products;
+  // Filter products based on selected collection and subcategory
+  let filteredProducts = [];
+
+  if (selectedCollection === 'all') {
+    filteredProducts = currentCollection.products;
+  } else {
+    // Filter by collection
+    filteredProducts = products.filter(p => p.category === selectedCollection);
+
+    // Further filter by subcategory if one is selected
+    if (selectedSubcategory) {
+      filteredProducts = filteredProducts.filter(p =>
+        p.collection && p.collection.toLowerCase() === selectedSubcategory.toLowerCase()
+      );
+    }
+  }
 
   return (
     <Container maxWidth="xl" sx={{
@@ -94,73 +96,194 @@ const SignaturePage = () => {
           Signature Collections
         </Typography>
 
-        {/* Collection tabs */}
-        <Box sx={{ borderBottom: 1, borderColor: 'divider', mb: 4 }}>
-          <Tabs
-            value={selectedCollection}
-            onChange={handleCollectionChange}
-            variant="scrollable"
-            scrollButtons="auto"
-            allowScrollButtonsMobile
-            aria-label="signature collection tabs"
-          >
-            {signatureCollections.map((collection) => (
-              <Tab
-                key={collection.id}
-                label={collection.label}
-                value={collection.id}
-                sx={{
-                  fontWeight: 500,
-                  fontSize: '0.9rem',
-                  '&.Mui-selected': {
-                    color: '#f0c14b',
-                  }
-                }}
-              />
-            ))}
-          </Tabs>
-        </Box>
+        {/* Navigation breadcrumbs */}
+        {selectedCollection !== 'all' && (
+          <Box sx={{ display: 'flex', gap: 1, mb: 3, alignItems: 'center' }}>
+            <Button
+              variant="text"
+              size="small"
+              onClick={() => navigate('/signature')}
+            >
+              All Collections
+            </Button>
+            {selectedCollection && (
+              <>
+                <Typography variant="body2" sx={{ color: 'text.secondary' }}>
+                  &gt;
+                </Typography>
+                <Button
+                  variant="text"
+                  size="small"
+                  onClick={() => navigate(`/signature?collection=${selectedCollection}`)}
+                  sx={{ textTransform: 'capitalize' }}
+                >
+                  {selectedCollection.replace(/-/g, ' ')}
+                </Button>
+              </>
+            )}
+            {selectedSubcategory && (
+              <>
+                <Typography variant="body2" sx={{ color: 'text.secondary' }}>
+                  &gt;
+                </Typography>
+                <Typography variant="body2" sx={{ color: 'text.primary', textTransform: 'capitalize' }}>
+                  {selectedSubcategory}
+                </Typography>
+              </>
+            )}
+          </Box>
+        )}
 
         {/* Collection description */}
         <Box sx={{ mb: 4 }}>
           <Typography variant="h5" component="h2" gutterBottom>
-            {currentCollection.label}
+            {selectedSubcategory
+              ? `${selectedSubcategory.charAt(0).toUpperCase() + selectedSubcategory.slice(1)} - ${currentCollection.label}`
+              : currentCollection.label}
           </Typography>
 
           <Typography variant="body1" paragraph>
-            {currentCollection.description}
+            {selectedSubcategory
+              ? `Explore our exquisite ${selectedSubcategory} jewelry from the ${currentCollection.label} collection.`
+              : (currentCollection.description || collectionDescriptions[selectedCollection] || 'Our exclusive Signature Collections feature our most exquisite and unique pieces.')}
           </Typography>
-
-          {/* Collection items list */}
-          {currentCollection.items && currentCollection.items.length > 0 && (
-            <>
-              <Divider sx={{ my: 3 }} />
-
-              <Typography variant="h6" gutterBottom sx={{ textAlign: 'left' }}>
-                Featured Items in this Collection:
-              </Typography>
-
-              <Paper elevation={0} sx={{ border: '1px solid rgba(0, 0, 0, 0.1)', borderRadius: 1, mt: 2, mb: 4 }}>
-                <List disablePadding>
-                  {currentCollection.items.map((item, index) => (
-                    <CollectionItem key={index}>
-                      <ListItemText
-                        primary={<StyledLink to={`/signature/${currentCollection.id}/${item.name.toLowerCase().replace(/\s+/g, '-')}`}>{item.name}</StyledLink>}
-                        secondary={item.description}
-                      />
-                    </CollectionItem>
-                  ))}
-                </List>
-              </Paper>
-            </>
-          )}
         </Box>
 
-        {/* Products with pagination */}
+        {/* Products Grid */}
         <Typography variant="h6" gutterBottom>
-          Browse {currentCollection.label} Products
+          Browse {selectedSubcategory
+            ? `${selectedSubcategory.charAt(0).toUpperCase() + selectedSubcategory.slice(1)} Products`
+            : `${currentCollection.label} Products`}
         </Typography>
         <PaginatedProductGrid products={filteredProducts} itemsPerPage={8} />
+
+        {/* Only show collections sections on the main signature page */}
+        {selectedCollection === 'all' && (
+          <>
+            {/* Scroll indicator */}
+            <Box sx={{
+              display: 'flex',
+              justifyContent: 'center',
+              alignItems: 'center',
+              mt: 4,
+              mb: 2,
+              flexDirection: 'column'
+            }}>
+              <Typography variant="h6" color="primary" gutterBottom>
+                Explore Our Signature Collections Below
+              </Typography>
+              <Box sx={{
+                animation: 'bounce 2s infinite',
+                '@keyframes bounce': {
+                  '0%, 20%, 50%, 80%, 100%': {
+                    transform: 'translateY(0)'
+                  },
+                  '40%': {
+                    transform: 'translateY(-20px)'
+                  },
+                  '60%': {
+                    transform: 'translateY(-10px)'
+                  }
+                }
+              }}>
+                <Typography variant="h4" color="primary">↓</Typography>
+              </Box>
+            </Box>
+
+            {/* 5 Elements Collection */}
+            <Box sx={{
+              my: 8,
+              p: 3,
+              border: '1px solid #e0e0e0',
+              borderRadius: 2,
+              backgroundColor: 'rgba(240, 240, 240, 0.5)'
+            }}>
+              <Typography variant="h5" component="h2" gutterBottom sx={{ color: '#1d2b39' }}>
+                5 Elements Collection
+              </Typography>
+              <Typography variant="body1" paragraph>
+                {collectionDescriptions['5-elements']}
+              </Typography>
+              <Grid container spacing={2} sx={{ mb: 2 }}>
+                {signatureCollections[0].subcategories.map(subcategory => (
+                  <Grid item xs={6} sm={4} md={2.4} key={subcategory}>
+                    <Button
+                      variant="outlined"
+                      fullWidth
+                      onClick={() => navigate(`/signature/5-elements/${subcategory.toLowerCase()}`)}
+                      sx={{ textTransform: 'capitalize' }}
+                    >
+                      {subcategory}
+                    </Button>
+                  </Grid>
+                ))}
+              </Grid>
+              <PaginatedProductGrid products={elementsProducts} itemsPerPage={8} />
+            </Box>
+
+            {/* Greek Gods Collection */}
+            <Box sx={{
+              my: 8,
+              p: 3,
+              border: '1px solid #e0e0e0',
+              borderRadius: 2,
+              backgroundColor: 'rgba(240, 240, 240, 0.5)'
+            }}>
+              <Typography variant="h5" component="h2" gutterBottom sx={{ color: '#1d2b39' }}>
+                Greek Gods Collection
+              </Typography>
+              <Typography variant="body1" paragraph>
+                {collectionDescriptions['greek-gods']}
+              </Typography>
+              <Grid container spacing={2} sx={{ mb: 2 }}>
+                {signatureCollections[1].subcategories.map(subcategory => (
+                  <Grid item xs={6} sm={4} md={2.4} key={subcategory}>
+                    <Button
+                      variant="outlined"
+                      fullWidth
+                      onClick={() => navigate(`/signature/greek-gods/${subcategory.toLowerCase()}`)}
+                      sx={{ textTransform: 'capitalize' }}
+                    >
+                      {subcategory}
+                    </Button>
+                  </Grid>
+                ))}
+              </Grid>
+              <PaginatedProductGrid products={greekGodsProducts} itemsPerPage={8} />
+            </Box>
+
+            {/* Underworld Collection */}
+            <Box sx={{
+              my: 8,
+              p: 3,
+              border: '1px solid #e0e0e0',
+              borderRadius: 2,
+              backgroundColor: 'rgba(240, 240, 240, 0.5)'
+            }}>
+              <Typography variant="h5" component="h2" gutterBottom sx={{ color: '#1d2b39' }}>
+                Underworld Collection
+              </Typography>
+              <Typography variant="body1" paragraph>
+                {collectionDescriptions['underworld']}
+              </Typography>
+              <Grid container spacing={2} sx={{ mb: 2 }}>
+                {signatureCollections[2].subcategories.map(subcategory => (
+                  <Grid item xs={6} sm={4} md={2.4} key={subcategory}>
+                    <Button
+                      variant="outlined"
+                      fullWidth
+                      onClick={() => navigate(`/signature/underworld/${subcategory.toLowerCase()}`)}
+                      sx={{ textTransform: 'capitalize' }}
+                    >
+                      {subcategory}
+                    </Button>
+                  </Grid>
+                ))}
+              </Grid>
+              <PaginatedProductGrid products={underworldProducts} itemsPerPage={8} />
+            </Box>
+          </>
+        )}
       </Paper>
     </Container>
   );

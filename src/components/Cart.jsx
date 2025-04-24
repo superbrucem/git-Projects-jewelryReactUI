@@ -33,6 +33,7 @@ const CartDrawer = styled(Drawer)(({ theme }) => ({
     padding: theme.spacing(2),
     [theme.breakpoints.down('sm')]: {
       width: '100%',
+      padding: theme.spacing(1.5),
     },
   },
 }));
@@ -110,9 +111,27 @@ const Cart = () => {
       </IconButton>
 
       <CartDrawer anchor="right" open={open} onClose={() => setOpen(false)}>
-        <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 2 }}>
-          <Typography variant="h6">Your Cart</Typography>
-          <IconButton onClick={() => setOpen(false)}>
+        <Box sx={{
+          display: 'flex',
+          justifyContent: 'space-between',
+          alignItems: 'center',
+          mb: 2,
+          position: 'sticky',
+          top: 0,
+          backgroundColor: 'white',
+          zIndex: 10,
+          pb: 1
+        }}>
+          <Typography variant="h6" sx={{ fontSize: { xs: '1.1rem', sm: '1.25rem' } }}>
+            Your Cart
+          </Typography>
+          <IconButton
+            onClick={() => setOpen(false)}
+            sx={{
+              backgroundColor: '#f5f5f5',
+              '&:hover': { backgroundColor: '#e0e0e0' }
+            }}
+          >
             <CloseIcon />
           </IconButton>
         </Box>
@@ -128,29 +147,86 @@ const Cart = () => {
             <List sx={{ mb: 2 }}>
               {cart.map((item) => (
                 <React.Fragment key={item.id}>
-                  <ListItem alignItems="flex-start">
-                    <ListItemAvatar>
-                      <Avatar alt={item.name} src={item.image} variant="square" />
-                    </ListItemAvatar>
-                    <ListItemText
-                      primary={item.name}
-                      secondary={
-                        <Typography variant="body2" color="text.primary">
-                          {getFormattedPrice(item.price)}
-                        </Typography>
-                      }
-                    />
-                    <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                  <ListItem
+                    alignItems="flex-start"
+                    sx={{
+                      flexDirection: { xs: 'column', sm: 'row' },
+                      alignItems: { xs: 'flex-start', sm: 'center' },
+                      py: { xs: 2, sm: 1 }
+                    }}
+                  >
+                    <Box sx={{
+                      display: 'flex',
+                      width: '100%',
+                      alignItems: 'center',
+                      mb: { xs: 1, sm: 0 }
+                    }}>
+                      <ListItemAvatar>
+                        <Avatar
+                          alt={item.name}
+                          src={item.image}
+                          variant="square"
+                          sx={{ width: { xs: 40, sm: 40 }, height: { xs: 40, sm: 40 } }}
+                        />
+                      </ListItemAvatar>
+                      <ListItemText
+                        primary={
+                          <Typography
+                            variant="body2"
+                            sx={{
+                              fontWeight: 500,
+                              fontSize: { xs: '0.85rem', sm: '0.9rem' }
+                            }}
+                          >
+                            {item.name}
+                          </Typography>
+                        }
+                        secondary={
+                          <Typography
+                            variant="body2"
+                            color="text.primary"
+                            sx={{ fontWeight: 'bold', fontSize: { xs: '0.85rem', sm: '0.9rem' } }}
+                          >
+                            {getFormattedPrice(item.price)}
+                          </Typography>
+                        }
+                      />
+                    </Box>
+                    <Box sx={{
+                      display: 'flex',
+                      alignItems: 'center',
+                      width: { xs: '100%', sm: 'auto' },
+                      justifyContent: { xs: 'flex-end', sm: 'flex-end' }
+                    }}>
                       <TextField
                         type="number"
                         size="small"
                         value={item.quantity}
                         onChange={(e) => handleQuantityChange(item.id, e)}
-                        inputProps={{ min: 1, style: { width: '40px' } }}
-                        sx={{ width: '60px', mr: 1 }}
+                        inputProps={{
+                          min: 1,
+                          style: {
+                            width: { xs: '30px', sm: '40px' },
+                            padding: { xs: '6px 4px', sm: '8px 8px' }
+                          }
+                        }}
+                        sx={{
+                          width: { xs: '50px', sm: '60px' },
+                          mr: 1,
+                          '& .MuiInputBase-input': {
+                            padding: { xs: '6px 4px', sm: '8px 8px' }
+                          }
+                        }}
                       />
-                      <IconButton edge="end" onClick={() => removeFromCart(item.id)}>
-                        <DeleteIcon />
+                      <IconButton
+                        edge="end"
+                        onClick={() => removeFromCart(item.id)}
+                        sx={{
+                          color: '#d32f2f',
+                          padding: { xs: '6px', sm: '8px' }
+                        }}
+                      >
+                        <DeleteIcon fontSize={window.innerWidth < 600 ? "small" : "medium"} />
                       </IconButton>
                     </Box>
                   </ListItem>
@@ -178,37 +254,126 @@ const Cart = () => {
         )}
       </CartDrawer>
 
-      <Dialog open={checkoutOpen} onClose={() => setCheckoutOpen(false)} maxWidth="sm" fullWidth>
-        <DialogTitle>Checkout</DialogTitle>
-        <DialogContent>
-          <Typography variant="h6" gutterBottom>
+      <Dialog
+        open={checkoutOpen}
+        onClose={() => setCheckoutOpen(false)}
+        maxWidth="sm"
+        fullWidth
+        sx={{
+          '& .MuiDialog-paper': {
+            margin: { xs: '16px', sm: '32px' },
+            width: { xs: 'calc(100% - 32px)', sm: '600px' },
+            maxHeight: { xs: 'calc(100% - 32px)', sm: 'calc(100% - 64px)' }
+          }
+        }}
+      >
+        <DialogTitle sx={{
+          display: 'flex',
+          justifyContent: 'space-between',
+          alignItems: 'center',
+          pb: 1
+        }}>
+          <Typography variant="h6" sx={{ fontSize: { xs: '1.1rem', sm: '1.25rem' } }}>
+            Checkout
+          </Typography>
+          <IconButton
+            onClick={() => setCheckoutOpen(false)}
+            sx={{
+              backgroundColor: '#f5f5f5',
+              '&:hover': { backgroundColor: '#e0e0e0' }
+            }}
+          >
+            <CloseIcon />
+          </IconButton>
+        </DialogTitle>
+        <DialogContent sx={{ px: { xs: 2, sm: 3 }, py: { xs: 2, sm: 2 } }}>
+          <Typography variant="h6" gutterBottom sx={{ fontSize: { xs: '1rem', sm: '1.1rem' } }}>
             Order Summary
           </Typography>
-          <List>
+          <List sx={{
+            py: 0,
+            '& .MuiListItem-root': {
+              px: { xs: 1, sm: 2 },
+              py: { xs: 1, sm: 1.5 }
+            }
+          }}>
             {cart.map((item) => (
-              <ListItem key={item.id}>
+              <ListItem key={item.id} sx={{
+                borderBottom: '1px solid #f0f0f0',
+                flexDirection: { xs: 'column', sm: 'row' },
+                alignItems: { xs: 'flex-start', sm: 'center' }
+              }}>
                 <ListItemText
-                  primary={item.name}
-                  secondary={`Quantity: ${item.quantity}`}
+                  primary={
+                    <Typography
+                      variant="body2"
+                      sx={{
+                        fontWeight: 500,
+                        fontSize: { xs: '0.85rem', sm: '0.9rem' }
+                      }}
+                    >
+                      {item.name}
+                    </Typography>
+                  }
+                  secondary={
+                    <Typography
+                      variant="body2"
+                      color="text.secondary"
+                      sx={{ fontSize: { xs: '0.8rem', sm: '0.85rem' } }}
+                    >
+                      Quantity: {item.quantity}
+                    </Typography>
+                  }
+                  sx={{ mb: { xs: 1, sm: 0 } }}
                 />
-                <Typography variant="body1">
+                <Typography
+                  variant="body1"
+                  sx={{
+                    fontWeight: 'bold',
+                    fontSize: { xs: '0.9rem', sm: '1rem' },
+                    alignSelf: { xs: 'flex-end', sm: 'center' }
+                  }}
+                >
                   {getFormattedPrice(item.price * item.quantity)}
                 </Typography>
               </ListItem>
             ))}
           </List>
           <Divider sx={{ my: 2 }} />
-          <Box sx={{ display: 'flex', justifyContent: 'flex-end', alignItems: 'center', mb: 2 }}>
-            <Typography variant="h6">
+          <Box sx={{
+            display: 'flex',
+            justifyContent: 'flex-end',
+            alignItems: 'center',
+            mb: 2,
+            backgroundColor: '#f9f9f9',
+            p: 1.5,
+            borderRadius: 1
+          }}>
+            <Typography
+              variant="h6"
+              sx={{
+                fontWeight: 'bold',
+                fontSize: { xs: '1.1rem', sm: '1.25rem' },
+                color: '#d32f2f'
+              }}
+            >
               Total: {getFormattedPrice(cartTotal)}
             </Typography>
           </Box>
 
           <Box sx={{ mt: 3 }}>
-            <Typography variant="h6" gutterBottom>
+            <Typography
+              variant="h6"
+              gutterBottom
+              sx={{ fontSize: { xs: '1rem', sm: '1.1rem' } }}
+            >
               Payment Options
             </Typography>
-            <Typography variant="body2" color="text.secondary" sx={{ mb: 2 }}>
+            <Typography
+              variant="body2"
+              color="text.secondary"
+              sx={{ mb: 2, fontSize: { xs: '0.8rem', sm: '0.875rem' } }}
+            >
               All prices are in CAD.
             </Typography>
 
@@ -217,26 +382,58 @@ const Cart = () => {
               variant="contained"
               color="primary"
               fullWidth
-              sx={{ mb: 2, py: 1.5, backgroundColor: '#0070ba', '&:hover': { backgroundColor: '#005ea6' } }}
+              sx={{
+                mb: 2,
+                py: { xs: 1.2, sm: 1.5 },
+                backgroundColor: '#0070ba',
+                '&:hover': { backgroundColor: '#005ea6' },
+                fontSize: { xs: '0.85rem', sm: '0.9rem' }
+              }}
               onClick={handleCheckoutSuccess}
             >
               Pay with Credit/Debit Card ({getFormattedPrice(cartTotal)})
             </Button>
 
-            <Typography variant="body2" color="text.secondary" sx={{ mt: 3, mb: 1 }}>
+            <Typography
+              variant="body2"
+              color="text.secondary"
+              sx={{
+                mt: 3,
+                mb: 1,
+                fontSize: { xs: '0.8rem', sm: '0.875rem' },
+                textAlign: 'center'
+              }}
+            >
               Or use PayPal:
             </Typography>
 
-            <PayPalButton
-              amount={convertPrice(cartTotal)}
-              currency={currency}
-              onSuccess={handleCheckoutSuccess}
-              onError={handleCheckoutError}
-            />
+            <Box sx={{
+              maxWidth: '100%',
+              overflow: 'hidden',
+              '& iframe': {
+                maxWidth: '100%'
+              }
+            }}>
+              <PayPalButton
+                amount={convertPrice(cartTotal)}
+                currency={currency}
+                onSuccess={handleCheckoutSuccess}
+                onError={handleCheckoutError}
+              />
+            </Box>
           </Box>
         </DialogContent>
-        <DialogActions>
-          <Button onClick={() => setCheckoutOpen(false)}>Cancel</Button>
+        <DialogActions sx={{ px: { xs: 2, sm: 3 }, py: { xs: 2, sm: 2 } }}>
+          <Button
+            onClick={() => setCheckoutOpen(false)}
+            variant="outlined"
+            sx={{
+              fontSize: { xs: '0.85rem', sm: '0.9rem' },
+              minWidth: { xs: '80px', sm: '100px' }
+            }}
+          >
+            Cancel
+          </Button>
         </DialogActions>
       </Dialog>
 

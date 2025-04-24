@@ -1,43 +1,99 @@
-import React, { useState } from 'react';
-import { Box, Container, Typography, Paper, Grid, Tabs, Tab } from '@mui/material';
+import React, { useState, useEffect } from 'react';
+import { Box, Container, Typography, Paper, Grid, Tabs, Tab, Button } from '@mui/material';
+import { useParams, useLocation, useNavigate } from 'react-router-dom';
 import PaginatedProductGrid from '../components/PaginatedProductGrid';
 import products from '../data/products';
 
-// Define collection categories based on the CategoryMenu component
-const collections = [
-  { id: 'all', label: 'All Collections', products: products },
-  { id: 'natural-gemstone-a-m', label: 'Natural Gemstone A-M', subcategories: [
-    'Amethyst', 'Aquamarine', 'Citrine', 'Emerald', 'Garnet', 'Jade', 'Lapis Lazuli', 'Moonstone'
-  ]},
-  { id: 'natural-gemstone-n-z', label: 'Natural Gemstone N-Z', subcategories: [
-    'Opal', 'Peridot', 'Ruby', 'Tanzanite', 'Tourmaline'
-  ]},
-  { id: 'natural-garnet', label: 'Natural Garnet', subcategories: [
-    'Red Garnet', 'Green Garnet'
-  ]},
-  { id: 'natural-sapphire', label: 'Natural Sapphire', subcategories: [
-    'Blue Sapphire', 'Pink Sapphire', 'Yellow Sapphire'
-  ]},
-  { id: 'natural-topaz-quartz', label: 'Natural Topaz - Quartz', subcategories: [
-    'Topaz', 'Quartz'
-  ]},
-  { id: 'natural-diamond', label: 'Natural Diamond', subcategories: [] }
-];
+// Import collection categories from JSON file
+import collectionsData from '../data/collections_sidemenu.json';
+
+// Add products to the collections data
+const collections = collectionsData.map(collection => {
+  if (collection.id === 'all') {
+    return { ...collection, products: products };
+  }
+  return collection;
+});
 
 const CollectionsPage = () => {
   const [selectedCollection, setSelectedCollection] = useState('all');
+  const [selectedSubcategory, setSelectedSubcategory] = useState(null);
+  const { subcategory } = useParams();
+  const location = useLocation();
+
+  // Effect to handle URL parameters, query parameters, and path changes
+  useEffect(() => {
+    // Check for query parameters first
+    const searchParams = new URLSearchParams(location.search);
+    const categoryParam = searchParams.get('category');
+
+    if (categoryParam) {
+      const matchedCollection = collections.find(c => c.id === categoryParam);
+      if (matchedCollection) {
+        setSelectedCollection(matchedCollection.id);
+        setSelectedSubcategory(null);
+        return;
+      }
+    }
+
+    // Check if we have a subcategory in the URL
+    if (subcategory) {
+      setSelectedSubcategory(subcategory);
+
+      // Find which collection this subcategory belongs to
+      for (const collection of collections) {
+        if (collection.subcategories && collection.subcategories.map(s => s.toLowerCase().replace(/\s+/g, '-')).includes(subcategory)) {
+          setSelectedCollection(collection.id);
+          break;
+        }
+      }
+    } else {
+      // If we're on the main collections page, reset the subcategory
+      setSelectedSubcategory(null);
+
+      // Check if we have a specific collection in the path
+      const pathParts = location.pathname.split('/');
+      if (pathParts.length > 2) {
+        const collectionPath = pathParts[2];
+        const matchedCollection = collections.find(c => c.id === collectionPath);
+        if (matchedCollection) {
+          setSelectedCollection(matchedCollection.id);
+        }
+      }
+    }
+  }, [subcategory, location.pathname, location.search]);
+
+  const navigate = useNavigate();
 
   const handleCollectionChange = (event, newValue) => {
     setSelectedCollection(newValue);
+    setSelectedSubcategory(null); // Reset subcategory when changing collections
+
+    // Update URL with query parameter
+    if (newValue === 'all') {
+      navigate('/collections');
+    } else {
+      navigate(`/collections?category=${newValue}`);
+    }
+  };
+
+  const handleSubcategoryClick = (subcategory) => {
+    setSelectedSubcategory(subcategory.toLowerCase().replace(/\s+/g, '-'));
   };
 
   // Get the current collection
   const currentCollection = collections.find(c => c.id === selectedCollection) || collections[0];
 
-  // Filter products based on selected collection
-  // In a real app, you would have proper filtering logic based on your data structure
-  // For now, we'll just use all products for demonstration
-  const filteredProducts = currentCollection.products || products;
+  // Filter products based on selected collection and subcategory
+  let filteredProducts = currentCollection.products || products;
+
+  // Further filter by subcategory if one is selected
+  if (selectedSubcategory) {
+    const subcategoryName = selectedSubcategory.replace(/-/g, ' ');
+    filteredProducts = filteredProducts.filter(product =>
+      product.subcategory && product.subcategory.toLowerCase() === subcategoryName
+    );
+  }
 
   return (
     <Container maxWidth="xl" sx={{
@@ -85,27 +141,42 @@ const CollectionsPage = () => {
 
           {currentCollection.subcategories && currentCollection.subcategories.length > 0 && (
             <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 1, mb: 3 }}>
-              {currentCollection.subcategories.map((subcategory) => (
-                <Box
-                  key={subcategory}
-                  sx={{
-                    backgroundColor: '#f5f5f5',
-                    border: '1px solid #e0e0e0',
-                    borderRadius: '4px',
-                    padding: '4px 12px',
-                    fontSize: '0.85rem',
-                    fontWeight: 500,
-                    color: '#333',
-                    '&:hover': {
-                      backgroundColor: '#f0c14b',
-                      color: '#1d2b39',
-                      cursor: 'pointer'
-                    }
-                  }}
-                >
-                  {subcategory}
-                </Box>
-              ))}
+              {currentCollection.subcategories.map((subcategory) => {
+                const subcategorySlug = subcategory.toLowerCase().replace(/\s+/g, '-');
+                const isSelected = selectedSubcategory === subcategorySlug;
+
+                return (
+                  <Box
+                    key={subcategory}
+                    component="a"
+                    href={`/collections/${subcategorySlug}`}
+                    onClick={(e) => {
+                      e.preventDefault();
+                      handleSubcategoryClick(subcategory);
+                      // Update the URL without reloading the page
+                      window.history.pushState({}, '', `/collections/${subcategorySlug}`);
+                    }}
+                    sx={{
+                      backgroundColor: isSelected ? '#f0c14b' : '#f5f5f5',
+                      border: '1px solid #e0e0e0',
+                      borderRadius: '4px',
+                      padding: '4px 12px',
+                      fontSize: '0.85rem',
+                      fontWeight: 500,
+                      color: isSelected ? '#1d2b39' : '#333',
+                      textDecoration: 'none',
+                      display: 'inline-block',
+                      '&:hover': {
+                        backgroundColor: '#f0c14b',
+                        color: '#1d2b39',
+                        cursor: 'pointer'
+                      }
+                    }}
+                  >
+                    {subcategory}
+                  </Box>
+                );
+              })}
             </Box>
           )}
 
@@ -113,6 +184,27 @@ const CollectionsPage = () => {
             Explore our {currentCollection.label.toLowerCase()} featuring exquisite gemstones of the highest quality.
             Each piece is carefully selected for its color, clarity, and brilliance.
           </Typography>
+
+          {/* Navigation buttons to go back to categories */}
+          <Box sx={{ mt: 2, mb: 3 }}>
+            <Button
+              variant="outlined"
+              color="primary"
+              size="small"
+              onClick={() => window.history.back()}
+              sx={{ mr: 2 }}
+            >
+              Back
+            </Button>
+            <Button
+              variant="contained"
+              color="primary"
+              size="small"
+              onClick={() => window.location.href = '/'}
+            >
+              View All Categories
+            </Button>
+          </Box>
         </Box>
 
         {/* Products with pagination */}
