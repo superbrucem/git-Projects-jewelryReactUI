@@ -11,7 +11,8 @@ import {
   AccordionDetails,
   Divider,
   List,
-  ListItem
+  ListItem,
+  useTheme
 } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
@@ -28,7 +29,11 @@ const FilterContainer = styled(Paper)(({ theme }) => ({
   border: '1px solid rgba(0, 0, 0, 0.1)',
   borderTop: 'none',
   backgroundColor: '#fff',
-  boxShadow: '0 2px 8px rgba(0,0,0,0.05)'
+  boxShadow: '0 2px 8px rgba(0,0,0,0.05)',
+  [theme.breakpoints.down('sm')]: {
+    borderRadius: '4px',
+    marginBottom: '10px'
+  }
 }));
 
 const FilterSection = styled(Accordion)(({ theme }) => ({
@@ -52,6 +57,13 @@ const FilterHeader = styled(AccordionSummary)(({ theme }) => ({
     '&.Mui-expanded': {
       margin: '0',
     }
+  },
+  [theme.breakpoints.down('sm')]: {
+    padding: '14px 16px', // Slightly larger touch target on mobile
+    minHeight: '52px',
+    '&.Mui-expanded': {
+      minHeight: '52px',
+    }
   }
 }));
 
@@ -66,7 +78,10 @@ const NavContainer = styled(Paper)(({ theme }) => ({
   border: '1px solid rgba(0, 0, 0, 0.1)',
   backgroundColor: '#fff',
   boxShadow: '0 2px 8px rgba(0,0,0,0.05)',
-  marginBottom: '20px'
+  marginBottom: '20px',
+  [theme.breakpoints.down('sm')]: {
+    marginBottom: '10px'
+  }
 }));
 
 // Use AccordionSummary for NavHeader to match the Collections section
@@ -84,6 +99,13 @@ const NavHeader = styled(AccordionSummary)(({ theme }) => ({
   },
   borderBottom: '1px solid rgba(0, 0, 0, 0.1)',
   backgroundColor: 'rgba(0, 0, 0, 0.02)',
+  [theme.breakpoints.down('sm')]: {
+    padding: '14px 16px', // Slightly larger touch target on mobile
+    minHeight: '52px',
+    '&.Mui-expanded': {
+      minHeight: '52px',
+    }
+  }
 }));
 
 const NavList = styled(List)(({ theme }) => ({
@@ -108,6 +130,10 @@ const NavLink = styled(Link)(({ theme }) => ({
   '&:hover': {
     backgroundColor: 'rgba(0, 0, 0, 0.03)',
   },
+  [theme.breakpoints.down('sm')]: {
+    padding: '12px 16px 12px 32px', // Larger touch target on mobile
+    fontSize: '0.9rem', // Slightly larger font for better readability on mobile
+  }
 }));
 
 // Main component
@@ -116,6 +142,7 @@ const FilterSidebar = () => {
   const navigate = useNavigate();
   const [selectedCollection, setSelectedCollection] = React.useState(null);
   const [selectedSignature, setSelectedSignature] = React.useState(null);
+  const theme = useTheme();
 
   // Handle navigation to keep content in iframe
   const handleNavigation = (e, path) => {
@@ -128,11 +155,29 @@ const FilterSidebar = () => {
     updateFilter(category, option, true);
   };
 
+  // Mobile detection
+  const [isMobile, setIsMobile] = React.useState(window.innerWidth < 600);
+
+  // Handle window resize
+  React.useEffect(() => {
+    const handleResize = () => {
+      setIsMobile(window.innerWidth < 600);
+    };
+
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
   return (
-    <Box>
+    <Box sx={{
+      width: '100%',
+      [theme.breakpoints.down('sm')]: {
+        padding: '0 8px' // Add some padding on mobile
+      }
+    }}>
       {/* Explore Links */}
       <NavContainer>
-        <FilterSection>
+        <FilterSection defaultExpanded={!isMobile}>
           <NavHeader expandIcon={<ExpandMoreIcon />}>
             <Typography variant="subtitle1" fontWeight={600}>
               Explore
@@ -162,7 +207,7 @@ const FilterSidebar = () => {
 
       {/* Collections Section */}
       <FilterContainer>
-        <FilterSection defaultExpanded>
+        <FilterSection defaultExpanded={true}>
           <FilterHeader expandIcon={<ExpandMoreIcon />}>
             <Typography variant="subtitle1" fontWeight={600}>
               Collections
@@ -181,13 +226,13 @@ const FilterSidebar = () => {
                 <FormControlLabel
                   key={collection.id}
                   value={collection.id}
-                  control={<Radio size="small" sx={{ padding: '4px' }} />}
+                  control={<Radio size={isMobile ? "medium" : "small"} sx={{ padding: isMobile ? '6px' : '4px' }} />}
                   label={
                     <Typography
                       sx={{
                         color: collection.id === 'all' ? '#8B4513' : '#006400',
                         fontWeight: collection.id === 'all' ? 500 : 400,
-                        fontSize: '0.75rem', // Smaller font size
+                        fontSize: isMobile ? '0.85rem' : '0.75rem', // Larger font on mobile
                         lineHeight: 1.2, // Tighter line height
                         marginLeft: '-4px', // Pull text slightly closer to radio button
                         pl: 1 // Add indentation for all items including "All Collections"
@@ -198,7 +243,7 @@ const FilterSidebar = () => {
                   }
                   sx={{
                     margin: 0,
-                    padding: '4px 0', // Slightly more vertical padding for better spacing
+                    padding: isMobile ? '8px 0' : '4px 0', // More vertical padding on mobile
                     ml: 1 // Add left margin for all items
                   }}
                 />
@@ -210,7 +255,7 @@ const FilterSidebar = () => {
 
       {/* Signature Collections Section */}
       <FilterContainer sx={{ mt: 3 }}>
-        <FilterSection defaultExpanded>
+        <FilterSection defaultExpanded={true}>
           <FilterHeader expandIcon={<ExpandMoreIcon />}>
             <Typography variant="subtitle1" fontWeight={600}>
               Signature
@@ -228,13 +273,13 @@ const FilterSidebar = () => {
                 <FormControlLabel
                   key={collection.id}
                   value={collection.id}
-                  control={<Radio size="small" sx={{ padding: '4px' }} />}
+                  control={<Radio size={isMobile ? "medium" : "small"} sx={{ padding: isMobile ? '6px' : '4px' }} />}
                   label={
                     <Typography
                       sx={{
                         color: collection.id === 'all-signature' ? '#8B4513' : '#006400',
                         fontWeight: collection.id === 'all-signature' ? 500 : 400,
-                        fontSize: '0.75rem', // Smaller font size
+                        fontSize: isMobile ? '0.85rem' : '0.75rem', // Larger font on mobile
                         lineHeight: 1.2, // Tighter line height
                         marginLeft: '-4px', // Pull text slightly closer to radio button
                         pl: 1 // Add indentation for all items
@@ -245,7 +290,7 @@ const FilterSidebar = () => {
                   }
                   sx={{
                     margin: 0,
-                    padding: '4px 0', // Slightly more vertical padding for better spacing
+                    padding: isMobile ? '8px 0' : '4px 0', // More vertical padding on mobile
                     ml: 1 // Add left margin for all items
                   }}
                 />
