@@ -130,24 +130,18 @@ const FilterSidebar = () => {
 
   return (
     <Box>
-      {/* Navigation Links */}
+      {/* Explore Links */}
       <NavContainer>
         <FilterSection>
           <NavHeader expandIcon={<ExpandMoreIcon />}>
             <Typography variant="subtitle1" fontWeight={600}>
-              Navigation
+              Explore
             </Typography>
           </NavHeader>
           <FilterContent>
             <NavList>
               <NavItem>
                 <NavLink to="/" onClick={(e) => handleNavigation(e, '/')}>Home</NavLink>
-              </NavItem>
-              <NavItem>
-                <NavLink to="/collections" onClick={(e) => handleNavigation(e, '/collections')}>Collections</NavLink>
-              </NavItem>
-              <NavItem>
-                <NavLink to="/signature" onClick={(e) => handleNavigation(e, '/signature')}>Signature</NavLink>
               </NavItem>
               <NavItem>
                 <NavLink to="/videos" onClick={(e) => handleNavigation(e, '/videos')}>Videos</NavLink>
