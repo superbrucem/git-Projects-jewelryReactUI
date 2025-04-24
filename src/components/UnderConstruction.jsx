@@ -9,7 +9,7 @@ const UnderConstruction = ({ pageName }) => {
     <Container maxWidth="xl" sx={{
       py: 8,
       width: '100%',
-      maxWidth: { xs: '100%', sm: '100%', md: '100%', lg: '1280px', xl: '1600px' }
+      maxWidth: { xs: '100%', sm: '100%', md: '100%', lg: '1440px', xl: '1920px' }
     }}>
       <Paper
         elevation={0}

@@ -174,7 +174,7 @@ const Footer = () => {
     <FooterContainer>
       <Container maxWidth="xl" sx={{
         width: '100%',
-        maxWidth: { xs: '100%', sm: '100%', md: '100%', lg: '1280px', xl: '1600px' }
+        maxWidth: { xs: '100%', sm: '100%', md: '100%', lg: '1440px', xl: '1920px' }
       }}>
         <Grid container spacing={4}>
           {/* Company Info */}

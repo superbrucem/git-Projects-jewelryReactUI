@@ -11,7 +11,7 @@ const HomePage = () => {
     <Container maxWidth="xl" sx={{
       py: 4,
       width: '100%',
-      maxWidth: { xs: '100%', sm: '100%', md: '100%', lg: '1280px', xl: '1600px' }
+      maxWidth: { xs: '100%', sm: '100%', md: '100%', lg: '1440px', xl: '1920px' }
     }}>
       <Grid container spacing={3}>
         {/* Left sidebar with category menu */}

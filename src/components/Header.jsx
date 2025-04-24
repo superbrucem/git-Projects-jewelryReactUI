@@ -495,7 +495,7 @@ const Header = () => {
           display: 'flex',
           justifyContent: 'space-between',
           width: '100%',
-          maxWidth: { xs: '100%', sm: '100%', md: '100%', lg: '1280px', xl: '1600px' }
+          maxWidth: { xs: '100%', sm: '100%', md: '100%', lg: '1440px', xl: '1920px' }
         }}>
           <Box sx={{ display: 'flex', alignItems: 'center', gap: 3 }}>
             <Box sx={{ display: 'flex', alignItems: 'center' }}>
@@ -540,7 +540,7 @@ const Header = () => {
       <MainBar>
         <Container maxWidth="xl" sx={{
           width: '100%',
-          maxWidth: { xs: '100%', sm: '100%', md: '100%', lg: '1280px', xl: '1600px' }
+          maxWidth: { xs: '100%', sm: '100%', md: '100%', lg: '1440px', xl: '1920px' }
         }}>
           <Toolbar disableGutters sx={{ justifyContent: 'space-between', minHeight: '56px' /* Reduced from default 64px */ }}>
             {/* Logo */}
@@ -614,7 +614,7 @@ const Header = () => {
       <NavBar>
         <Container maxWidth="xl" sx={{
           width: '100%',
-          maxWidth: { xs: '100%', sm: '100%', md: '100%', lg: '1280px', xl: '1600px' }
+          maxWidth: { xs: '100%', sm: '100%', md: '100%', lg: '1440px', xl: '1920px' }
         }}>
           <Stack direction="row" justifyContent="center">
             <NavItem to="/">HOME</NavItem>

@@ -144,6 +144,9 @@ let theme = createTheme({
           paddingLeft: 24,
           paddingRight: 24,
         },
+        maxWidthXl: {
+          maxWidth: '1920px', // Increased from default 1536px
+        },
       },
     },
     MuiInputBase: {

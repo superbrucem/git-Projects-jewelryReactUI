@@ -96,7 +96,7 @@ const TestimonialsPage = () => {
     <Container maxWidth="xl" sx={{
       py: 4,
       width: '100%',
-      maxWidth: { xs: '100%', sm: '100%', md: '100%', lg: '1280px', xl: '1600px' }
+      maxWidth: { xs: '100%', sm: '100%', md: '100%', lg: '1440px', xl: '1920px' }
     }}>
       <Paper elevation={0} sx={{ p: 4, borderRadius: 2, backgroundColor: 'rgba(255, 255, 255, 0.9)' }}>
         <Box textAlign="center" mb={6}>
