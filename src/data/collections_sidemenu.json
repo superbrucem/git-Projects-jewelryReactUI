@@ -1,62 +1,62 @@
 [
-  { 
-    "id": "all", 
-    "label": "All Collections", 
+  {
+    "id": "all",
+    "label": "ALL COLLECTIONS",
     "subcategories": []
   },
-  { 
-    "id": "natural-gemstone-a-m", 
-    "label": "NATURAL GEMSTONE A-M", 
+  {
+    "id": "natural-gemstone-a-m",
+    "label": "NATURAL GEMSTONE A-M",
     "subcategories": [
-      "Amethyst", 
-      "Aquamarine", 
-      "Citrine", 
-      "Emerald", 
-      "Garnet", 
-      "Jade", 
-      "Lapis Lazuli", 
+      "Amethyst",
+      "Aquamarine",
+      "Citrine",
+      "Emerald",
+      "Garnet",
+      "Jade",
+      "Lapis Lazuli",
       "Moonstone"
     ]
   },
-  { 
-    "id": "natural-gemstone-n-z", 
-    "label": "NATURAL GEMSTONE N-Z", 
+  {
+    "id": "natural-gemstone-n-z",
+    "label": "NATURAL GEMSTONE N-Z",
     "subcategories": [
-      "Opal", 
-      "Peridot", 
-      "Ruby", 
-      "Tanzanite", 
+      "Opal",
+      "Peridot",
+      "Ruby",
+      "Tanzanite",
       "Tourmaline"
     ]
   },
-  { 
-    "id": "natural-garnet", 
-    "label": "NATURAL GARNET", 
+  {
+    "id": "natural-garnet",
+    "label": "NATURAL GARNET",
     "subcategories": [
-      "Red Garnet", 
+      "Red Garnet",
       "Green Garnet"
     ]
   },
-  { 
-    "id": "natural-sapphire", 
-    "label": "NATURAL SAPPHIRE", 
+  {
+    "id": "natural-sapphire",
+    "label": "NATURAL SAPPHIRE",
     "subcategories": [
-      "Blue Sapphire", 
-      "Pink Sapphire", 
+      "Blue Sapphire",
+      "Pink Sapphire",
       "Yellow Sapphire"
     ]
   },
-  { 
-    "id": "natural-topaz-quartz", 
-    "label": "NATURAL TOPAZ - QUARTZ", 
+  {
+    "id": "natural-topaz-quartz",
+    "label": "NATURAL TOPAZ - QUARTZ",
     "subcategories": [
-      "Topaz", 
+      "Topaz",
       "Quartz"
     ]
   },
-  { 
-    "id": "natural-diamond", 
-    "label": "NATURAL DIAMOND", 
+  {
+    "id": "natural-diamond",
+    "label": "NATURAL DIAMOND",
     "subcategories": []
   }
 ]

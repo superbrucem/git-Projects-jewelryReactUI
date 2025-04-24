@@ -1,0 +1,40 @@
+[
+  {
+    "id": "all-signature",
+    "label": "ALL SIGNATURE",
+    "subcategories": []
+  },
+  {
+    "id": "5-elements",
+    "label": "5 Elements",
+    "subcategories": [
+      "Earth",
+      "Water",
+      "Fire",
+      "Air",
+      "Spirit"
+    ]
+  },
+  {
+    "id": "greek-gods",
+    "label": "Greek Gods",
+    "subcategories": [
+      "Zeus",
+      "Poseidon",
+      "Hades",
+      "Athena",
+      "Apollo"
+    ]
+  },
+  {
+    "id": "underworld",
+    "label": "Underworld",
+    "subcategories": [
+      "Hades",
+      "Persephone",
+      "Cerberus",
+      "Charon",
+      "Styx"
+    ]
+  }
+]

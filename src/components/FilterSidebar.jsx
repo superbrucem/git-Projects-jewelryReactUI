@@ -18,6 +18,7 @@ import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { useFilter } from '../context/FilterContext';
 import { Link, useNavigate } from 'react-router-dom';
 import collectionsData from '../data/collections_sidemenu.json';
+import signatureData from '../data/signature_collections.json';
 
 // Styled components
 const FilterContainer = styled(Paper)(({ theme }) => ({
@@ -113,6 +114,8 @@ const NavLink = styled(Link)(({ theme }) => ({
 const FilterSidebar = () => {
   const { filters, updateFilter } = useFilter();
   const navigate = useNavigate();
+  const [selectedCollection, setSelectedCollection] = React.useState(null);
+  const [selectedSignature, setSelectedSignature] = React.useState(null);
 
   // Handle navigation to keep content in iframe
   const handleNavigation = (e, path) => {
@@ -129,7 +132,7 @@ const FilterSidebar = () => {
     <Box>
       {/* Navigation Links */}
       <NavContainer>
-        <FilterSection defaultExpanded>
+        <FilterSection>
           <NavHeader expandIcon={<ExpandMoreIcon />}>
             <Typography variant="subtitle1" fontWeight={600}>
               Navigation
@@ -173,8 +176,9 @@ const FilterSidebar = () => {
           </FilterHeader>
           <FilterContent>
             <RadioGroup
-              value={Object.entries(filters.collections).find(([_, value]) => value)?.[0] || 'all'}
+              value={selectedCollection || 'all'}
               onChange={(e) => {
+                setSelectedCollection(e.target.value);
                 handleRadioChange('collections', e.target.value);
                 navigate(`/collections?category=${e.target.value}`);
               }}
@@ -192,7 +196,54 @@ const FilterSidebar = () => {
                         fontSize: '0.75rem', // Smaller font size
                         lineHeight: 1.2, // Tighter line height
                         marginLeft: '-4px', // Pull text slightly closer to radio button
-                        pl: collection.id !== 'all' ? 1 : 0 // Add indentation for all items except "All Collections"
+                        pl: 1 // Add indentation for all items including "All Collections"
+                      }}
+                    >
+                      {collection.label}
+                    </Typography>
+                  }
+                  sx={{
+                    margin: 0,
+                    padding: '4px 0', // Slightly more vertical padding for better spacing
+                    ml: 1 // Add left margin for all items
+                  }}
+                />
+              ))}
+            </RadioGroup>
+          </FilterContent>
+        </FilterSection>
+      </FilterContainer>
+
+      {/* Signature Collections Section */}
+      <FilterContainer sx={{ mt: 3 }}>
+        <FilterSection defaultExpanded>
+          <FilterHeader expandIcon={<ExpandMoreIcon />}>
+            <Typography variant="subtitle1" fontWeight={600}>
+              Signature
+            </Typography>
+          </FilterHeader>
+          <FilterContent>
+            <RadioGroup
+              value={selectedSignature || 'all-signature'}
+              onChange={(e) => {
+                setSelectedSignature(e.target.value);
+                navigate(`/signature?category=${e.target.value}`);
+              }}
+            >
+              {signatureData.map((collection) => (
+                <FormControlLabel
+                  key={collection.id}
+                  value={collection.id}
+                  control={<Radio size="small" sx={{ padding: '4px' }} />}
+                  label={
+                    <Typography
+                      sx={{
+                        color: collection.id === 'all-signature' ? '#8B4513' : '#006400',
+                        fontWeight: collection.id === 'all-signature' ? 500 : 400,
+                        fontSize: '0.75rem', // Smaller font size
+                        lineHeight: 1.2, // Tighter line height
+                        marginLeft: '-4px', // Pull text slightly closer to radio button
+                        pl: 1 // Add indentation for all items
                       }}
                     >
                       {collection.label}
