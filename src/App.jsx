@@ -22,6 +22,7 @@ import ProductCarePage from './pages/ProductCarePage'
 import WarrantyPage from './pages/WarrantyPage'
 import FAQPage from './pages/FAQPage'
 import PrivacyPolicyPage from './pages/PrivacyPolicyPage'
+import SearchPage from './pages/SearchPage'
 
 function App() {
   return (
@@ -47,6 +48,7 @@ function App() {
             <Route path="/warranty" element={<WarrantyPage />} />
             <Route path="/faq" element={<FAQPage />} />
             <Route path="/privacy-policy" element={<PrivacyPolicyPage />} />
+            <Route path="/search" element={<SearchPage />} />
             </Routes>
           </Layout>
         </Router>

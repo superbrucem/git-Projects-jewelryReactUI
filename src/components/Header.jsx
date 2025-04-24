@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
   AppBar,
   Toolbar,
@@ -13,7 +13,7 @@ import {
   useTheme,
   useMediaQuery
 } from '@mui/material';
-import { Link as RouterLink } from 'react-router-dom';
+import { Link as RouterLink, useNavigate } from 'react-router-dom';
 import ScrollingBanner from './ScrollingBanner';
 import SearchIcon from '@mui/icons-material/Search';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
@@ -411,6 +411,38 @@ const StyledIconButton = styled(IconButton)(({ theme }) => ({
   },
 }));
 
+// Search form component
+const SearchForm = () => {
+  const navigate = useNavigate();
+  const [searchQuery, setSearchQuery] = useState('');
+
+  const handleSearchSubmit = (e) => {
+    e.preventDefault();
+    if (searchQuery.trim()) {
+      navigate(`/search?q=${encodeURIComponent(searchQuery.trim())}`);
+      setSearchQuery('');
+    }
+  };
+
+  return (
+    <Box component="form" onSubmit={handleSearchSubmit} sx={{ display: 'flex', width: '100%' }}>
+      <StyledInputBase
+        placeholder="Search the store"
+        inputProps={{ 'aria-label': 'search' }}
+        value={searchQuery}
+        onChange={(e) => setSearchQuery(e.target.value)}
+        fullWidth
+      />
+      <IconButton
+        type="submit"
+        sx={{ color: '#1d2b39', padding: '4px' }}
+      >
+        <SearchIcon fontSize="small" />
+      </IconButton>
+    </Box>
+  );
+};
+
 // Cart icon with dynamic badge count
 const CartIconWithBadge = () => {
   const { cart } = useCart();
@@ -556,13 +588,7 @@ const Header = () => {
             {/* Search, Account, Cart */}
             <Box sx={{ display: 'flex', gap: 2, alignItems: 'center', width: '70%', justifyContent: 'flex-end' }}>
               <SearchBox>
-                <StyledInputBase
-                  placeholder="Search the store"
-                  inputProps={{ 'aria-label': 'search' }}
-                />
-                <IconButton sx={{ color: '#1d2b39', padding: '4px' }}>
-                  <SearchIcon fontSize="small" />
-                </IconButton>
+                <SearchForm />
               </SearchBox>
 
               <StyledIconButton aria-label="account">
