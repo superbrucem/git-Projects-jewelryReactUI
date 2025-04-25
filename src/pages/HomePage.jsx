@@ -1,14 +1,29 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Box, Container, Grid, Typography } from '@mui/material';
 import FilterSidebar from '../components/FilterSidebar';
 import ImageCarousel from '../components/ImageCarousel';
 import PaginatedProductGrid from '../components/PaginatedProductGrid';
 import { useFilter } from '../context/FilterContext';
 import ContentFrame from '../components/ContentFrame';
+import products from '../data/products';
 
 const HomePage = ({ contentOnly = false }) => {
-  // Get filtered products and loading state from context
-  const { filteredProducts, isLoading } = useFilter();
+  // Use local state for products and loading
+  const [homeProducts, setHomeProducts] = useState([]);
+  const [isHomeLoading, setIsHomeLoading] = useState(true);
+
+  // Get global loading state for consistency
+  const { isLoading: isGlobalLoading } = useFilter();
+
+  // Load all products on component mount, regardless of filter state
+  useEffect(() => {
+    setIsHomeLoading(true);
+    // Short timeout to ensure UI shows loading state
+    setTimeout(() => {
+      setHomeProducts(products);
+      setIsHomeLoading(false);
+    }, 100);
+  }, []);
 
   // If contentOnly is true, only render the content without the container and sidebar
   if (contentOnly) {
@@ -35,7 +50,7 @@ const HomePage = ({ contentOnly = false }) => {
             Featured Gemstones
           </Typography>
 
-          <PaginatedProductGrid products={filteredProducts} itemsPerPage={8} isLoading={isLoading} />
+          <PaginatedProductGrid products={homeProducts} itemsPerPage={8} isLoading={isHomeLoading} />
         </Box>
       </>
     );
