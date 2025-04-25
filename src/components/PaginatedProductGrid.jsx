@@ -7,7 +7,7 @@ import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward';
 import NavigateNextIcon from '@mui/icons-material/NavigateNext';
 import NavigateBeforeIcon from '@mui/icons-material/NavigateBefore';
 
-const PaginatedProductGrid = ({ products, itemsPerPage = 8 }) => {
+const PaginatedProductGrid = ({ products, itemsPerPage = 8, isLoading }) => {
   const { addToCart } = useCart();
   const [currentPage, setCurrentPage] = useState(1);
 
@@ -167,6 +167,20 @@ const PaginatedProductGrid = ({ products, itemsPerPage = 8 }) => {
       </Stack>
     </Box>
   );
+
+  // Check if products are loading
+  if (isLoading) {
+    return (
+      <Box sx={{ textAlign: 'center', py: 4 }}>
+        <Typography variant="h6" color="text.secondary">
+          Loading products...
+        </Typography>
+        <Typography variant="body2" color="text.secondary" sx={{ mt: 1 }}>
+          Please wait while we fetch the products.
+        </Typography>
+      </Box>
+    );
+  }
 
   // Check if there are products to display
   if (!safeProducts || safeProducts.length === 0) {

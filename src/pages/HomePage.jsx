@@ -7,8 +7,8 @@ import { useFilter } from '../context/FilterContext';
 import ContentFrame from '../components/ContentFrame';
 
 const HomePage = ({ contentOnly = false }) => {
-  // Get filtered products from context
-  const { filteredProducts } = useFilter();
+  // Get filtered products and loading state from context
+  const { filteredProducts, isLoading } = useFilter();
 
   // If contentOnly is true, only render the content without the container and sidebar
   if (contentOnly) {
@@ -35,7 +35,7 @@ const HomePage = ({ contentOnly = false }) => {
             Featured Gemstones
           </Typography>
 
-          <PaginatedProductGrid products={filteredProducts} itemsPerPage={8} />
+          <PaginatedProductGrid products={filteredProducts} itemsPerPage={8} isLoading={isLoading} />
         </Box>
       </>
     );
