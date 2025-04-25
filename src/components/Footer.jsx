@@ -25,21 +25,11 @@ import MastercardIcon from '@mui/icons-material/CreditCard';
 import PaypalIcon from '@mui/icons-material/CreditCard';
 
 const FooterContainer = styled(Box)(({ theme }) => ({
-  backgroundColor: '#1d2b39',
+  backgroundColor: '#0c2348', // Darker blue
   color: 'white',
   paddingTop: '40px',
   paddingBottom: '20px',
   position: 'relative',
-  backgroundImage: `
-    radial-gradient(circle at 20% 30%, rgba(255, 215, 0, 0.05) 0%, transparent 8%),
-    radial-gradient(circle at 75% 40%, rgba(255, 215, 0, 0.05) 0%, transparent 8%),
-    radial-gradient(circle at 40% 80%, rgba(255, 215, 0, 0.05) 0%, transparent 8%),
-    radial-gradient(circle at 85% 15%, rgba(255, 215, 0, 0.05) 0%, transparent 8%),
-    radial-gradient(circle at 60% 60%, rgba(255, 215, 0, 0.05) 0%, transparent 8%),
-    radial-gradient(circle at 10% 75%, rgba(255, 215, 0, 0.05) 0%, transparent 8%),
-    linear-gradient(to bottom, #1d2b39, #1d2b39)
-  `,
-  backgroundSize: 'cover',
   '&::before': {
     content: '""',
     position: 'absolute',
@@ -65,7 +55,7 @@ const FooterTitle = styled(Typography)(({ theme }) => ({
     left: 0,
     width: '30px',
     height: '2px',
-    backgroundColor: '#f0c14b',
+    backgroundColor: '#e53935', // Professional red
   }
 }));
 
@@ -79,7 +69,7 @@ const FooterLink = styled(RouterLink)(({ theme }) => ({
   position: 'relative',
   paddingLeft: '0',
   '&:hover': {
-    color: '#f0c14b',
+    color: '#e53935', // Professional red
     paddingLeft: '4px',
   },
 }));
@@ -100,7 +90,7 @@ const SocialIcon = styled(IconButton)(({ theme }) => ({
   transition: 'all 0.3s ease',
   padding: '6px',
   '&:hover': {
-    color: '#f0c14b',
+    color: '#e53935', // Professional red
     backgroundColor: 'rgba(255, 255, 255, 0.1)',
     transform: 'translateY(-2px)',
   },
@@ -161,7 +151,7 @@ const CompanyDescription = styled(Typography)(({ theme }) => ({
 }));
 
 const ContactIconWrapper = styled(Box)(({ theme }) => ({
-  color: '#f0c14b',
+  color: '#e53935', // Professional red
   display: 'flex',
   alignItems: 'center',
   justifyContent: 'center',

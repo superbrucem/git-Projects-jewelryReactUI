@@ -1,6 +1,7 @@
 import React from 'react';
 import { Box, Container, Typography, Paper, Grid, Divider } from '@mui/material';
 import { styled } from '@mui/material/styles';
+import { placeholderImages } from '../assets/images/placeholder-images';
 
 const StyledImage = styled('img')(({ theme }) => ({
   width: '100%',
@@ -27,7 +28,7 @@ const AboutPage = () => {
           <Grid container spacing={4} alignItems="center">
             <Grid item xs={12} md={6}>
               <StyledImage
-                src="https://via.placeholder.com/600x400"
+                src={placeholderImages.storefront}
                 alt="Ottawa Opal Shop storefront"
               />
             </Grid>

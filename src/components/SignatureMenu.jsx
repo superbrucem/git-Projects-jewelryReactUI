@@ -25,13 +25,14 @@ const SignatureContainer = styled(Paper)(({ theme }) => ({
 }));
 
 const SignatureHeader = styled(Box)(({ theme }) => ({
-  backgroundColor: '#1d2b39', // Same dark blue as Collections
-  color: 'white',
+  backgroundColor: '#f5f5f5', // Light gray background
+  color: '#333333', // Dark text
   padding: '10px 16px',
   display: 'flex',
   justifyContent: 'space-between',
   alignItems: 'center',
   fontWeight: 600,
+  borderBottom: '1px solid #e0e0e0', // Light gray border
 }));
 
 const SignatureItem = styled(ListItem)(({ theme }) => ({
@@ -42,7 +43,7 @@ const SignatureItem = styled(ListItem)(({ theme }) => ({
   '&:hover': {
     backgroundColor: 'rgba(0, 0, 0, 0.03)',
     '& .MuiSvgIcon-root': {
-      color: theme.palette.primary.main,
+      color: '#333333',
       transform: 'translateX(2px)',
     }
   },
@@ -62,9 +63,9 @@ const SignatureItemClickable = styled(ListItem)(({ theme }) => ({
   cursor: 'pointer',
   '&:hover': {
     backgroundColor: 'rgba(0, 0, 0, 0.03)',
-    color: theme.palette.primary.main,
+    color: '#333333',
     '& .MuiSvgIcon-root': {
-      color: theme.palette.primary.main,
+      color: '#333333',
       transform: 'translateX(2px)',
     }
   },
@@ -89,7 +90,7 @@ const SubCategoryItem = styled(ListItem)(({ theme }) => ({
   cursor: 'pointer',
   '&:hover': {
     backgroundColor: 'rgba(0, 0, 0, 0.03)',
-    color: theme.palette.primary.main,
+    color: '#333333',
   },
   '& .MuiListItemText-primary': {
     fontSize: '0.8rem',
@@ -102,7 +103,7 @@ const StyledLink = styled(Link)(({ theme }) => ({
   display: 'block',
   width: '100%',
   '&:hover': {
-    color: theme.palette.primary.main,
+    color: '#333333',
   },
 }));
 
@@ -146,8 +147,8 @@ const SignatureMenu = () => {
   return (
     <SignatureContainer elevation={0}>
       <SignatureHeader>
-        <Typography variant="subtitle2" sx={{ fontWeight: 600, letterSpacing: '0.5px', fontSize: '0.9rem' }}>
-          SIGNATURE COLLECTIONS
+        <Typography variant="subtitle2" sx={{ fontWeight: 600, letterSpacing: '0.5px', fontSize: '0.9rem', textTransform: 'uppercase' }}>
+          Signature
         </Typography>
       </SignatureHeader>
 

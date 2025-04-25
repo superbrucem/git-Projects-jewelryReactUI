@@ -13,7 +13,7 @@ import {
   useTheme,
   useMediaQuery
 } from '@mui/material';
-import { Link as RouterLink, useNavigate } from 'react-router-dom';
+import { Link as RouterLink, useNavigate, Link } from 'react-router-dom';
 import SearchIcon from '@mui/icons-material/Search';
 import { keyframes } from '@mui/material';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
@@ -67,21 +67,13 @@ const TopBar = styled(Box)(({ theme }) => ({
 }));
 
 const MainBar = styled(Box)(({ theme }) => ({
-  backgroundColor: '#1d2b39',
+  backgroundColor: '#1a3a6c', // Professional blue
   padding: '8px 0', // Reduced padding from 12px to 8px
-  backgroundImage: `
-    radial-gradient(circle at 15% 20%, rgba(67, 206, 162, 0.05) 0%, transparent 6%),
-    radial-gradient(circle at 85% 25%, rgba(67, 206, 162, 0.05) 0%, transparent 6%),
-    radial-gradient(circle at 50% 50%, rgba(67, 206, 162, 0.03) 0%, transparent 8%),
-    radial-gradient(circle at 30% 80%, rgba(67, 206, 162, 0.05) 0%, transparent 6%),
-    radial-gradient(circle at 70% 75%, rgba(67, 206, 162, 0.05) 0%, transparent 6%),
-    linear-gradient(to bottom, #1d2b39, #1d2b39)
-  `,
   backgroundSize: 'cover',
 }));
 
 const NavBar = styled(Box)(({ theme }) => ({
-  backgroundColor: '#1d2b39',
+  backgroundColor: '#0c2348', // Darker blue
   borderTop: '1px solid rgba(255, 255, 255, 0.08)',
   borderBottom: '1px solid rgba(255, 255, 255, 0.08)',
   padding: '2px 0', // Added small padding for more compact look
@@ -136,7 +128,7 @@ const NavItem = styled(RouterLink)(({ theme }) => ({
   textDecoration: 'none',
   display: 'inline-block',
   '&:hover': {
-    color: '#f0c14b',
+    color: '#e53935', // Professional red
     '&::after': {
       width: '70%',
     }
@@ -148,7 +140,7 @@ const NavItem = styled(RouterLink)(({ theme }) => ({
     left: '15%',
     width: '0',
     height: '2px',
-    backgroundColor: '#f0c14b',
+    backgroundColor: '#e53935', // Professional red
     transition: 'width 0.3s ease',
   },
   [theme.breakpoints.down('sm')]: {
@@ -159,288 +151,19 @@ const NavItem = styled(RouterLink)(({ theme }) => ({
 }));
 
 const GoldBar = styled(Box)(({ theme }) => ({
-  background: 'linear-gradient(90deg, #d4af37 0%, #f0c14b 50%, #d4af37 100%)',
-  height: '4px',
+  background: '#000000', // Black accent line
+  height: '1px', // Thinner line
   width: '100%',
 }));
 
-const OpalIcon = styled(Box)(({ theme }) => ({
-  // Styled to match the opal image
-  width: '22px',
-  height: '28px', // Taller to match teardrop/pear shape
-  borderRadius: '50% 50% 50% 50% / 60% 60% 40% 40%', // Teardrop/pear shape
-  background: 'linear-gradient(135deg, rgba(255, 255, 255, 0.8) 0%, rgba(220, 220, 220, 0.6) 100%)',
-  boxShadow: '0 0 20px rgba(218, 165, 32, 0.6)',
-  margin: '0 8px', // Reduced margin from 12px to 8px
-  position: 'relative',
-  overflow: 'hidden',
-  animation: 'pulseOpal 6s ease-in-out infinite',
-  '@keyframes pulseOpal': {
-    '0%': {
-      boxShadow: '0 0 20px rgba(218, 165, 32, 0.6)',
-      transform: 'scale(0.95)',
-    },
-    '33%': {
-      boxShadow: '0 0 25px rgba(199, 21, 133, 0.7)',
-      transform: 'scale(1.05)',
-    },
-    '66%': {
-      boxShadow: '0 0 20px rgba(0, 128, 0, 0.6)',
-      transform: 'scale(0.95)',
-    },
-    '100%': {
-      boxShadow: '0 0 20px rgba(218, 165, 32, 0.6)',
-      transform: 'scale(0.95)',
-    },
-  },
-  '&::before': {
-    content: '""',
-    position: 'absolute',
-    top: '0',
-    left: '0',
-    width: '100%',
-    height: '100%',
-    borderRadius: 'inherit',
-    background: 'linear-gradient(45deg, rgba(218, 165, 32, 0.7) 0%, rgba(199, 21, 133, 0.7) 25%, rgba(0, 128, 0, 0.7) 50%, rgba(218, 165, 32, 0.7) 75%, rgba(199, 21, 133, 0.7) 100%)',
-    backgroundSize: '400% 400%',
-    animation: 'colorShift 8s ease-in-out infinite',
-    opacity: 0.8,
-  },
-  '@keyframes colorShift': {
-    '0%': {
-      backgroundPosition: '0% 50%',
-    },
-    '50%': {
-      backgroundPosition: '100% 50%',
-    },
-    '100%': {
-      backgroundPosition: '0% 50%',
-    },
-  },
-  '&::after': {
-    content: '""',
-    position: 'absolute',
-    top: '10%',
-    left: '10%',
-    width: '80%',
-    height: '80%',
-    borderRadius: 'inherit',
-    background: 'radial-gradient(ellipse at 30% 30%, rgba(255, 255, 255, 0.9), rgba(255, 255, 255, 0.4) 70%, transparent 100%)',
-    filter: 'blur(1px)',
-    animation: 'glowOpal 5s ease-in-out infinite alternate',
-  },
-  '@keyframes glowOpal': {
-    '0%': {
-      opacity: 0.8,
-      filter: 'blur(1px)',
-    },
-    '50%': {
-      opacity: 1,
-      filter: 'blur(1.5px)',
-    },
-    '100%': {
-      opacity: 0.9,
-      filter: 'blur(1px)',
-    },
-  },
-  // Color flashes
-  '& .color-flash': {
-    position: 'absolute',
-    width: '10px',
-    height: '10px',
-    borderRadius: '50%',
-    filter: 'blur(2px)',
-    opacity: 0.7,
-    zIndex: 1,
-  },
-  '& .flash-yellow': {
-    background: 'rgba(218, 165, 32, 0.7)',
-    top: '30%',
-    left: '40%',
-    animation: 'flashPulse 4s ease-in-out infinite alternate',
-    animationDelay: '0s',
-  },
-  '& .flash-pink': {
-    background: 'rgba(199, 21, 133, 0.7)',
-    top: '50%',
-    left: '30%',
-    animation: 'flashPulse 4.5s ease-in-out infinite alternate',
-    animationDelay: '0.5s',
-  },
-  '& .flash-green': {
-    background: 'rgba(0, 128, 0, 0.7)',
-    top: '60%',
-    left: '50%',
-    animation: 'flashPulse 5s ease-in-out infinite alternate',
-    animationDelay: '1s',
-  },
-  '@keyframes flashPulse': {
-    '0%': {
-      opacity: 0.4,
-      transform: 'scale(0.8)',
-    },
-    '50%': {
-      opacity: 0.8,
-      transform: 'scale(1.2)',
-    },
-    '100%': {
-      opacity: 0.4,
-      transform: 'scale(0.8)',
-    },
-  },
-  // Inner diamond/highlight
-  '& .diamond-inner': {
-    position: 'absolute',
-    width: '8px',
-    height: '8px',
-    backgroundColor: 'rgba(255, 255, 255, 0.95)',
-    borderRadius: '50%',
-    boxShadow: '0 0 8px rgba(255, 255, 255, 0.9)',
-    top: '25%',
-    left: '30%',
-    opacity: 0.9,
-    zIndex: 3,
-    animation: 'diamondGlow 3s ease-in-out infinite alternate',
-  },
-  '@keyframes diamondGlow': {
-    '0%': {
-      opacity: 0.7,
-      transform: 'scale(0.8)',
-    },
-    '100%': {
-      opacity: 1,
-      transform: 'scale(1.1)',
-    },
-  },
-  // Outer glow particles
-  '& .diamond': {
-    position: 'absolute',
-    width: '3px',
-    height: '3px',
-    backgroundColor: 'rgba(255, 255, 255, 0.95)',
-    borderRadius: '50%',
-    boxShadow: '0 0 8px rgba(255, 255, 255, 0.9)',
-    opacity: 0,
-    zIndex: 4,
-  },
-  '& .diamond-1': {
-    left: '50%',
-    bottom: '50%',
-    animation: 'diamondFloat1 2s ease-out infinite',
-  },
-  '& .diamond-2': {
-    left: '30%',
-    bottom: '50%',
-    animation: 'diamondFloat2 2.5s ease-out infinite 0.5s',
-  },
-  '& .diamond-3': {
-    left: '70%',
-    bottom: '50%',
-    animation: 'diamondFloat3 3s ease-out infinite 1s',
-  },
-  '& .diamond-4': {
-    left: '40%',
-    bottom: '50%',
-    animation: 'diamondSideFloat1 2.2s ease-out infinite 0.2s',
-  },
-  '& .diamond-5': {
-    left: '60%',
-    bottom: '50%',
-    animation: 'diamondSideFloat2 2.7s ease-out infinite 0.7s',
-  },
-  '@keyframes diamondFloat1': {
-    '0%': {
-      transform: 'translateY(0) scale(0)',
-      opacity: 0,
-    },
-    '10%': {
-      opacity: 1,
-      transform: 'translateY(-5px) scale(1)',
-    },
-    '90%': {
-      opacity: 0.7,
-    },
-    '100%': {
-      transform: 'translateY(-20px) scale(0)',
-      opacity: 0,
-    },
-  },
-  '@keyframes diamondFloat2': {
-    '0%': {
-      transform: 'translateY(0) scale(0)',
-      opacity: 0,
-    },
-    '10%': {
-      opacity: 1,
-      transform: 'translateY(-5px) scale(1)',
-    },
-    '90%': {
-      opacity: 0.7,
-    },
-    '100%': {
-      transform: 'translateY(-25px) scale(0)',
-      opacity: 0,
-    },
-  },
-  '@keyframes diamondFloat3': {
-    '0%': {
-      transform: 'translateY(0) scale(0)',
-      opacity: 0,
-    },
-    '10%': {
-      opacity: 1,
-      transform: 'translateY(-5px) scale(1)',
-    },
-    '90%': {
-      opacity: 0.7,
-    },
-    '100%': {
-      transform: 'translateY(-22px) scale(0)',
-      opacity: 0,
-    },
-  },
-  '@keyframes diamondSideFloat1': {
-    '0%': {
-      transform: 'translate(0, 0) scale(0)',
-      opacity: 0,
-    },
-    '10%': {
-      opacity: 1,
-      transform: 'translate(5px, -5px) scale(1)',
-    },
-    '90%': {
-      opacity: 0.7,
-    },
-    '100%': {
-      transform: 'translate(15px, -15px) scale(0)',
-      opacity: 0,
-    },
-  },
-  '@keyframes diamondSideFloat2': {
-    '0%': {
-      transform: 'translate(0, 0) scale(0)',
-      opacity: 0,
-    },
-    '10%': {
-      opacity: 1,
-      transform: 'translate(-5px, -5px) scale(1)',
-    },
-    '90%': {
-      opacity: 0.7,
-    },
-    '100%': {
-      transform: 'translate(-15px, -15px) scale(0)',
-      opacity: 0,
-    },
-  },
-}));
+// Removed OpalIcon with animations
 
 const StyledIconButton = styled(IconButton)(({ theme }) => ({
   color: 'white',
   transition: 'all 0.2s ease',
   padding: '6px',
   '&:hover': {
-    color: '#f0c14b',
+    color: '#e53935', // Professional red
     backgroundColor: 'rgba(255, 255, 255, 0.05)',
   },
 }));
@@ -495,7 +218,7 @@ const CartIconWithBadge = () => {
         transition: 'all 0.2s ease',
         padding: '6px',
         '&:hover': {
-          color: '#f0c14b',
+          color: '#e53935', // Professional red
           backgroundColor: 'rgba(255, 255, 255, 0.05)',
         }
       }}
@@ -506,8 +229,8 @@ const CartIconWithBadge = () => {
         color="error"
         sx={{
           '& .MuiBadge-badge': {
-            backgroundColor: '#f0c14b',
-            color: '#1d2b39',
+            backgroundColor: '#e53935', // Professional red
+            color: 'white',
             fontWeight: 'bold',
           }
         }}
@@ -524,44 +247,30 @@ const Header = () => {
 
   return (
     <>
-      {/* Top bar with scrolling banner */}
-      <TopBar>
-        <Box className="shipping-banner" sx={{
-          py: 0.5,
-          overflow: 'hidden',
-          width: '100%'
-        }}>
-          <ScrollingTextContainer>
-            {[
-              'FREE SHIPPING ON ALL ORDERS OVER $99.95',
-              'PERFECT FOR SPECIAL OCCASIONS',
-              'UNIQUE HANDCRAFTED JEWELRY',
-              'FREE GIFT WRAPPING',
-              'CALL US: +1 (613) 555-1234',
-              'EMAIL: Ottawa_Opal_Shop@hotmail.com'
-            ].map((message, index) => (
-              <Typography
-                key={index}
-                variant="body2"
-                component="span"
-                sx={{
-                  color: '#1d2b39',
-                  fontWeight: 600,
-                  textTransform: 'uppercase',
-                  letterSpacing: '0.5px',
-                  display: 'flex',
-                  alignItems: 'center',
-                  mx: 6,
-                  fontSize: '0.75rem',
-                  whiteSpace: 'nowrap',
-                }}
-              >
-                ♦ {message} ♦
-              </Typography>
-            ))}
-          </ScrollingTextContainer>
+      {/* Welcome Banner with Phone Number */}
+      <Box sx={{
+        backgroundColor: '#0c2348',
+        color: 'white',
+        py: 0.5,
+        display: 'flex',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        px: 3
+      }}>
+        <Typography variant="body2" sx={{ fontWeight: 400, fontSize: '0.8rem' }}>
+          Welcome to Ottawa Opal Shop
+        </Typography>
+        <Box sx={{ display: 'flex', alignItems: 'center' }}>
+          <Box component="span" sx={{ color: '#e53935', mr: 0.5, display: 'flex', alignItems: 'center' }}>
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+              <path d="M3.654 1.328a.678.678 0 0 0-1.015-.063L1.605 2.3c-.483.484-.661 1.169-.45 1.77a17.568 17.568 0 0 0 4.168 6.608 17.569 17.569 0 0 0 6.608 4.168c.601.211 1.286.033 1.77-.45l1.034-1.034a.678.678 0 0 0-.063-1.015l-2.307-1.794a.678.678 0 0 0-.58-.122l-2.19.547a1.745 1.745 0 0 1-1.657-.459L5.482 8.062a1.745 1.745 0 0 1-.46-1.657l.548-2.19a.678.678 0 0 0-.122-.58L3.654 1.328zM1.884.511a1.745 1.745 0 0 1 2.612.163L6.29 2.98c.329.423.445.974.315 1.494l-.547 2.19a.678.678 0 0 0 .178.643l2.457 2.457a.678.678 0 0 0 .644.178l2.189-.547a1.745 1.745 0 0 1 1.494.315l2.306 1.794c.829.645.905 1.87.163 2.611l-1.034 1.034c-.74.74-1.846 1.065-2.877.702a18.634 18.634 0 0 1-7.01-4.42 18.634 18.634 0 0 1-4.42-7.009c-.362-1.03-.037-2.137.703-2.877L1.885.511z"/>
+            </svg>
+          </Box>
+          <Typography variant="body2" sx={{ fontWeight: 500, fontSize: '0.8rem', color: 'white' }}>
+            613-555-5555
+          </Typography>
         </Box>
-      </TopBar>
+      </Box>
 
       {/* Main header with logo and search */}
       <MainBar>
@@ -589,38 +298,17 @@ const Header = () => {
                 component="div"
                 sx={{
                   color: 'white',
-                  fontWeight: 600,
+                  fontWeight: 400,
                   display: 'flex',
                   alignItems: 'center',
-                  letterSpacing: '0.5px', // Reduced letter spacing
-                  fontSize: isMobile ? '1.1rem' : '1.3rem', // Slightly smaller font
+                  letterSpacing: '1px',
+                  fontSize: isMobile ? '1.5rem' : '2.2rem', // Larger font
                   lineHeight: 1.1, // Tighter line height
                   whiteSpace: 'nowrap',
+                  fontFamily: '"Times New Roman", serif',
                 }}
               >
-                <OpalIcon>
-                  <Box className="color-flash flash-yellow" />
-                  <Box className="color-flash flash-pink" />
-                  <Box className="color-flash flash-green" />
-                  <Box className="diamond-inner" />
-                  <Box className="diamond diamond-1" />
-                  <Box className="diamond diamond-2" />
-                  <Box className="diamond diamond-3" />
-                  <Box className="diamond diamond-4" />
-                  <Box className="diamond diamond-5" />
-                </OpalIcon>
-                OTTAWA OPAL SHOP
-                <OpalIcon>
-                  <Box className="color-flash flash-yellow" />
-                  <Box className="color-flash flash-pink" />
-                  <Box className="color-flash flash-green" />
-                  <Box className="diamond-inner" />
-                  <Box className="diamond diamond-1" />
-                  <Box className="diamond diamond-2" />
-                  <Box className="diamond diamond-3" />
-                  <Box className="diamond diamond-4" />
-                  <Box className="diamond diamond-5" />
-                </OpalIcon>
+                Ottawa Opal Shop
               </Typography>
             </Box>
 
@@ -662,6 +350,92 @@ const Header = () => {
 
       {/* Gold accent bar */}
       <GoldBar />
+
+      {/* Navigation Menu */}
+      <Box sx={{
+        backgroundColor: '#1a3a6c',
+        display: 'flex',
+        justifyContent: 'center',
+        borderBottom: '1px solid rgba(255, 255, 255, 0.1)'
+      }}>
+        <Container maxWidth="xl" sx={{
+          width: '100%',
+          maxWidth: { xs: '100%', sm: '100%', md: '100%', lg: '1440px', xl: '1920px' }
+        }}>
+          <Box sx={{
+            display: 'flex',
+            py: 1,
+            px: { xs: 2, sm: 3 }
+          }}>
+            <Box sx={{
+              display: 'flex',
+              gap: { xs: 3, sm: 4 },
+              mx: 'auto'
+            }}>
+              <Link
+                to="/"
+                style={{
+                  textDecoration: 'none',
+                  color: 'white',
+                  fontSize: '0.9rem',
+                  fontWeight: 500,
+                  padding: '4px 0'
+                }}
+              >
+                Home
+              </Link>
+              <Link
+                to="/videos"
+                style={{
+                  textDecoration: 'none',
+                  color: 'white',
+                  fontSize: '0.9rem',
+                  fontWeight: 500,
+                  padding: '4px 0'
+                }}
+              >
+                Videos
+              </Link>
+              <Link
+                to="/about"
+                style={{
+                  textDecoration: 'none',
+                  color: 'white',
+                  fontSize: '0.9rem',
+                  fontWeight: 500,
+                  padding: '4px 0'
+                }}
+              >
+                About
+              </Link>
+              <Link
+                to="/contact"
+                style={{
+                  textDecoration: 'none',
+                  color: 'white',
+                  fontSize: '0.9rem',
+                  fontWeight: 500,
+                  padding: '4px 0'
+                }}
+              >
+                Contact
+              </Link>
+              <Link
+                to="/testimonials"
+                style={{
+                  textDecoration: 'none',
+                  color: 'white',
+                  fontSize: '0.9rem',
+                  fontWeight: 500,
+                  padding: '4px 0'
+                }}
+              >
+                Testimonials
+              </Link>
+            </Box>
+          </Box>
+        </Container>
+      </Box>
     </>
   );
 };

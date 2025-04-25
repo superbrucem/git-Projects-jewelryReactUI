@@ -15,16 +15,16 @@ let theme = createTheme({
   palette: {
     mode: 'light',
     primary: {
-      main: '#1d2b39', // Updated darker navy blue
-      light: '#2c3e50',
-      dark: '#0f1924',
+      main: '#1a3a6c', // Professional blue
+      light: '#2c5ca0',
+      dark: '#0c2348',
       contrastText: '#ffffff',
     },
     secondary: {
-      main: '#f0c14b', // Gold
-      light: '#f5d16a',
-      dark: '#d4af37',
-      contrastText: '#1e2a38',
+      main: '#e53935', // Professional red
+      light: '#ff6f60',
+      dark: '#ab000d',
+      contrastText: '#ffffff',
     },
     background: {
       default: '#f8f9fa',

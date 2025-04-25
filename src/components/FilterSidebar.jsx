@@ -49,6 +49,9 @@ const FilterSection = styled(Accordion)(({ theme }) => ({
 const FilterHeader = styled(AccordionSummary)(({ theme }) => ({
   padding: '12px 16px',
   minHeight: '48px',
+  backgroundColor: '#f5f5f5', // Light gray background
+  color: '#333333', // Dark text
+  borderBottom: '1px solid #e0e0e0', // Light gray border
   '&.Mui-expanded': {
     minHeight: '48px',
   },
@@ -57,6 +60,9 @@ const FilterHeader = styled(AccordionSummary)(({ theme }) => ({
     '&.Mui-expanded': {
       margin: '0',
     }
+  },
+  '& .MuiSvgIcon-root': {
+    color: '#333333', // Dark icon color
   },
   [theme.breakpoints.down('sm')]: {
     padding: '14px 16px', // Slightly larger touch target on mobile
@@ -97,8 +103,12 @@ const NavHeader = styled(AccordionSummary)(({ theme }) => ({
       margin: '0',
     }
   },
-  borderBottom: '1px solid rgba(0, 0, 0, 0.1)',
-  backgroundColor: 'rgba(0, 0, 0, 0.02)',
+  borderBottom: '1px solid #e0e0e0', // Light gray border
+  backgroundColor: '#f5f5f5', // Light gray background
+  color: '#333333', // Dark text
+  '& .MuiSvgIcon-root': {
+    color: '#333333', // Dark icon color
+  },
   [theme.breakpoints.down('sm')]: {
     padding: '14px 16px', // Slightly larger touch target on mobile
     minHeight: '52px',
@@ -175,35 +185,7 @@ const FilterSidebar = () => {
         padding: '0 8px' // Add some padding on mobile
       }
     }}>
-      {/* Explore Links */}
-      <NavContainer>
-        <FilterSection defaultExpanded={!isMobile}>
-          <NavHeader expandIcon={<ExpandMoreIcon />}>
-            <Typography variant="subtitle1" fontWeight={600}>
-              Explore
-            </Typography>
-          </NavHeader>
-          <FilterContent>
-            <NavList>
-              <NavItem>
-                <NavLink to="/" onClick={(e) => handleNavigation(e, '/')}>Home</NavLink>
-              </NavItem>
-              <NavItem>
-                <NavLink to="/videos" onClick={(e) => handleNavigation(e, '/videos')}>Videos</NavLink>
-              </NavItem>
-              <NavItem>
-                <NavLink to="/about" onClick={(e) => handleNavigation(e, '/about')}>About</NavLink>
-              </NavItem>
-              <NavItem>
-                <NavLink to="/contact" onClick={(e) => handleNavigation(e, '/contact')}>Contact</NavLink>
-              </NavItem>
-              <NavItem>
-                <NavLink to="/testimonials" onClick={(e) => handleNavigation(e, '/testimonials')}>Testimonials</NavLink>
-              </NavItem>
-            </NavList>
-          </FilterContent>
-        </FilterSection>
-      </NavContainer>
+
 
       {/* Collections Section */}
       <FilterContainer>
@@ -230,7 +212,7 @@ const FilterSidebar = () => {
                   label={
                     <Typography
                       sx={{
-                        color: collection.id === 'all' ? '#8B4513' : '#006400',
+                        color: '#333333',
                         fontWeight: collection.id === 'all' ? 500 : 400,
                         fontSize: isMobile ? '0.85rem' : '0.75rem', // Larger font on mobile
                         lineHeight: 1.2, // Tighter line height
@@ -278,7 +260,7 @@ const FilterSidebar = () => {
                   label={
                     <Typography
                       sx={{
-                        color: collection.id === 'all-signature' ? '#8B4513' : '#006400',
+                        color: '#333333',
                         fontWeight: collection.id === 'all-signature' ? 500 : 400,
                         fontSize: isMobile ? '0.85rem' : '0.75rem', // Larger font on mobile
                         lineHeight: 1.2, // Tighter line height
