@@ -11,7 +11,8 @@ import {
   Stack,
   styled,
   useTheme,
-  useMediaQuery
+  useMediaQuery,
+  Button
 } from '@mui/material';
 import { Link as RouterLink, useNavigate, Link } from 'react-router-dom';
 import SearchIcon from '@mui/icons-material/Search';
@@ -67,13 +68,13 @@ const TopBar = styled(Box)(({ theme }) => ({
 }));
 
 const MainBar = styled(Box)(({ theme }) => ({
-  backgroundColor: '#2c3e8c', // Darker blue like Ashergems
+  backgroundColor: '#3949ab', // Updated blue color from the image
   padding: '10px 0', // Adjusted padding to match Ashergems
   backgroundSize: 'cover',
 }));
 
 const NavBar = styled(Box)(({ theme }) => ({
-  backgroundColor: '#2c3e8c', // Darker blue like Ashergems
+  backgroundColor: '#3949ab', // Updated blue color from the image
   borderTop: '1px solid rgba(255, 255, 255, 0.08)',
   borderBottom: '1px solid rgba(255, 255, 255, 0.08)',
   padding: '2px 0', // Added small padding for more compact look
@@ -89,10 +90,12 @@ const SearchBox = styled('div')(({ theme }) => ({
   marginLeft: 0,
   width: '100%',
   display: 'flex',
-  alignItems: 'center',
+  alignItems: 'stretch', // Changed from 'center' to 'stretch'
   transition: 'all 0.3s ease',
   border: '1px solid rgba(0, 0, 0, 0.1)',
   borderRight: 'none', // Remove right border
+  overflow: 'hidden', // Prevent any overflow
+  height: '36px', // Fixed height
   '&:focus-within': {
     backgroundColor: 'white',
     boxShadow: '0 0 0 2px rgba(229, 57, 53, 0.3)', // Red shadow to match search button
@@ -105,10 +108,12 @@ const SearchBox = styled('div')(({ theme }) => ({
 const StyledInputBase = styled(InputBase)(({ theme }) => ({
   color: '#333',
   width: '100%',
+  height: '100%',
   '& .MuiInputBase-input': {
     padding: '8px 8px 8px 0',
     paddingLeft: '1em',
     width: '100%',
+    height: '100%',
     fontSize: '0.85rem',
     '&::placeholder': {
       color: 'rgba(0, 0, 0, 0.6)',
@@ -180,7 +185,7 @@ const SearchForm = () => {
   };
 
   return (
-    <Box component="form" onSubmit={handleSearchSubmit} sx={{ display: 'flex', width: '100%' }}>
+    <Box component="form" onSubmit={handleSearchSubmit} sx={{ display: 'flex', width: '100%', height: '100%' }}>
       <StyledInputBase
         placeholder="Search the store"
         inputProps={{ 'aria-label': 'search' }}
@@ -188,22 +193,32 @@ const SearchForm = () => {
         onChange={(e) => setSearchQuery(e.target.value)}
         fullWidth
       />
-      <IconButton
+      <Button
         type="submit"
+        disableRipple
+        disableElevation
+        variant="contained"
         sx={{
           backgroundColor: '#e53935', // Red like Ashergems
           color: 'white', // White icon
-          padding: '4px',
+          padding: '0 10px',
+          margin: '0',
           borderRadius: '0 4px 4px 0', // Rounded only on right side
           height: '100%',
           minWidth: '40px', // Fixed width to match image
+          border: 'none',
+          boxShadow: 'none',
+          '&.MuiButtonBase-root': {
+            boxShadow: 'none',
+          },
           '&:hover': {
             backgroundColor: '#c62828', // Darker red on hover
+            boxShadow: 'none',
           }
         }}
       >
         <SearchIcon fontSize="small" />
-      </IconButton>
+      </Button>
     </Box>
   );
 };
@@ -256,7 +271,7 @@ const Header = () => {
     <>
       {/* Welcome Banner with Phone Number - Ashergems style */}
       <Box sx={{
-        backgroundColor: '#2c3e8c', // Darker blue like Ashergems
+        backgroundColor: '#1e2761', // Purple background from Ashergems image
         color: 'white',
         py: 0.5,
         display: 'flex',
@@ -359,7 +374,7 @@ const Header = () => {
 
       {/* Navigation Menu - Ashergems style */}
       <Box sx={{
-        backgroundColor: '#2c3e8c', // Darker blue like Ashergems
+        backgroundColor: '#3949ab', // Updated blue color from the image
         borderBottom: '1px solid rgba(255, 255, 255, 0.1)'
       }}>
         <Container maxWidth="xl" sx={{
