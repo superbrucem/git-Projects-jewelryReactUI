@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { Box, Container, Typography, Paper, TextField, InputAdornment, Tabs, Tab, Divider } from '@mui/material';
+import { Box, Container, Typography, Paper, TextField, InputAdornment, Tabs, Tab, Divider, IconButton } from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
 import PaginatedProductGrid from '../components/PaginatedProductGrid';
 import products from '../data/products';
@@ -10,35 +10,52 @@ const SearchPage = () => {
   const navigate = useNavigate();
   const queryParams = new URLSearchParams(location.search);
   const initialQuery = queryParams.get('q') || '';
-  
+  const initialTimestamp = queryParams.get('_t') || Date.now().toString();
+
   const [searchQuery, setSearchQuery] = useState(initialQuery);
+  const [searchTimestamp, setSearchTimestamp] = useState(initialTimestamp);
   const [selectedTab, setSelectedTab] = useState('all');
   const [searchResults, setSearchResults] = useState([]);
-  
+
   // Filter categories
   const categories = {
     all: 'All Results',
     collections: 'Collections',
     signature: 'Signature'
   };
-  
+
+  // Update search query when URL changes
+  useEffect(() => {
+    const currentParams = new URLSearchParams(location.search);
+    const currentQuery = currentParams.get('q') || '';
+    const currentTimestamp = currentParams.get('_t') || Date.now().toString();
+
+    if (currentQuery !== searchQuery) {
+      setSearchQuery(currentQuery);
+    }
+
+    if (currentTimestamp !== searchTimestamp) {
+      setSearchTimestamp(currentTimestamp);
+    }
+  }, [location.search, searchQuery, searchTimestamp]);
+
   // Perform search when query or selected tab changes
   useEffect(() => {
     if (!searchQuery.trim()) {
       setSearchResults([]);
       return;
     }
-    
+
     const query = searchQuery.toLowerCase();
-    
+
     // Filter products based on search query and selected tab
     let filteredProducts = products.filter(product => {
-      const matchesQuery = 
-        product.name.toLowerCase().includes(query) || 
+      const matchesQuery =
+        product.name.toLowerCase().includes(query) ||
         product.description?.toLowerCase().includes(query) ||
         product.collection?.toLowerCase().includes(query) ||
         product.category?.toLowerCase().includes(query);
-        
+
       if (selectedTab === 'all') {
         return matchesQuery;
       } else if (selectedTab === 'collections') {
@@ -46,58 +63,62 @@ const SearchPage = () => {
       } else if (selectedTab === 'signature') {
         return matchesQuery && ['5-elements', 'greek-gods', 'underworld'].includes(product.category);
       }
-      
+
       return false;
     });
-    
+
     setSearchResults(filteredProducts);
-    
-    // Update URL with search query
-    if (searchQuery !== initialQuery) {
-      navigate(`/search?q=${encodeURIComponent(searchQuery)}`, { replace: true });
-    }
-  }, [searchQuery, selectedTab, initialQuery, navigate]);
-  
+  }, [searchQuery, selectedTab]);
+
   const handleSearchChange = (event) => {
     setSearchQuery(event.target.value);
   };
-  
+
+  const handleSearchSubmit = (event) => {
+    event.preventDefault();
+    const trimmedQuery = searchQuery.trim();
+    if (trimmedQuery) {
+      // Update URL with new search query and timestamp
+      navigate(`/search?q=${encodeURIComponent(trimmedQuery)}&_t=${Date.now()}`);
+    }
+  };
+
   const handleTabChange = (event, newValue) => {
     setSelectedTab(newValue);
   };
-  
+
   // Get counts for each category
   const getCounts = () => {
     if (!searchQuery.trim()) {
       return { all: 0, collections: 0, signature: 0 };
     }
-    
+
     const query = searchQuery.toLowerCase();
-    
-    const allResults = products.filter(product => 
-      product.name.toLowerCase().includes(query) || 
+
+    const allResults = products.filter(product =>
+      product.name.toLowerCase().includes(query) ||
       product.description?.toLowerCase().includes(query) ||
       product.collection?.toLowerCase().includes(query) ||
       product.category?.toLowerCase().includes(query)
     );
-    
-    const collectionsResults = allResults.filter(product => 
+
+    const collectionsResults = allResults.filter(product =>
       !['5-elements', 'greek-gods', 'underworld'].includes(product.category)
     );
-    
-    const signatureResults = allResults.filter(product => 
+
+    const signatureResults = allResults.filter(product =>
       ['5-elements', 'greek-gods', 'underworld'].includes(product.category)
     );
-    
+
     return {
       all: allResults.length,
       collections: collectionsResults.length,
       signature: signatureResults.length
     };
   };
-  
+
   const counts = getCounts();
-  
+
   return (
     <Container maxWidth="xl" sx={{
       py: 4,
@@ -108,37 +129,46 @@ const SearchPage = () => {
         <Typography variant="h4" component="h1" gutterBottom>
           Search Results
         </Typography>
-        
+
         {/* Search input */}
-        <TextField
-          fullWidth
-          variant="outlined"
-          placeholder="Search for products, collections, or gemstones..."
-          value={searchQuery}
-          onChange={handleSearchChange}
-          sx={{ mb: 3 }}
-          InputProps={{
-            startAdornment: (
-              <InputAdornment position="start">
-                <SearchIcon />
-              </InputAdornment>
-            ),
-          }}
-        />
-        
+        <Box component="form" onSubmit={handleSearchSubmit} sx={{ width: '100%' }}>
+          <TextField
+            fullWidth
+            variant="outlined"
+            placeholder="Search for products, collections, or gemstones..."
+            value={searchQuery}
+            onChange={handleSearchChange}
+            sx={{ mb: 3 }}
+            InputProps={{
+              startAdornment: (
+                <InputAdornment position="start">
+                  <SearchIcon />
+                </InputAdornment>
+              ),
+              endAdornment: (
+                <InputAdornment position="end">
+                  <IconButton type="submit" edge="end">
+                    <SearchIcon />
+                  </IconButton>
+                </InputAdornment>
+              ),
+            }}
+          />
+        </Box>
+
         {/* Category tabs */}
         <Box sx={{ borderBottom: 1, borderColor: 'divider', mb: 3 }}>
-          <Tabs 
-            value={selectedTab} 
+          <Tabs
+            value={selectedTab}
             onChange={handleTabChange}
             aria-label="search categories"
           >
             {Object.entries(categories).map(([key, label]) => (
-              <Tab 
-                key={key} 
-                value={key} 
+              <Tab
+                key={key}
+                value={key}
                 label={`${label} (${counts[key]})`}
-                sx={{ 
+                sx={{
                   fontWeight: 500,
                   '&.Mui-selected': {
                     color: '#f0c14b',
@@ -148,7 +178,7 @@ const SearchPage = () => {
             ))}
           </Tabs>
         </Box>
-        
+
         {/* Search results */}
         {searchQuery.trim() ? (
           <>
