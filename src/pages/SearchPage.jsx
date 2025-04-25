@@ -138,9 +138,9 @@ const SearchPage = () => {
 
   const counts = getCounts();
 
-  return (
-    <Container maxWidth="xl" sx={{
-      py: 4,
+  return (    <Container maxWidth="xl" sx={{
+      pt: 1, // Reduced top padding
+      pb: 4,
       width: '100%',
       maxWidth: { xs: '100%', sm: '100%', md: '100%', lg: '1440px', xl: '1920px' }
     }}>

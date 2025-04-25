@@ -67,13 +67,13 @@ const TopBar = styled(Box)(({ theme }) => ({
 }));
 
 const MainBar = styled(Box)(({ theme }) => ({
-  backgroundColor: '#3f51b5', // New blue color from the image
-  padding: '8px 0', // Reduced padding from 12px to 8px
+  backgroundColor: '#2c3e8c', // Darker blue like Ashergems
+  padding: '10px 0', // Adjusted padding to match Ashergems
   backgroundSize: 'cover',
 }));
 
 const NavBar = styled(Box)(({ theme }) => ({
-  backgroundColor: '#3f51b5', // New blue color from the image
+  backgroundColor: '#2c3e8c', // Darker blue like Ashergems
   borderTop: '1px solid rgba(255, 255, 255, 0.08)',
   borderBottom: '1px solid rgba(255, 255, 255, 0.08)',
   padding: '2px 0', // Added small padding for more compact look
@@ -106,12 +106,12 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
   color: '#333',
   width: '100%',
   '& .MuiInputBase-input': {
-    padding: '6px 6px 6px 0',
-    paddingLeft: '0.8em',
+    padding: '8px 8px 8px 0',
+    paddingLeft: '1em',
     width: '100%',
-    fontSize: '0.8rem',
+    fontSize: '0.85rem',
     '&::placeholder': {
-      color: 'rgba(0, 0, 0, 0.5)',
+      color: 'rgba(0, 0, 0, 0.6)',
       opacity: 1,
     },
   },
@@ -191,14 +191,14 @@ const SearchForm = () => {
       <IconButton
         type="submit"
         sx={{
-          backgroundColor: '#f44336', // Brighter red to match the image
+          backgroundColor: '#e53935', // Red like Ashergems
           color: 'white', // White icon
           padding: '4px',
           borderRadius: '0 4px 4px 0', // Rounded only on right side
           height: '100%',
           minWidth: '40px', // Fixed width to match image
           '&:hover': {
-            backgroundColor: '#d32f2f', // Darker red on hover
+            backgroundColor: '#c62828', // Darker red on hover
           }
         }}
       >
@@ -254,9 +254,9 @@ const Header = () => {
 
   return (
     <>
-      {/* Welcome Banner with Phone Number */}
+      {/* Welcome Banner with Phone Number - Ashergems style */}
       <Box sx={{
-        backgroundColor: '#1a2a57', // Darker blue from the welcome banner image
+        backgroundColor: '#2c3e8c', // Darker blue like Ashergems
         color: 'white',
         py: 0.5,
         display: 'flex',
@@ -264,16 +264,16 @@ const Header = () => {
         alignItems: 'center',
         px: 3
       }}>
-        <Typography variant="body2" sx={{ fontWeight: 400, fontSize: '0.8rem' }}>
+        <Typography variant="body2" sx={{ fontWeight: 400, fontSize: '0.75rem' }}>
           Welcome to Ottawa Opal Shop
         </Typography>
         <Box sx={{ display: 'flex', alignItems: 'center' }}>
           <Box component="span" sx={{ color: '#ffffff', mr: 0.5, display: 'flex', alignItems: 'center' }}>
-            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="currentColor" viewBox="0 0 16 16">
               <path d="M3.654 1.328a.678.678 0 0 0-1.015-.063L1.605 2.3c-.483.484-.661 1.169-.45 1.77a17.568 17.568 0 0 0 4.168 6.608 17.569 17.569 0 0 0 6.608 4.168c.601.211 1.286.033 1.77-.45l1.034-1.034a.678.678 0 0 0-.063-1.015l-2.307-1.794a.678.678 0 0 0-.58-.122l-2.19.547a1.745 1.745 0 0 1-1.657-.459L5.482 8.062a1.745 1.745 0 0 1-.46-1.657l.548-2.19a.678.678 0 0 0-.122-.58L3.654 1.328zM1.884.511a1.745 1.745 0 0 1 2.612.163L6.29 2.98c.329.423.445.974.315 1.494l-.547 2.19a.678.678 0 0 0 .178.643l2.457 2.457a.678.678 0 0 0 .644.178l2.189-.547a1.745 1.745 0 0 1 1.494.315l2.306 1.794c.829.645.905 1.87.163 2.611l-1.034 1.034c-.74.74-1.846 1.065-2.877.702a18.634 18.634 0 0 1-7.01-4.42 18.634 18.634 0 0 1-4.42-7.009c-.362-1.03-.037-2.137.703-2.877L1.885.511z"/>
             </svg>
           </Box>
-          <Typography variant="body2" sx={{ fontWeight: 500, fontSize: '0.8rem', color: 'white' }}>
+          <Typography variant="body2" sx={{ fontWeight: 500, fontSize: '0.75rem', color: 'white' }}>
             613-555-5555
           </Typography>
         </Box>
@@ -306,14 +306,15 @@ const Header = () => {
                 component="div"
                 sx={{
                   color: 'white',
-                  fontWeight: 400,
+                  fontWeight: 700, // Bold like Ashergems
                   display: 'flex',
                   alignItems: 'center',
-                  letterSpacing: '1px',
-                  fontSize: isMobile ? '1.5rem' : '2.2rem', // Larger font
+                  letterSpacing: '0.5px',
+                  fontSize: isMobile ? '1.3rem' : '1.6rem', // Size like Ashergems
                   lineHeight: 1.1, // Tighter line height
                   whiteSpace: 'nowrap',
-                  fontFamily: '"Times New Roman", serif',
+                  fontFamily: 'Arial, sans-serif', // Sans-serif like Ashergems
+                  textTransform: 'uppercase', // Uppercase like Ashergems
                 }}
               >
                 Ottawa Opal Shop
@@ -338,7 +339,7 @@ const Header = () => {
                 <SearchForm />
               </SearchBox>
 
-              <Box sx={{ display: 'flex', gap: { xs: 1, sm: 2 } }}>
+              <Box sx={{ display: 'flex', gap: { xs: 1, sm: 2 }, alignItems: 'center' }}>
                 <StyledIconButton aria-label="account" size={isMobile ? "small" : "medium"}>
                   <PersonIcon fontSize={isMobile ? "small" : "medium"} />
                 </StyledIconButton>
@@ -356,9 +357,9 @@ const Header = () => {
         </Container>
       </MainBar>
 
-      {/* Navigation Menu */}
+      {/* Navigation Menu - Ashergems style */}
       <Box sx={{
-        backgroundColor: '#3f51b5', // New blue color from the image
+        backgroundColor: '#2c3e8c', // Darker blue like Ashergems
         borderBottom: '1px solid rgba(255, 255, 255, 0.1)'
       }}>
         <Container maxWidth="xl" sx={{
@@ -367,168 +368,77 @@ const Header = () => {
         }}>
           <Box sx={{
             display: 'flex',
-            py: 2, // Increase padding for two rows
+            py: 1, // Reduced padding for single row like Ashergems
             px: 0, // Remove padding from container
-            justifyContent: 'flex-start' // Left justify
+            justifyContent: 'flex-start', // Left justify
+            pl: { xs: 2, sm: 3 }, // Match logo padding
           }}>
-            {/* Left-aligned navigation links starting under Ottawa Opal Shop */}
-            <Box sx={{
-              display: 'flex',
-              flexDirection: 'column',
-              ml: 0, // No margin
-              pl: { xs: 2, sm: 3 }, // Match logo padding
-            }}>
-              {/* Main navigation row */}
-              <Box sx={{
-                display: 'flex',
-                gap: { xs: 3, sm: 4 },
-                alignItems: 'center',
-                mb: 1 // Add margin between rows
-              }}>
-                <Link
-                  to="/"
-                  style={{
-                    textDecoration: 'none',
-                    color: 'white',
-                    fontSize: '0.9rem',
-                    fontWeight: 500,
-                    padding: '4px 0'
-                  }}
-                >
-                  Home
-                </Link>
-                <Link
-                  to="/videos"
-                  style={{
-                    textDecoration: 'none',
-                    color: 'white',
-                    fontSize: '0.9rem',
-                    fontWeight: 500,
-                    padding: '4px 0'
-                  }}
-                >
-                  Videos
-                </Link>
-                <Link
-                  to="/about"
-                  style={{
-                    textDecoration: 'none',
-                    color: 'white',
-                    fontSize: '0.9rem',
-                    fontWeight: 500,
-                    padding: '4px 0'
-                  }}
-                >
-                  About
-                </Link>
-                <Link
-                  to="/contact"
-                  style={{
-                    textDecoration: 'none',
-                    color: 'white',
-                    fontSize: '0.9rem',
-                    fontWeight: 500,
-                    padding: '4px 0'
-                  }}
-                >
-                  Contact
-                </Link>
-                <Link
-                  to="/testimonials"
-                  style={{
-                    textDecoration: 'none',
-                    color: 'white',
-                    fontSize: '0.9rem',
-                    fontWeight: 500,
-                    padding: '4px 0'
-                  }}
-                >
-                  Testimonials
-                </Link>
-              </Box>
-
-              {/* Customer service navigation row */}
-              <Box sx={{
-                display: 'flex',
-                gap: { xs: 3, sm: 4 },
-                alignItems: 'center'
-              }}>
-                <Link
-                  to="/customer-service"
-                  style={{
-                    textDecoration: 'none',
-                    color: 'white',
-                    fontSize: '0.9rem',
-                    fontWeight: 500,
-                    padding: '4px 0'
-                  }}
-                >
-                  Customer Service
-                </Link>
-                <Link
-                  to="/shipping-returns"
-                  style={{
-                    textDecoration: 'none',
-                    color: 'white',
-                    fontSize: '0.9rem',
-                    fontWeight: 500,
-                    padding: '4px 0'
-                  }}
-                >
-                  Shipping & Returns
-                </Link>
-                <Link
-                  to="/product-care"
-                  style={{
-                    textDecoration: 'none',
-                    color: 'white',
-                    fontSize: '0.9rem',
-                    fontWeight: 500,
-                    padding: '4px 0'
-                  }}
-                >
-                  Product Care
-                </Link>
-                <Link
-                  to="/warranty"
-                  style={{
-                    textDecoration: 'none',
-                    color: 'white',
-                    fontSize: '0.9rem',
-                    fontWeight: 500,
-                    padding: '4px 0'
-                  }}
-                >
-                  Warranty
-                </Link>
-                <Link
-                  to="/faq"
-                  style={{
-                    textDecoration: 'none',
-                    color: 'white',
-                    fontSize: '0.9rem',
-                    fontWeight: 500,
-                    padding: '4px 0'
-                  }}
-                >
-                  FAQ
-                </Link>
-                <Link
-                  to="/privacy-policy"
-                  style={{
-                    textDecoration: 'none',
-                    color: 'white',
-                    fontSize: '0.9rem',
-                    fontWeight: 500,
-                    padding: '4px 0'
-                  }}
-                >
-                  Privacy Policy
-                </Link>
-              </Box>
-            </Box>
-
-            {/* No need for empty box with flex-start layout */}
+            {/* Navigation links in a single row */}
+            <Link
+              to="/"
+              style={{
+                textDecoration: 'none',
+                color: 'white',
+                fontSize: '0.8rem',
+                fontWeight: 600,
+                padding: '4px 12px 4px 0',
+                textTransform: 'uppercase'
+              }}
+            >
+              Home
+            </Link>
+            <Link
+              to="/videos"
+              style={{
+                textDecoration: 'none',
+                color: 'white',
+                fontSize: '0.8rem',
+                fontWeight: 600,
+                padding: '4px 12px',
+                textTransform: 'uppercase'
+              }}
+            >
+              Videos
+            </Link>
+            <Link
+              to="/about"
+              style={{
+                textDecoration: 'none',
+                color: 'white',
+                fontSize: '0.8rem',
+                fontWeight: 600,
+                padding: '4px 12px',
+                textTransform: 'uppercase'
+              }}
+            >
+              About
+            </Link>
+            <Link
+              to="/contact"
+              style={{
+                textDecoration: 'none',
+                color: 'white',
+                fontSize: '0.8rem',
+                fontWeight: 600,
+                padding: '4px 12px',
+                textTransform: 'uppercase'
+              }}
+            >
+              Contact
+            </Link>
+            <Link
+              to="/testimonials"
+              style={{
+                textDecoration: 'none',
+                color: 'white',
+                fontSize: '0.8rem',
+                fontWeight: 600,
+                padding: '4px 12px',
+                textTransform: 'uppercase'
+              }}
+            >
+              Testimonials
+            </Link>
           </Box>
         </Container>
       </Box>

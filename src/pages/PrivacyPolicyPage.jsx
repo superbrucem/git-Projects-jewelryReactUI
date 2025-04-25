@@ -2,9 +2,9 @@ import React from 'react';
 import { Box, Container, Typography, Paper, Divider } from '@mui/material';
 
 const PrivacyPolicyPage = () => {
-  return (
-    <Container maxWidth="xl" sx={{
-      py: 4,
+  return (    <Container maxWidth="xl" sx={{
+      pt: 1, // Reduced top padding
+      pb: 4,
       width: '100%',
       maxWidth: { xs: '100%', sm: '100%', md: '100%', lg: '1440px', xl: '1920px' }
     }}>
