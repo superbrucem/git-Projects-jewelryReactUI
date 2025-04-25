@@ -269,6 +269,21 @@ const Header = () => {
 
   return (
     <>
+      {/* Black Banner at the very top - twice as thick */}
+      <Box sx={{
+        backgroundColor: '#000000', // Black background
+        color: 'white',
+        py: 0.6, // Doubled vertical padding
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        px: 3
+      }}>
+        <Typography variant="body2" sx={{ fontWeight: 400, fontSize: '0.75rem', py: 0.3 }}> {/* Added padding to text */}
+          Free shipping on orders over $100
+        </Typography>
+      </Box>
+
       {/* Welcome Banner with Phone Number - Ashergems style */}
       <Box sx={{
         backgroundColor: '#1e2761', // Purple background from Ashergems image
@@ -381,14 +396,16 @@ const Header = () => {
           width: '100%',
           maxWidth: { xs: '100%', sm: '100%', md: '100%', lg: '1440px', xl: '1920px' }
         }}>
+          {/* Single row navigation */}
           <Box sx={{
             display: 'flex',
-            py: 1, // Reduced padding for single row like Ashergems
-            px: 0, // Remove padding from container
-            justifyContent: 'flex-start', // Left justify
-            pl: { xs: 2, sm: 3 }, // Match logo padding
+            py: 1,
+            px: 0,
+            justifyContent: 'flex-start',
+            pl: { xs: 2, sm: 3 },
+            flexWrap: 'nowrap', // Prevent wrapping
+            overflowX: 'auto', // Allow horizontal scrolling if needed
           }}>
-            {/* Navigation links in a single row */}
             <Link
               to="/"
               style={{
@@ -396,8 +413,9 @@ const Header = () => {
                 color: 'white',
                 fontSize: '0.8rem',
                 fontWeight: 600,
-                padding: '4px 12px 4px 0',
-                textTransform: 'uppercase'
+                padding: '4px 10px 4px 0',
+                textTransform: 'uppercase',
+                whiteSpace: 'nowrap'
               }}
             >
               Home
@@ -409,8 +427,9 @@ const Header = () => {
                 color: 'white',
                 fontSize: '0.8rem',
                 fontWeight: 600,
-                padding: '4px 12px',
-                textTransform: 'uppercase'
+                padding: '4px 10px',
+                textTransform: 'uppercase',
+                whiteSpace: 'nowrap'
               }}
             >
               Videos
@@ -422,8 +441,9 @@ const Header = () => {
                 color: 'white',
                 fontSize: '0.8rem',
                 fontWeight: 600,
-                padding: '4px 12px',
-                textTransform: 'uppercase'
+                padding: '4px 10px',
+                textTransform: 'uppercase',
+                whiteSpace: 'nowrap'
               }}
             >
               About
@@ -435,8 +455,9 @@ const Header = () => {
                 color: 'white',
                 fontSize: '0.8rem',
                 fontWeight: 600,
-                padding: '4px 12px',
-                textTransform: 'uppercase'
+                padding: '4px 10px',
+                textTransform: 'uppercase',
+                whiteSpace: 'nowrap'
               }}
             >
               Contact
@@ -448,11 +469,68 @@ const Header = () => {
                 color: 'white',
                 fontSize: '0.8rem',
                 fontWeight: 600,
-                padding: '4px 12px',
-                textTransform: 'uppercase'
+                padding: '4px 10px',
+                textTransform: 'uppercase',
+                whiteSpace: 'nowrap'
               }}
             >
               Testimonials
+            </Link>
+            <Link
+              to="/customer-service"
+              style={{
+                textDecoration: 'none',
+                color: 'white',
+                fontSize: '0.8rem',
+                fontWeight: 600,
+                padding: '4px 10px',
+                textTransform: 'uppercase',
+                whiteSpace: 'nowrap'
+              }}
+            >
+              Customer Service
+            </Link>
+            <Link
+              to="/shipping-returns"
+              style={{
+                textDecoration: 'none',
+                color: 'white',
+                fontSize: '0.8rem',
+                fontWeight: 600,
+                padding: '4px 10px',
+                textTransform: 'uppercase',
+                whiteSpace: 'nowrap'
+              }}
+            >
+              Shipping & Returns
+            </Link>
+            <Link
+              to="/product-care"
+              style={{
+                textDecoration: 'none',
+                color: 'white',
+                fontSize: '0.8rem',
+                fontWeight: 600,
+                padding: '4px 10px',
+                textTransform: 'uppercase',
+                whiteSpace: 'nowrap'
+              }}
+            >
+              Product Care
+            </Link>
+            <Link
+              to="/warranty"
+              style={{
+                textDecoration: 'none',
+                color: 'white',
+                fontSize: '0.8rem',
+                fontWeight: 600,
+                padding: '4px 10px',
+                textTransform: 'uppercase',
+                whiteSpace: 'nowrap'
+              }}
+            >
+              Warranty
             </Link>
           </Box>
         </Container>
