@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   Box,
   Typography,
@@ -125,6 +125,14 @@ const SignatureMenu = () => {
     });
   };
 
+  // Initialize with 5 Elements expanded by default
+  useEffect(() => {
+    setExpanded(prev => ({
+      ...prev,
+      '5-elements': true
+    }));
+  }, []);
+
   const handleNavigate = (collectionId) => {
     // Navigate to the main signature page with a query parameter
     navigate(`/signature?collection=${collectionId}`);
@@ -148,7 +156,13 @@ const SignatureMenu = () => {
           <React.Fragment key={collection.id}>
             {/* Collection Header */}
             <SignatureItem
-              onClick={() => handleToggle(collection.id)}
+              onClick={() => {
+                handleToggle(collection.id);
+                // Only navigate if clicking directly on the collection header
+                if (!expanded[collection.id]) {
+                  handleNavigate(collection.id);
+                }
+              }}
               sx={{
                 backgroundColor: expanded[collection.id] ? 'rgba(0, 0, 0, 0.03)' : 'transparent',
                 '&:hover': {
@@ -164,6 +178,10 @@ const SignatureMenu = () => {
                       fontWeight: 500,
                       fontSize: '0.85rem',
                     }
+                  }}
+                  onClick={(e) => {
+                    e.stopPropagation(); // Prevent toggle
+                    handleNavigate(collection.id);
                   }}
                 />
                 <ListItemIcon sx={{ minWidth: 'auto' }}>

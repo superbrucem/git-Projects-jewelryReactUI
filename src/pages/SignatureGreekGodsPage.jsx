@@ -1,9 +1,10 @@
-import React from 'react';
-import { Box, Container, Typography, Paper, Grid, List, ListItem, ListItemText, Divider } from '@mui/material';
-import { Link } from 'react-router-dom';
+import React, { useEffect, useState } from 'react';
+import { Box, Container, Typography, Paper, Grid, List, ListItem, ListItemText, Divider, Button } from '@mui/material';
+import { Link, useNavigate } from 'react-router-dom';
 import { styled } from '@mui/material/styles';
 import PaginatedProductGrid from '../components/PaginatedProductGrid';
 import greekGodsProducts from '../data/greekGodsProducts';
+import products from '../data/products';
 
 const StyledLink = styled(Link)(({ theme }) => ({
   textDecoration: 'none',
@@ -22,13 +23,32 @@ const CollectionItem = styled(ListItem)(({ theme }) => ({
 }));
 
 const SignatureGreekGodsPage = () => {
+  const navigate = useNavigate();
+  const [localGreekGodsProducts, setLocalGreekGodsProducts] = useState([]);
+
+  // Use useEffect to ensure products are loaded
+  useEffect(() => {
+    // If greekGodsProducts is empty, filter directly from products
+    if (!greekGodsProducts || greekGodsProducts.length === 0) {
+      console.log('SignatureGreekGodsPage - Filtering products directly');
+      const filteredProducts = products.filter(p => p.category === 'greek-gods');
+      setLocalGreekGodsProducts(filteredProducts);
+    } else {
+      console.log('SignatureGreekGodsPage - Using imported greekGodsProducts:', greekGodsProducts.length);
+      setLocalGreekGodsProducts(greekGodsProducts);
+    }
+  }, []);
+
+  // Debug log to check if products are loaded
+  console.log('SignatureGreekGodsPage - localGreekGodsProducts:', localGreekGodsProducts.length);
+
   // Group products by god/goddess
   const godGroups = {
-    'Zeus': greekGodsProducts.filter(p => p.collection === 'Zeus'),
-    'Poseidon': greekGodsProducts.filter(p => p.collection === 'Poseidon'),
-    'Athena': greekGodsProducts.filter(p => p.collection === 'Athena'),
-    'Apollo': greekGodsProducts.filter(p => p.collection === 'Apollo'),
-    'Aphrodite': greekGodsProducts.filter(p => p.collection === 'Aphrodite')
+    'Zeus': localGreekGodsProducts.filter(p => p.collection === 'Zeus'),
+    'Poseidon': localGreekGodsProducts.filter(p => p.collection === 'Poseidon'),
+    'Athena': localGreekGodsProducts.filter(p => p.collection === 'Athena'),
+    'Apollo': localGreekGodsProducts.filter(p => p.collection === 'Apollo'),
+    'Aphrodite': localGreekGodsProducts.filter(p => p.collection === 'Aphrodite')
   };
 
   return (
@@ -97,7 +117,31 @@ const SignatureGreekGodsPage = () => {
             <Typography variant="h6" gutterBottom sx={{ textAlign: 'left' }}>
               Browse Greek Gods Collection Products
             </Typography>
-            <PaginatedProductGrid products={greekGodsProducts} itemsPerPage={8} />
+
+            {localGreekGodsProducts.length === 0 ? (
+              <Box sx={{ textAlign: 'center', py: 4 }}>
+                <Typography variant="body1" color="text.secondary" paragraph>
+                  Loading products...
+                </Typography>
+                <Button
+                  variant="contained"
+                  color="primary"
+                  onClick={() => window.location.reload()}
+                  sx={{ mr: 2 }}
+                >
+                  Refresh Page
+                </Button>
+                <Button
+                  variant="outlined"
+                  color="primary"
+                  onClick={() => navigate('/')}
+                >
+                  Return to Home
+                </Button>
+              </Box>
+            ) : (
+              <PaginatedProductGrid products={localGreekGodsProducts} itemsPerPage={8} />
+            )}
           </Grid>
         </Grid>
       </Paper>

@@ -266,7 +266,8 @@ const FilterSidebar = () => {
               value={selectedSignature || 'all-signature'}
               onChange={(e) => {
                 setSelectedSignature(e.target.value);
-                navigate(`/signature?category=${e.target.value}`);
+                // Use 'collection' parameter instead of 'category'
+                navigate(`/signature?collection=${e.target.value}`);
               }}
             >
               {signatureData.map((collection) => (

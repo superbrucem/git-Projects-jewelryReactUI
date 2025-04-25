@@ -1,25 +1,32 @@
 import React, { useEffect, useState } from 'react';
-import { Box, Container, Typography, Paper, Grid, Divider, Button } from '@mui/material';
+import { Box, Container, Typography, Paper, Grid, Divider, Button, Tabs, Tab } from '@mui/material';
 import { useParams, useLocation, useNavigate } from 'react-router-dom';
 import PaginatedProductGrid from '../components/PaginatedProductGrid';
 import products from '../data/products';
 import signatureCollections from '../data/signature_sidemenu.json';
 
-// Filter products by category
-const elementsProducts = products.filter(p => p.category === '5-elements');
-const greekGodsProducts = products.filter(p => p.category === 'greek-gods');
-const underworldProducts = products.filter(p => p.category === 'underworld');
+// Filter products by category - using memoized values to prevent re-filtering on every render
+const getFilteredProducts = () => {
+  const elementsProducts = products.filter(p => p.category === '5-elements');
+  const greekGodsProducts = products.filter(p => p.category === 'greek-gods');
+  const underworldProducts = products.filter(p => p.category === 'underworld');
 
-// Debug logs
-console.log('All products:', products.length);
-console.log('5 Elements products:', elementsProducts.length);
-console.log('Greek Gods products:', greekGodsProducts.length);
-console.log('Underworld products:', underworldProducts.length);
+  // Debug logs
+  console.log('All products:', products.length);
+  console.log('5 Elements products:', elementsProducts.length);
+  console.log('Greek Gods products:', greekGodsProducts.length);
+  console.log('Underworld products:', underworldProducts.length);
+
+  return { elementsProducts, greekGodsProducts, underworldProducts };
+};
+
+// Get the filtered products
+const { elementsProducts, greekGodsProducts, underworldProducts } = getFilteredProducts();
 
 // Add "all" collection to the signature collections
 const allSignatureCollections = [
   {
-    id: 'all',
+    id: 'all-signature', // Changed from 'all' to 'all-signature' to match FilterSidebar
     label: 'All Signature Collections',
     products: products.filter(p => ['5-elements', 'greek-gods', 'underworld'].includes(p.category)),
     description: 'Our exclusive Signature Collections feature our most exquisite and unique pieces, each one personally selected and designed by our master jewelers.'
@@ -42,19 +49,35 @@ const SignaturePage = () => {
   // Get collection from query parameter if not in URL path
   const queryParams = new URLSearchParams(location.search);
   const collectionQuery = queryParams.get('collection');
+  // Also check for 'category' parameter for backward compatibility
+  const categoryQuery = queryParams.get('category');
+
+  // Use either collection or category parameter
+  const collectionFromQuery = collectionQuery || categoryQuery;
 
   // Determine which collection to show
-  const [selectedCollection, setSelectedCollection] = useState('all');
+  const [selectedCollection, setSelectedCollection] = useState('all-signature');
   const [selectedSubcategory, setSelectedSubcategory] = useState(null);
+
+  // Debug logging
+  console.log('SignaturePage - URL params:', {
+    collectionParam,
+    subcategory,
+    collectionQuery,
+    categoryQuery
+  });
 
   useEffect(() => {
     // Check if we have a collection in the URL path or query
     if (collectionParam) {
+      console.log('Setting collection from URL path:', collectionParam);
       setSelectedCollection(collectionParam);
-    } else if (collectionQuery) {
-      setSelectedCollection(collectionQuery);
+    } else if (collectionFromQuery) {
+      console.log('Setting collection from query parameter:', collectionFromQuery);
+      setSelectedCollection(collectionFromQuery);
     } else {
-      setSelectedCollection('all');
+      console.log('No collection specified, defaulting to "all-signature"');
+      setSelectedCollection('all-signature');
     }
 
     // Check if we have a subcategory
@@ -63,15 +86,18 @@ const SignaturePage = () => {
     } else {
       setSelectedSubcategory(null);
     }
-  }, [collectionParam, collectionQuery, subcategory]);
+  }, [collectionParam, collectionFromQuery, subcategory]);
 
-  // Get the current collection
+  // Get the current collection with error handling
   const currentCollection = allSignatureCollections.find(c => c.id === selectedCollection) || allSignatureCollections[0];
+
+  // Debug logging for current collection
+  console.log('Current collection:', currentCollection?.id, 'Selected collection:', selectedCollection);
 
   // Filter products based on selected collection and subcategory
   let filteredProducts = [];
 
-  if (selectedCollection === 'all') {
+  if (selectedCollection === 'all-signature') {
     filteredProducts = currentCollection.products;
   } else {
     // Filter by collection
@@ -97,8 +123,45 @@ const SignaturePage = () => {
           Signature Collections
         </Typography>
 
+        {/* Collection tabs */}
+        <Box sx={{ borderBottom: 1, borderColor: 'divider', mb: 4 }}>
+          <Tabs
+            value={selectedCollection}
+            onChange={(event, newValue) => {
+              setSelectedCollection(newValue);
+              setSelectedSubcategory(null);
+
+              // Update URL with query parameter
+              if (newValue === 'all-signature') {
+                navigate('/signature');
+              } else {
+                navigate(`/signature?collection=${newValue}`);
+              }
+            }}
+            variant="scrollable"
+            scrollButtons="auto"
+            allowScrollButtonsMobile
+            aria-label="signature collection tabs"
+          >
+            {allSignatureCollections.map((collection) => (
+              <Tab
+                key={collection.id}
+                label={collection.id === 'all-signature' ? 'ALL SIGNATURE' : collection.label.toUpperCase()}
+                value={collection.id}
+                sx={{
+                  fontWeight: 500,
+                  fontSize: '0.9rem',
+                  '&.Mui-selected': {
+                    color: '#f0c14b',
+                  }
+                }}
+              />
+            ))}
+          </Tabs>
+        </Box>
+
         {/* Navigation breadcrumbs */}
-        {selectedCollection !== 'all' && (
+        {selectedCollection !== 'all-signature' && selectedSubcategory && (
           <Box sx={{ display: 'flex', gap: 1, mb: 3, alignItems: 'center' }}>
             <Button
               variant="text"
@@ -148,6 +211,46 @@ const SignaturePage = () => {
               ? `Explore our exquisite ${selectedSubcategory} jewelry from the ${currentCollection.label} collection.`
               : (currentCollection.description || collectionDescriptions[selectedCollection] || 'Our exclusive Signature Collections feature our most exquisite and unique pieces.')}
           </Typography>
+
+          {/* Display subcategory chips when a collection is selected but no subcategory */}
+          {selectedCollection !== 'all-signature' && !selectedSubcategory && currentCollection.subcategories && (
+            <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 1, mt: 2 }}>
+              {currentCollection.subcategories.map(subcategory => {
+                const subcategorySlug = subcategory.toLowerCase();
+                return (
+                  <Box
+                    key={subcategorySlug}
+                    component="a"
+                    href={`/signature/${selectedCollection}/${subcategorySlug}`}
+                    onClick={(e) => {
+                      e.preventDefault();
+                      setSelectedSubcategory(subcategorySlug);
+                      // Update the URL without reloading the page
+                      navigate(`/signature/${selectedCollection}/${subcategorySlug}`);
+                    }}
+                    sx={{
+                      backgroundColor: '#f5f5f5',
+                      border: '1px solid #e0e0e0',
+                      borderRadius: '4px',
+                      padding: '4px 12px',
+                      fontSize: '0.85rem',
+                      fontWeight: 500,
+                      color: '#333',
+                      textDecoration: 'none',
+                      display: 'inline-block',
+                      '&:hover': {
+                        backgroundColor: '#f0c14b',
+                        color: '#1d2b39',
+                        cursor: 'pointer'
+                      }
+                    }}
+                  >
+                    {subcategory}
+                  </Box>
+                );
+              })}
+            </Box>
+          )}
         </Box>
 
         {/* Products Grid */}
@@ -159,7 +262,7 @@ const SignaturePage = () => {
         <PaginatedProductGrid products={filteredProducts} itemsPerPage={8} />
 
         {/* Only show collections sections on the main signature page */}
-        {selectedCollection === 'all' && (
+        {selectedCollection === 'all-signature' && (
           <>
             {/* Scroll indicator */}
             <Box sx={{

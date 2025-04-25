@@ -70,6 +70,25 @@ const SearchPage = () => {
     setSearchResults(filteredProducts);
   }, [searchQuery, selectedTab]);
 
+  // Use debounce for search input to prevent excessive re-renders
+  const [debouncedSearchTerm, setDebouncedSearchTerm] = useState(searchQuery);
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setDebouncedSearchTerm(searchQuery);
+    }, 300); // 300ms delay
+
+    return () => clearTimeout(timer);
+  }, [searchQuery]);
+
+  // Update search results when debounced search term changes
+  useEffect(() => {
+    if (debouncedSearchTerm !== searchQuery && debouncedSearchTerm.trim()) {
+      // Only update URL when user has stopped typing
+      navigate(`/search?q=${encodeURIComponent(debouncedSearchTerm)}&_t=${Date.now()}`);
+    }
+  }, [debouncedSearchTerm, searchQuery, navigate]);
+
   const handleSearchChange = (event) => {
     setSearchQuery(event.target.value);
   };
@@ -83,7 +102,7 @@ const SearchPage = () => {
     }
   };
 
-  const handleTabChange = (event, newValue) => {
+  const handleTabChange = (_, newValue) => {
     setSelectedTab(newValue);
   };
 
