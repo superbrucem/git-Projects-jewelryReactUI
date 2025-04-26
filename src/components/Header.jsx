@@ -14,7 +14,7 @@ import {
   useMediaQuery,
   Button
 } from '@mui/material';
-import { Link as RouterLink, useNavigate, Link } from 'react-router-dom';
+import { Link as RouterLink, useNavigate, Link, useLocation } from 'react-router-dom';
 import SearchIcon from '@mui/icons-material/Search';
 import { keyframes } from '@mui/material';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
@@ -269,6 +269,12 @@ const CartIconWithBadge = () => {
 const Header = () => {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('md'));
+  const location = useLocation();
+
+  // Function to check if a link is active
+  const isActive = (path) => {
+    return location.pathname === path;
+  };
 
   return (
     <>
@@ -409,132 +415,36 @@ const Header = () => {
             flexWrap: 'nowrap', // Prevent wrapping
             overflowX: 'auto', // Allow horizontal scrolling if needed
           }}>
-            <Link
-              to="/"
-              style={{
-                textDecoration: 'none',
-                color: 'white',
-                fontSize: '0.8rem',
-                fontWeight: 600,
-                padding: '4px 10px 4px 0',
-                textTransform: 'uppercase',
-                whiteSpace: 'nowrap'
-              }}
-            >
-              Home
-            </Link>
-            <Link
-              to="/videos"
-              style={{
-                textDecoration: 'none',
-                color: 'white',
-                fontSize: '0.8rem',
-                fontWeight: 600,
-                padding: '4px 10px',
-                textTransform: 'uppercase',
-                whiteSpace: 'nowrap'
-              }}
-            >
-              Videos
-            </Link>
-            <Link
-              to="/about"
-              style={{
-                textDecoration: 'none',
-                color: 'white',
-                fontSize: '0.8rem',
-                fontWeight: 600,
-                padding: '4px 10px',
-                textTransform: 'uppercase',
-                whiteSpace: 'nowrap'
-              }}
-            >
-              About
-            </Link>
-            <Link
-              to="/contact"
-              style={{
-                textDecoration: 'none',
-                color: 'white',
-                fontSize: '0.8rem',
-                fontWeight: 600,
-                padding: '4px 10px',
-                textTransform: 'uppercase',
-                whiteSpace: 'nowrap'
-              }}
-            >
-              Contact
-            </Link>
-            <Link
-              to="/testimonials"
-              style={{
-                textDecoration: 'none',
-                color: 'white',
-                fontSize: '0.8rem',
-                fontWeight: 600,
-                padding: '4px 10px',
-                textTransform: 'uppercase',
-                whiteSpace: 'nowrap'
-              }}
-            >
-              Testimonials
-            </Link>
-            <Link
-              to="/customer-service"
-              style={{
-                textDecoration: 'none',
-                color: 'white',
-                fontSize: '0.8rem',
-                fontWeight: 600,
-                padding: '4px 10px',
-                textTransform: 'uppercase',
-                whiteSpace: 'nowrap'
-              }}
-            >
-              Customer Service
-            </Link>
-            <Link
-              to="/shipping-returns"
-              style={{
-                textDecoration: 'none',
-                color: 'white',
-                fontSize: '0.8rem',
-                fontWeight: 600,
-                padding: '4px 10px',
-                textTransform: 'uppercase',
-                whiteSpace: 'nowrap'
-              }}
-            >
-              Shipping & Returns
-            </Link>
-            <Link
-              to="/product-care"
-              style={{
-                textDecoration: 'none',
-                color: 'white',
-                fontSize: '0.8rem',
-                fontWeight: 600,
-                padding: '4px 10px',
-                textTransform: 'uppercase',
-                whiteSpace: 'nowrap'
-              }}
-            >
-              Product Care
-            </Link>
-            <Link
-              to="/warranty"
-              style={{
-                textDecoration: 'none',
-                color: 'white',
-                fontSize: '0.8rem',
-                fontWeight: 600,
-                padding: '4px 10px',
-                textTransform: 'uppercase',
-                whiteSpace: 'nowrap'
-              }}
-            >
-              Warranty
-            </Link>
+            {/* Navigation Links with Active State Styling */}
+            {[
+              { path: '/', label: 'Home' },
+              { path: '/videos', label: 'Videos' },
+              { path: '/about', label: 'About' },
+              { path: '/contact', label: 'Contact' },
+              { path: '/testimonials', label: 'Testimonials' },
+              { path: '/customer-service', label: 'Customer Service' },
+              { path: '/shipping-returns', label: 'Shipping & Returns' },
+              { path: '/product-care', label: 'Product Care' },
+              { path: '/warranty', label: 'Warranty' }
+            ].map((item, index) => (
+              <Link
+                key={item.path}
+                to={item.path}
+                style={{
+                  textDecoration: 'none',
+                  color: 'white',
+                  fontSize: '0.8rem',
+                  fontWeight: 600,
+                  padding: index === 0 ? '4px 10px 4px 0' : '4px 10px',
+                  textTransform: 'uppercase',
+                  whiteSpace: 'nowrap',
+                  position: 'relative',
+                  borderBottom: isActive(item.path) ? '2px solid white' : 'none'
+                }}
+              >
+                {item.label}
+              </Link>
+            ))}
           </Box>
         </Container>
       </Box>

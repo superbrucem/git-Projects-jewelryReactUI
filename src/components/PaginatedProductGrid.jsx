@@ -1,15 +1,34 @@
-import React, { useState } from 'react';
-import { Grid, Box, Button, Typography, Stack, IconButton } from '@mui/material';
+import React, { useState, useEffect } from 'react';
+import {
+  Grid,
+  Box,
+  Button,
+  Typography,
+  Stack,
+  IconButton,
+  Select,
+  MenuItem,
+  FormControl,
+  InputLabel,
+  ToggleButtonGroup,
+  ToggleButton,
+  Paper
+} from '@mui/material';
 import ProductCard from './ProductCard';
 import { useCart } from '../context/CartContext';
 import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward';
 import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward';
 import NavigateNextIcon from '@mui/icons-material/NavigateNext';
 import NavigateBeforeIcon from '@mui/icons-material/NavigateBefore';
+import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 
-const PaginatedProductGrid = ({ products, itemsPerPage = 8, isLoading }) => {
+const PaginatedProductGrid = ({ products, initialItemsPerPage = 8, isLoading }) => {
   const { addToCart } = useCart();
   const [currentPage, setCurrentPage] = useState(1);
+  const [sortBy, setSortBy] = useState('featured');
+  const [itemsPerPage, setItemsPerPage] = useState(initialItemsPerPage);
+  const [columns, setColumns] = useState(4);
+  const [sortedProducts, setSortedProducts] = useState([]);
 
   // Debug products
   console.log('PaginatedProductGrid received products:', products?.length, products?.map(p => p.category));
@@ -17,13 +36,60 @@ const PaginatedProductGrid = ({ products, itemsPerPage = 8, isLoading }) => {
   // Ensure products is always an array
   const safeProducts = Array.isArray(products) ? products : [];
 
+  // Sort products when sortBy or products change
+  useEffect(() => {
+    let sorted = [...safeProducts];
+
+    switch (sortBy) {
+      case 'featured':
+        // Assuming featured products have a 'featured' property or are already in featured order
+        break;
+      case 'price-low':
+        sorted.sort((a, b) => (a.price || 0) - (b.price || 0));
+        break;
+      case 'price-high':
+        sorted.sort((a, b) => (b.price || 0) - (a.price || 0));
+        break;
+      case 'name-asc':
+        sorted.sort((a, b) => (a.name || '').localeCompare(b.name || ''));
+        break;
+      case 'name-desc':
+        sorted.sort((a, b) => (b.name || '').localeCompare(a.name || ''));
+        break;
+      default:
+        break;
+    }
+
+    setSortedProducts(sorted);
+    // Reset to first page when sort changes
+    setCurrentPage(1);
+  }, [sortBy, safeProducts]);
+
   // Calculate total pages
-  const totalPages = Math.ceil((safeProducts.length || 0) / itemsPerPage);
+  const totalPages = Math.ceil((sortedProducts.length || 0) / itemsPerPage);
 
   // Get current products
   const indexOfLastItem = currentPage * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
-  const currentProducts = safeProducts.length ? safeProducts.slice(indexOfFirstItem, indexOfLastItem) : [];
+  const currentProducts = sortedProducts.length ? sortedProducts.slice(indexOfFirstItem, indexOfLastItem) : [];
+
+  // Handle column change
+  const handleColumnsChange = (event, newColumns) => {
+    if (newColumns !== null) {
+      setColumns(newColumns);
+    }
+  };
+
+  // Handle items per page change
+  const handleItemsPerPageChange = (event) => {
+    setItemsPerPage(event.target.value);
+    setCurrentPage(1); // Reset to first page
+  };
+
+  // Handle sort change
+  const handleSortChange = (event) => {
+    setSortBy(event.target.value);
+  };
 
   // Change page
   const goToPage = (pageNumber) => {
@@ -196,8 +262,95 @@ const PaginatedProductGrid = ({ products, itemsPerPage = 8, isLoading }) => {
     );
   }
 
+  // Get column size based on columns setting
+  const getColumnSize = (columns) => {
+    switch (columns) {
+      case 1: return 12;
+      case 2: return 6;
+      case 3: return 4;
+      case 4: return 3;
+      case 6: return 2;
+      default: return 3;
+    }
+  };
+
   return (
     <Box>
+      {/* Controls Bar */}
+      <Paper
+        elevation={0}
+        sx={{
+          p: 1.5,
+          mb: 2,
+          display: 'flex',
+          flexDirection: { xs: 'column', sm: 'row' },
+          justifyContent: 'space-between',
+          alignItems: { xs: 'flex-start', sm: 'center' },
+          gap: 2,
+          backgroundColor: '#f9f9f9',
+          border: '1px solid #e0e0e0',
+          borderRadius: '4px'
+        }}
+      >
+        {/* Sort By */}
+        <FormControl size="small" sx={{ minWidth: 180 }}>
+          <InputLabel id="sort-by-label">Sort By:</InputLabel>
+          <Select
+            labelId="sort-by-label"
+            value={sortBy}
+            label="Sort By:"
+            onChange={handleSortChange}
+            IconComponent={KeyboardArrowDownIcon}
+          >
+            <MenuItem value="featured">Featured Items</MenuItem>
+            <MenuItem value="price-low">Price: Low to High</MenuItem>
+            <MenuItem value="price-high">Price: High to Low</MenuItem>
+            <MenuItem value="name-asc">Name: A to Z</MenuItem>
+            <MenuItem value="name-desc">Name: Z to A</MenuItem>
+          </Select>
+        </FormControl>
+
+        <Box sx={{ display: 'flex', gap: 2, alignItems: 'center', flexWrap: { xs: 'wrap', sm: 'nowrap' } }}>
+          {/* Columns */}
+          <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+            <Typography variant="body2" sx={{ whiteSpace: 'nowrap' }}>
+              Columns:
+            </Typography>
+            <ToggleButtonGroup
+              value={columns}
+              exclusive
+              onChange={handleColumnsChange}
+              aria-label="columns"
+              size="small"
+            >
+              <ToggleButton value={1} aria-label="1 column">1</ToggleButton>
+              <ToggleButton value={2} aria-label="2 columns">2</ToggleButton>
+              <ToggleButton value={3} aria-label="3 columns">3</ToggleButton>
+              <ToggleButton value={4} aria-label="4 columns">4</ToggleButton>
+              <ToggleButton value={6} aria-label="6 columns">6</ToggleButton>
+            </ToggleButtonGroup>
+          </Box>
+
+          {/* Products Per Page */}
+          <FormControl size="small" sx={{ minWidth: 150 }}>
+            <InputLabel id="items-per-page-label">Products Per Page:</InputLabel>
+            <Select
+              labelId="items-per-page-label"
+              value={itemsPerPage}
+              label="Products Per Page:"
+              onChange={handleItemsPerPageChange}
+              IconComponent={KeyboardArrowDownIcon}
+            >
+              <MenuItem value={8}>8</MenuItem>
+              <MenuItem value={12}>12</MenuItem>
+              <MenuItem value={16}>16</MenuItem>
+              <MenuItem value={24}>24</MenuItem>
+              <MenuItem value={36}>36</MenuItem>
+            </Select>
+          </FormControl>
+        </Box>
+      </Paper>
+
       {/* Top anchor and pagination controls */}
       <Box id="product-grid-top">
         <PaginationControls />
@@ -206,7 +359,13 @@ const PaginatedProductGrid = ({ products, itemsPerPage = 8, isLoading }) => {
       {/* Product grid */}
       <Grid container spacing={2}>
         {currentProducts.map((product) => (
-          <Grid item xs={6} sm={6} md={4} lg={3} key={product.id}>
+          <Grid
+            item
+            xs={columns === 1 ? 12 : 6}
+            sm={columns === 1 ? 12 : columns === 2 ? 6 : 4}
+            md={getColumnSize(columns)}
+            key={product.id}
+          >
             <ProductCard product={product} onAddToCart={addToCart} />
           </Grid>
         ))}
@@ -223,7 +382,7 @@ const PaginatedProductGrid = ({ products, itemsPerPage = 8, isLoading }) => {
         align="center"
         sx={{ mt: 2, color: 'text.secondary' }}
       >
-        Showing page {currentPage} of {totalPages} ({safeProducts.length} products)
+        Showing page {currentPage} of {totalPages} ({sortedProducts.length} products)
       </Typography>
     </Box>
   );
