@@ -2,9 +2,6 @@ import React from 'react';
 import {
   Box,
   Typography,
-  Radio,
-  RadioGroup,
-  FormControlLabel,
   Paper,
   Accordion,
   AccordionSummary,
@@ -12,6 +9,8 @@ import {
   Divider,
   List,
   ListItem,
+  ListItemButton,
+  ListItemText,
   useTheme
 } from '@mui/material';
 import { styled } from '@mui/material/styles';
@@ -195,42 +194,46 @@ const FilterSidebar = () => {
               Collections
             </Typography>
           </FilterHeader>
-          <FilterContent>
-            <RadioGroup
-              value={selectedCollection || 'all'}
-              onChange={(e) => {
-                setSelectedCollection(e.target.value);
-                handleRadioChange('collections', e.target.value);
-                navigate(`/collections?category=${e.target.value}`);
-              }}
-            >
+          <FilterContent sx={{ p: 0 }}>
+            <List disablePadding>
               {collectionsData.map((collection) => (
-                <FormControlLabel
+                <ListItemButton
                   key={collection.id}
-                  value={collection.id}
-                  control={<Radio size={isMobile ? "medium" : "small"} sx={{ padding: isMobile ? '6px' : '4px' }} />}
-                  label={
-                    <Typography
-                      sx={{
-                        color: '#333333',
-                        fontWeight: collection.id === 'all' ? 500 : 400,
-                        fontSize: isMobile ? '0.85rem' : '0.75rem', // Larger font on mobile
-                        lineHeight: 1.2, // Tighter line height
-                        marginLeft: '-4px', // Pull text slightly closer to radio button
-                        pl: 1 // Add indentation for all items including "All Collections"
-                      }}
-                    >
-                      {collection.label}
-                    </Typography>
-                  }
-                  sx={{
-                    margin: 0,
-                    padding: isMobile ? '8px 0' : '4px 0', // More vertical padding on mobile
-                    ml: 1 // Add left margin for all items
+                  selected={selectedCollection === collection.id}
+                  onClick={() => {
+                    setSelectedCollection(collection.id);
+                    handleRadioChange('collections', collection.id);
+                    navigate(`/collections?category=${collection.id}`);
                   }}
-                />
+                  sx={{
+                    py: isMobile ? 1 : 0.5,
+                    pl: 3,
+                    '&.Mui-selected': {
+                      backgroundColor: 'transparent',
+                    },
+                    '&:hover': {
+                      backgroundColor: 'rgba(0, 0, 0, 0.04)',
+                    }
+                  }}
+                >
+                  <ListItemText
+                    primary={
+                      <Typography
+                        sx={{
+                          color: selectedCollection === collection.id ? '#1976d2' : '#333333', // Blue color when selected
+                          fontWeight: collection.id === 'all' || selectedCollection === collection.id ? 600 : 400,
+                          fontSize: isMobile ? '0.85rem' : '0.75rem', // Larger font on mobile
+                          lineHeight: 1.2, // Tighter line height
+                          textTransform: 'uppercase' // Make all text uppercase
+                        }}
+                      >
+                        {collection.label}
+                      </Typography>
+                    }
+                  />
+                </ListItemButton>
               ))}
-            </RadioGroup>
+            </List>
           </FilterContent>
         </FilterSection>
       </FilterContainer>
@@ -243,42 +246,46 @@ const FilterSidebar = () => {
               Signature
             </Typography>
           </FilterHeader>
-          <FilterContent>
-            <RadioGroup
-              value={selectedSignature || 'all-signature'}
-              onChange={(e) => {
-                setSelectedSignature(e.target.value);
-                // Use 'collection' parameter instead of 'category'
-                navigate(`/signature?collection=${e.target.value}`);
-              }}
-            >
+          <FilterContent sx={{ p: 0 }}>
+            <List disablePadding>
               {signatureData.map((collection) => (
-                <FormControlLabel
+                <ListItemButton
                   key={collection.id}
-                  value={collection.id}
-                  control={<Radio size={isMobile ? "medium" : "small"} sx={{ padding: isMobile ? '6px' : '4px' }} />}
-                  label={
-                    <Typography
-                      sx={{
-                        color: '#333333',
-                        fontWeight: collection.id === 'all-signature' ? 500 : 400,
-                        fontSize: isMobile ? '0.85rem' : '0.75rem', // Larger font on mobile
-                        lineHeight: 1.2, // Tighter line height
-                        marginLeft: '-4px', // Pull text slightly closer to radio button
-                        pl: 1 // Add indentation for all items
-                      }}
-                    >
-                      {collection.label}
-                    </Typography>
-                  }
-                  sx={{
-                    margin: 0,
-                    padding: isMobile ? '8px 0' : '4px 0', // More vertical padding on mobile
-                    ml: 1 // Add left margin for all items
+                  selected={selectedSignature === collection.id}
+                  onClick={() => {
+                    setSelectedSignature(collection.id);
+                    // Use 'collection' parameter instead of 'category'
+                    navigate(`/signature?collection=${collection.id}`);
                   }}
-                />
+                  sx={{
+                    py: isMobile ? 1 : 0.5,
+                    pl: 3,
+                    '&.Mui-selected': {
+                      backgroundColor: 'transparent',
+                    },
+                    '&:hover': {
+                      backgroundColor: 'rgba(0, 0, 0, 0.04)',
+                    }
+                  }}
+                >
+                  <ListItemText
+                    primary={
+                      <Typography
+                        sx={{
+                          color: selectedSignature === collection.id ? '#1976d2' : '#333333', // Blue color when selected
+                          fontWeight: collection.id === 'all-signature' || selectedSignature === collection.id ? 600 : 400,
+                          fontSize: isMobile ? '0.85rem' : '0.75rem', // Larger font on mobile
+                          lineHeight: 1.2, // Tighter line height
+                          textTransform: collection.id === 'all-signature' ? 'uppercase' : 'none' // Only "ALL SIGNATURE" in uppercase
+                        }}
+                      >
+                        {collection.id === 'all-signature' ? 'ALL SIGNATURE' : collection.label}
+                      </Typography>
+                    }
+                  />
+                </ListItemButton>
               ))}
-            </RadioGroup>
+            </List>
           </FilterContent>
         </FilterSection>
       </FilterContainer>
