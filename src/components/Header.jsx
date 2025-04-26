@@ -302,7 +302,8 @@ const Header = () => {
         alignItems: 'center',
         justifyContent: 'center',
         overflow: 'hidden', // Hide overflow for scrolling effect
-        position: 'relative'
+        position: 'relative',
+        maxWidth: '100%'
       }}>
         <Box sx={{
           display: 'flex',
@@ -346,7 +347,7 @@ const Header = () => {
 
       {/* Main header with logo and search */}
       <MainBar>
-        <Container maxWidth="xl" sx={{ width: '100%', maxWidth: { xs: '100%', sm: '100%', md: '100%', lg: '1600px', xl: '1800px' } }}>
+        <Container maxWidth="xl" sx={{ width: '100%', maxWidth: { xs: '100%', sm: '100%', md: '100%', lg: '1200px', xl: '1400px' } }}>
           <Toolbar disableGutters sx={{
             justifyContent: 'space-between',
             minHeight: '56px', /* Reduced from default 64px */
@@ -423,7 +424,7 @@ const Header = () => {
         backgroundColor: '#3949ab', // Updated blue color from the image
         borderBottom: '1px solid rgba(255, 255, 255, 0.1)'
       }}>
-        <Container maxWidth="xl" sx={{ width: '100%', maxWidth: { xs: '100%', sm: '100%', md: '100%', lg: '1600px', xl: '1800px' } }}>
+        <Container maxWidth="xl" sx={{ width: '100%', maxWidth: { xs: '100%', sm: '100%', md: '100%', lg: '1200px', xl: '1400px' } }}>
           {/* Single row navigation */}
           <Box sx={{
             display: 'flex',
