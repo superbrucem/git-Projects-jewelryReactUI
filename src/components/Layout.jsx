@@ -5,12 +5,25 @@ import Footer from './Footer';
 
 const Layout = ({ children }) => {
   return (
-    <Box sx={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
+    <Box
+      sx={{
+        display: 'flex',
+        flexDirection: 'column',
+        minHeight: '100vh',
+        width: '100%',
+        maxWidth: '100%',
+        boxSizing: 'border-box',
+        overflow: 'hidden' // Prevent horizontal scrolling
+      }}
+    >
       <Header />
       <Box
         component="main"
         sx={{
           flexGrow: 1,
+          width: '100%',
+          maxWidth: '100%',
+          boxSizing: 'border-box',
           backgroundImage: `
             radial-gradient(circle at 20% 30%, rgba(67, 206, 162, 0.03) 0%, transparent 10%),
             radial-gradient(circle at 75% 40%, rgba(67, 206, 162, 0.03) 0%, transparent 10%),
@@ -21,7 +34,8 @@ const Layout = ({ children }) => {
             linear-gradient(to bottom, #f8f9fa, #f8f9fa)
           `,
           backgroundSize: 'cover',
-          backgroundAttachment: 'fixed'
+          backgroundAttachment: 'fixed',
+          overflow: 'hidden' // Prevent horizontal scrolling
         }}
       >
         {children}

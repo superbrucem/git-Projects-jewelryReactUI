@@ -18,7 +18,7 @@ import SearchPage from '../pages/SearchPage';
 
 const ContentFrame = () => {
   const location = useLocation();
-  
+
   return (
     <Box
       sx={{
@@ -27,7 +27,9 @@ const ContentFrame = () => {
         overflow: 'hidden',
         height: 'calc(100vh - 200px)',
         backgroundColor: 'white',
-        boxShadow: '0 2px 10px rgba(0,0,0,0.05)'
+        boxShadow: '0 2px 10px rgba(0,0,0,0.05)',
+        maxWidth: '100%', // Prevent stretching in Firefox
+        boxSizing: 'border-box' // Include padding in width calculation
       }}
     >
       <Box sx={{
@@ -35,6 +37,8 @@ const ContentFrame = () => {
         height: '100%',
         overflow: 'auto',
         p: 3,
+        maxWidth: '100%', // Prevent stretching in Firefox
+        boxSizing: 'border-box', // Include padding in width calculation
         '&::-webkit-scrollbar': {
           width: '6px',
         },

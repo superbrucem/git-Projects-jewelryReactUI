@@ -62,16 +62,25 @@ const HomePage = ({ contentOnly = false }) => {
       pt: 1, // Reduced top padding
       pb: 4,
       width: '100%',
-      maxWidth: { xs: '100%', sm: '100%', md: '100%', lg: '1440px', xl: '1920px' }
+      maxWidth: { xs: '100%', sm: '100%', md: '100%', lg: '1440px', xl: '1920px' },
+      boxSizing: 'border-box' // Include padding in width calculation
     }}>
-      <Grid container spacing={3}>
+      <Grid container spacing={3} sx={{ width: '100%', m: 0 }}>
         {/* Left sidebar with filter menu */}
-        <Grid item xs={12} md={3} lg={2.5}>
+        <Grid item xs={12} md={3} lg={2.5} sx={{
+          boxSizing: 'border-box',
+          pl: { xs: 0, md: 1 },
+          pr: { xs: 0, md: 1 }
+        }}>
           <FilterSidebar />
         </Grid>
 
         {/* Main content area */}
-        <Grid item xs={12} md={9} lg={9.5}>
+        <Grid item xs={12} md={9} lg={9.5} sx={{
+          boxSizing: 'border-box',
+          pl: { xs: 0, md: 1 },
+          pr: { xs: 0, md: 1 }
+        }}>
           <ContentFrame />
         </Grid>
       </Grid>

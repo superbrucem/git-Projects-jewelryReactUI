@@ -23,6 +23,7 @@ import signatureData from '../data/signature_collections.json';
 // Styled components
 const FilterContainer = styled(Paper)(({ theme }) => ({
   width: '100%',
+  maxWidth: '100%', // Prevent stretching in Firefox
   borderRadius: '0 0 4px 4px',
   overflow: 'hidden',
   border: '1px solid rgba(0, 0, 0, 0.1)',
@@ -180,6 +181,9 @@ const FilterSidebar = () => {
   return (
     <Box sx={{
       width: '100%',
+      maxWidth: '100%', // Prevent stretching in Firefox
+      display: 'flex',
+      flexDirection: 'column',
       [theme.breakpoints.down('sm')]: {
         padding: '0 8px' // Add some padding on mobile
       }
@@ -208,6 +212,8 @@ const FilterSidebar = () => {
                   sx={{
                     py: isMobile ? 1 : 0.5,
                     pl: 3,
+                    width: '100%',
+                    maxWidth: '100%',
                     '&.Mui-selected': {
                       backgroundColor: 'transparent',
                     },
@@ -217,14 +223,18 @@ const FilterSidebar = () => {
                   }}
                 >
                   <ListItemText
+                    disableTypography
                     primary={
                       <Typography
+                        noWrap
                         sx={{
                           color: selectedCollection === collection.id ? '#1976d2' : '#333333', // Blue color when selected
                           fontWeight: collection.id === 'all' || selectedCollection === collection.id ? 600 : 400,
                           fontSize: isMobile ? '0.85rem' : '0.75rem', // Larger font on mobile
                           lineHeight: 1.2, // Tighter line height
-                          textTransform: 'uppercase' // Make all text uppercase
+                          textTransform: 'uppercase', // Make all text uppercase
+                          display: 'block', // Ensure proper text wrapping
+                          width: '100%' // Ensure text stays within container
                         }}
                       >
                         {collection.label}
@@ -260,6 +270,8 @@ const FilterSidebar = () => {
                   sx={{
                     py: isMobile ? 1 : 0.5,
                     pl: 3,
+                    width: '100%',
+                    maxWidth: '100%',
                     '&.Mui-selected': {
                       backgroundColor: 'transparent',
                     },
@@ -269,14 +281,18 @@ const FilterSidebar = () => {
                   }}
                 >
                   <ListItemText
+                    disableTypography
                     primary={
                       <Typography
+                        noWrap
                         sx={{
                           color: selectedSignature === collection.id ? '#1976d2' : '#333333', // Blue color when selected
                           fontWeight: collection.id === 'all-signature' || selectedSignature === collection.id ? 600 : 400,
                           fontSize: isMobile ? '0.85rem' : '0.75rem', // Larger font on mobile
                           lineHeight: 1.2, // Tighter line height
-                          textTransform: collection.id === 'all-signature' ? 'uppercase' : 'none' // Only "ALL SIGNATURE" in uppercase
+                          textTransform: collection.id === 'all-signature' ? 'uppercase' : 'none', // Only "ALL SIGNATURE" in uppercase
+                          display: 'block', // Ensure proper text wrapping
+                          width: '100%' // Ensure text stays within container
                         }}
                       >
                         {collection.id === 'all-signature' ? 'ALL SIGNATURE' : collection.label}
