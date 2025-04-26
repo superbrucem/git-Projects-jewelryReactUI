@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import {
   Card,
   CardMedia,
@@ -30,6 +30,7 @@ import PinterestIcon from '@mui/icons-material/Pinterest';
 import TwitterIcon from '@mui/icons-material/Twitter';
 import WhatsAppIcon from '@mui/icons-material/WhatsApp';
 import { useCart } from '../context/CartContext';
+import VideoPlayer from './VideoPlayer';
 
 const StyledCard = styled(Card)(({ theme }) => ({
   height: '100%',
@@ -61,6 +62,7 @@ const QuickViewButton = styled(Box)(({ theme }) => ({
 
 const ProductImageContainer = styled(Box)(({ theme }) => ({
   position: 'relative',
+  overflow: 'hidden',
   '&:hover .quick-view': {
     opacity: 1,
   }
@@ -86,6 +88,8 @@ const ProductCard = ({ product, onAddToCart }) => {
   const [snackbarOpen, setSnackbarOpen] = useState(false);
   const [quickViewOpen, setQuickViewOpen] = useState(false);
   const [quantity, setQuantity] = useState(1);
+  const [isHovering, setIsHovering] = useState(false);
+  const [videoError, setVideoError] = useState(false);
 
   const handleAddToCart = () => {
     if (onAddToCart && quantity > 0 && product.inStock) {
@@ -110,6 +114,52 @@ const ProductCard = ({ product, onAddToCart }) => {
     setQuickViewOpen(false);
   };
 
+  // Refs for hover timers
+  const enterTimerRef = useRef(null);
+  const leaveTimerRef = useRef(null);
+
+  const handleMouseEnter = () => {
+    // Clear any existing leave timer
+    if (leaveTimerRef.current) {
+      clearTimeout(leaveTimerRef.current);
+      leaveTimerRef.current = null;
+    }
+
+    // Set a small delay before showing the video
+    if (product.videoUrl && !videoError) {
+      enterTimerRef.current = setTimeout(() => {
+        setIsHovering(true);
+      }, 150); // 150ms delay for smoother experience
+    }
+  };
+
+  const handleMouseLeave = () => {
+    // Clear any existing enter timer
+    if (enterTimerRef.current) {
+      clearTimeout(enterTimerRef.current);
+      enterTimerRef.current = null;
+    }
+
+    // Set a small delay before hiding the video
+    leaveTimerRef.current = setTimeout(() => {
+      setIsHovering(false);
+    }, 100); // 100ms delay to prevent flickering
+  };
+
+  // Clean up timers on unmount
+  useEffect(() => {
+    return () => {
+      if (enterTimerRef.current) clearTimeout(enterTimerRef.current);
+      if (leaveTimerRef.current) clearTimeout(leaveTimerRef.current);
+    };
+  }, []);
+
+  const handleVideoError = (error) => {
+    console.error('Video playback error:', error);
+    setVideoError(true);
+    setIsHovering(false);
+  };
+
   const handleQuantityChange = (e) => {
     const value = parseInt(e.target.value);
     if (!isNaN(value) && value >= 1 && value <= product.stock) {
@@ -131,7 +181,10 @@ const ProductCard = ({ product, onAddToCart }) => {
 
   return (
     <StyledCard>
-      <ProductImageContainer>
+      <ProductImageContainer
+        onMouseEnter={handleMouseEnter}
+        onMouseLeave={handleMouseLeave}
+      >
         <CardMedia
           component="img"
           height="200"
@@ -141,13 +194,29 @@ const ProductCard = ({ product, onAddToCart }) => {
             cursor: 'pointer',
             objectFit: 'contain',
             backgroundColor: '#f5f5f5',
-            padding: '10px'
+            padding: '10px',
+            zIndex: 0
           }}
           onClick={handleQuickView}
         />
+
+        {/* Video player that shows on hover */}
+        {product.videoUrl && !videoError && (
+          <VideoPlayer
+            videoUrl={product.videoUrl}
+            isVisible={isHovering}
+            onError={handleVideoError}
+          />
+        )}
+
         <QuickViewButton
           className="quick-view"
-          sx={{ opacity: { xs: 1, md: 0 }, transition: 'opacity 0.3s ease', '.MuiCard-root:hover &': { opacity: 1 } }}
+          sx={{
+            opacity: { xs: 1, md: 0 },
+            transition: 'opacity 0.3s ease',
+            '.MuiCard-root:hover &': { opacity: 1 },
+            zIndex: 2
+          }}
           onClick={handleQuickView}
         >
           <VisibilityIcon fontSize="small" sx={{ mr: 0.5 }} />
@@ -173,7 +242,8 @@ const ProductCard = ({ product, onAddToCart }) => {
               borderRadius: '16px',
               '& .MuiChip-label': {
                 px: 1
-              }
+              },
+              zIndex: 2
             }}
           />
         )}
@@ -327,19 +397,39 @@ const ProductCard = ({ product, onAddToCart }) => {
                   justifyContent: 'center',
                   backgroundColor: '#f5f5f5',
                   borderRadius: '4px',
-                  padding: '10px'
+                  padding: '10px',
+                  position: 'relative'
                 }}
               >
-                <img
-                  src={product.image}
-                  alt={product.name}
-                  style={{
-                    maxWidth: '100%',
-                    maxHeight: '180px',
-                    objectFit: 'contain',
-                    borderRadius: '4px'
-                  }}
-                />
+                {product.videoUrl && !videoError ? (
+                  <Box sx={{ position: 'relative', width: '100%', height: '100%' }}>
+                    <video
+                      src={product.videoUrl}
+                      autoPlay
+                      loop
+                      muted
+                      playsInline
+                      style={{
+                        maxWidth: '100%',
+                        maxHeight: '180px',
+                        objectFit: 'contain',
+                        borderRadius: '4px'
+                      }}
+                      onError={() => setVideoError(true)}
+                    />
+                  </Box>
+                ) : (
+                  <img
+                    src={product.image}
+                    alt={product.name}
+                    style={{
+                      maxWidth: '100%',
+                      maxHeight: '180px',
+                      objectFit: 'contain',
+                      borderRadius: '4px'
+                    }}
+                  />
+                )}
               </Box>
             </Box>
             <Box sx={{ flex: '1 1 60%' }}>

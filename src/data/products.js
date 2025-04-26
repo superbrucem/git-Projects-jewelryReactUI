@@ -1,8 +1,21 @@
 // Import placeholder images
 import { placeholderImages } from '../assets/images/placeholder-images';
+// Import video URLs
+import { productVideos } from '../assets/videos/video-urls';
 
 // Use the imported images
 const { blue, green, teal, purple, red, yellow, orange, pink } = placeholderImages;
+// Use the imported videos
+const {
+  blue1, blue2,
+  green1, green2,
+  teal1, teal2,
+  purple1, purple2,
+  red1, red2,
+  yellow1, yellow2,
+  orange1, orange2,
+  pink1, pink2
+} = productVideos;
 
 // Define image URLs for each product
 const apatite1 = blue;
@@ -41,6 +54,7 @@ const products = [
     name: '7x5.5 mm Pear 1.05ct Brilliant Luster Natural Blue Green Apatite [Flawless-VVS]',
     price: 24.99,
     image: apatite1,
+    videoUrl: blue1,
     category: '5-elements',
     collection: 'Fire',
     inStock: true,
@@ -52,6 +66,7 @@ const products = [
     name: '6.00 mm Cushion 1.22ct AAA Luster Natural Blue Green Apatite [Flawless-VVS]',
     price: 29.99,
     image: apatite2,
+    videoUrl: teal1,
     category: '5-elements',
     collection: 'Water',
     inStock: true,
@@ -63,6 +78,7 @@ const products = [
     name: '7x6 mm Oval 1.10ct AAA Fire Luster Natural Intense Blue Green Apatite [Flawless-VVS]',
     price: 27.99,
     image: apatite7,
+    videoUrl: blue2,
     category: '5-elements',
     collection: 'Earth',
     inStock: true,
@@ -74,6 +90,7 @@ const products = [
     name: '7x6 mm Pear 1.28ct Brilliant Luster Natural Blue Green Apatite [Flawless-VVS]',
     price: 29.99,
     image: apatite8,
+    videoUrl: green1,
     category: '5-elements',
     collection: 'Air',
     inStock: true,
@@ -85,6 +102,7 @@ const products = [
     name: '8x6 mm Oval 1.35ct AAA Fire Luster Natural Purple Apatite [VVS]',
     price: 34.99,
     image: aetherElement,
+    videoUrl: purple1,
     category: '5-elements',
     collection: 'Aether',
     inStock: true,
