@@ -20,9 +20,22 @@ import PhoneIcon from '@mui/icons-material/Phone';
 import EmailIcon from '@mui/icons-material/Email';
 import AccessTimeIcon from '@mui/icons-material/AccessTime';
 // Payment icons
-import VisaIcon from '@mui/icons-material/CreditCard';
-import MastercardIcon from '@mui/icons-material/CreditCard';
-import PaypalIcon from '@mui/icons-material/CreditCard';
+const VisaIcon = () => (
+  <svg viewBox="0 0 24 24" fill="white" width="16" height="16">
+    <path d="M9.245 7.5h2.58L14.61 16.5H12l-.615-2.25h-2.7l-.405 2.25H6.045L9.245 7.5zm1.35 5.25h1.5l-.345-1.5-.345-1.5-.21-1.05-.315 1.05-.285 1.5zM17.355 7.5h2.04l-1.545 9h-2.04l1.545-9z"/>
+  </svg>
+);
+
+const MastercardIcon = () => (
+  <svg viewBox="0 0 24 24" fill="white" width="16" height="16">
+    <path d="M11.25 12c0-1.545-.78-2.895-1.965-3.66a4.125 4.125 0 100 7.32 3.99 3.99 0 001.965-3.66zm6.6 0c0 2.235-1.815 4.05-4.05 4.05S9.75 14.235 9.75 12s1.815-4.05 4.05-4.05S17.85 9.765 17.85 12z"/>
+  </svg>
+);
+const PaypalIcon = () => (
+  <svg viewBox="0 0 24 24" fill="white" width="16" height="16">
+    <path d="M7.076 21.337H2.47L4.53 3.27h5.078c3.114 0 4.722 1.115 4.572 3.41-.127 2.27-1.705 2.97-3.8 2.97h-1.36l-.744 11.687zM7.764 7.117h-.78l-.49 7.744h.78c3.114 0 4.722-1.115 4.572-3.41-.126-2.34-1.704-3.034-3.8-3.034h-.282z"/>
+  </svg>
+);
 
 const FooterContainer = styled(Box)(({ theme }) => ({
   backgroundColor: '#0c2348', // Darker blue
@@ -248,13 +261,13 @@ const Footer = () => {
           </Typography>
           <PaymentMethodsContainer>
             <VisaCard>
-              <Typography variant="caption" sx={{ fontWeight: 'bold', fontSize: '0.7rem' }}>VISA</Typography>
+              <VisaIcon />
             </VisaCard>
             <MastercardCard>
-              <Typography variant="caption" sx={{ fontWeight: 'bold', fontSize: '0.7rem' }}>MC</Typography>
+              <MastercardIcon />
             </MastercardCard>
             <PaypalCard>
-              <Typography variant="caption" sx={{ fontWeight: 'bold', fontSize: '0.65rem' }}>PayPal</Typography>
+              <PaypalIcon />
             </PaypalCard>
           </PaymentMethodsContainer>
         </CopyrightBar>

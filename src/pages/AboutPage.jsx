@@ -35,7 +35,7 @@ const AboutPage = () => {
             </Grid>
             <Grid item xs={12} md={6}>
               <Typography variant="body1" paragraph>
-                Founded in 1985, Ottawa Opal Shop began as a small family business with a passion for unique, handcrafted jewelry. Our founder, John Smith, discovered his love for opals during a trip to Australia and was captivated by their mesmerizing play of colors.
+                Founded in 1985, Ottawa Opal Shop began as a small family business with a passion for unique, handcrafted jewelry. Our founder, Dean Aaron, discovered his love for opals during a trip to Australia and was captivated by their mesmerizing play of colors.
               </Typography>
               <Typography variant="body1" paragraph>
                 What started as a modest workshop has grown into Ottawa's premier destination for fine jewelry, specializing in opals and other precious gemstones. Throughout our journey, we've maintained our commitment to exceptional craftsmanship, ethical sourcing, and personalized service.

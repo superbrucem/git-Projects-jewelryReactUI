@@ -172,6 +172,12 @@ const SignaturePage = () => {
             scrollButtons="auto"
             allowScrollButtonsMobile
             aria-label="signature collection tabs"
+            TabIndicatorProps={{ style: { display: 'none' } }} // Hide the default indicator
+            sx={{
+              '& .MuiTabs-flexContainer': {
+                borderBottom: '1px solid #e0e0e0',
+              }
+            }}
           >
             {allSignatureCollections.map((collection) => (
               <Tab
@@ -181,8 +187,14 @@ const SignaturePage = () => {
                 sx={{
                   fontWeight: 500,
                   fontSize: '0.9rem',
+                  padding: '12px 16px',
                   '&.Mui-selected': {
-                    color: '#f0c14b',
+                    color: '#1976d2', // Blue color for selected tab
+                    backgroundColor: '#f5f5f5', // Very light gray background
+                    borderBottom: '2px solid #1976d2', // Blue underline
+                  },
+                  '&:hover': {
+                    backgroundColor: 'rgba(0, 0, 0, 0.04)',
                   }
                 }}
               />
