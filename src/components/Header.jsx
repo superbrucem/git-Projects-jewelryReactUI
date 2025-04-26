@@ -179,7 +179,10 @@ const SearchForm = () => {
     e.preventDefault();
     const trimmedQuery = searchQuery.trim();
     if (trimmedQuery) {
-      navigate(`/search?q=${encodeURIComponent(trimmedQuery)}&_t=${Date.now()}`);
+      const timestamp = Date.now();
+      // Force a new navigation with a unique timestamp to ensure React Router recognizes it as a new route
+      navigate(`/search?q=${encodeURIComponent(trimmedQuery)}&_t=${timestamp}`);
+      console.log('Header search submitted:', trimmedQuery, 'timestamp:', timestamp);
       setSearchQuery(''); // Clear input after successful submission
     }
   };

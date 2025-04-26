@@ -30,14 +30,13 @@ const SearchPage = () => {
     const currentQuery = currentParams.get('q') || '';
     const currentTimestamp = currentParams.get('_t') || Date.now().toString();
 
-    if (currentQuery !== searchQuery) {
-      setSearchQuery(currentQuery);
-    }
+    // Always update the search query and timestamp when the URL changes
+    setSearchQuery(currentQuery);
+    setSearchTimestamp(currentTimestamp);
 
-    if (currentTimestamp !== searchTimestamp) {
-      setSearchTimestamp(currentTimestamp);
-    }
-  }, [location.search, searchQuery, searchTimestamp]);
+    // Log for debugging
+    console.log('URL changed, new query:', currentQuery, 'new timestamp:', currentTimestamp);
+  }, [location.search]);
 
   // Perform search when query or selected tab changes
   useEffect(() => {
@@ -83,9 +82,11 @@ const SearchPage = () => {
 
   // Update search results when debounced search term changes
   useEffect(() => {
-    if (debouncedSearchTerm !== searchQuery && debouncedSearchTerm.trim()) {
-      // Only update URL when user has stopped typing
-      navigate(`/search?q=${encodeURIComponent(debouncedSearchTerm)}&_t=${Date.now()}`);
+    if (debouncedSearchTerm.trim() && debouncedSearchTerm === searchQuery) {
+      // Only update URL when user has stopped typing and if the search term is not empty
+      const timestamp = Date.now();
+      navigate(`/search?q=${encodeURIComponent(debouncedSearchTerm)}&_t=${timestamp}`);
+      console.log('Navigating with debounced term:', debouncedSearchTerm, 'timestamp:', timestamp);
     }
   }, [debouncedSearchTerm, searchQuery, navigate]);
 
@@ -98,7 +99,9 @@ const SearchPage = () => {
     const trimmedQuery = searchQuery.trim();
     if (trimmedQuery) {
       // Update URL with new search query and timestamp
-      navigate(`/search?q=${encodeURIComponent(trimmedQuery)}&_t=${Date.now()}`);
+      const timestamp = Date.now();
+      navigate(`/search?q=${encodeURIComponent(trimmedQuery)}&_t=${timestamp}`);
+      console.log('Search submitted:', trimmedQuery, 'timestamp:', timestamp);
     }
   };
 
