@@ -5,6 +5,7 @@ import { theme } from './theme/theme'
 import Layout from './components/Layout'
 import { CartProvider } from './context/CartContext'
 import { FilterProvider } from './context/FilterContext'
+import ErrorBoundary from './components/ErrorBoundary'
 
 // Pages
 import HomePage from './pages/HomePage'
@@ -30,11 +31,13 @@ function App() {
       <CartProvider>
         <FilterProvider>
           <Router>
-            <Layout>
-              <Routes>
-                <Route path="/*" element={<HomePage />} />
-              </Routes>
-            </Layout>
+            <ErrorBoundary>
+              <Layout>
+                <Routes>
+                  <Route path="/*" element={<HomePage />} />
+                </Routes>
+              </Layout>
+            </ErrorBoundary>
           </Router>
         </FilterProvider>
       </CartProvider>
