@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Box, Container, Typography, Paper, Grid, Tabs, Tab, Button } from '@mui/material';
 import { useParams, useLocation, useNavigate } from 'react-router-dom';
 import PaginatedProductGrid from '../components/PaginatedProductGrid';
+import Breadcrumb from '../components/Breadcrumb';
 import products from '../data/products';
 
 // Import collection categories from JSON file
@@ -95,6 +96,31 @@ const CollectionsPage = () => {
     );
   }
 
+  // Prepare breadcrumb items
+  const getBreadcrumbItems = () => {
+    const items = [{ label: 'Collections', path: '/collections' }];
+
+    if (selectedSubcategory) {
+      // Add the current subcategory
+      const subcategoryName = selectedSubcategory.replace(/-/g, ' ');
+      items.push({
+        label: subcategoryName,
+        path: `/collections/${selectedSubcategory}`
+      });
+    } else if (selectedCollection !== 'all') {
+      // Add the current collection if it's not "all"
+      const collection = collections.find(c => c.id === selectedCollection);
+      if (collection) {
+        items.push({
+          label: collection.label,
+          path: `/collections?category=${selectedCollection}`
+        });
+      }
+    }
+
+    return items;
+  };
+
   return (
     <Container maxWidth="xl" sx={{
       pt: 1, // Reduced top padding
@@ -102,8 +128,11 @@ const CollectionsPage = () => {
       width: '100%',
       maxWidth: { xs: '100%', sm: '100%', md: '100%', lg: '1440px', xl: '1920px' }
     }}>
+      {/* Breadcrumb navigation */}
+      <Breadcrumb items={getBreadcrumbItems()} />
+
       <Paper elevation={0} sx={{ p: 3, borderRadius: 2, backgroundColor: 'rgba(255, 255, 255, 0.9)' }}>
-        <Typography variant="h4" component="h1" gutterBottom align="center">
+        <Typography variant="h4" component="h1" gutterBottom align="left">
           Collections
         </Typography>
 

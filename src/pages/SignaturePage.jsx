@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Box, Container, Typography, Paper, Grid, Divider, Button, Tabs, Tab } from '@mui/material';
 import { useParams, useLocation, useNavigate } from 'react-router-dom';
 import PaginatedProductGrid from '../components/PaginatedProductGrid';
+import Breadcrumb from '../components/Breadcrumb';
 import products from '../data/products';
 import signatureCollections from '../data/signature_sidemenu.json';
 
@@ -111,6 +112,32 @@ const SignaturePage = () => {
     }
   }
 
+  // Prepare breadcrumb items
+  const getBreadcrumbItems = () => {
+    const items = [{ label: 'Signature Collections', path: '/signature' }];
+
+    if (selectedCollection !== 'all-signature') {
+      // Add the current collection
+      const collection = allSignatureCollections.find(c => c.id === selectedCollection);
+      if (collection) {
+        items.push({
+          label: collection.label,
+          path: `/signature?collection=${selectedCollection}`
+        });
+      }
+
+      // Add subcategory if selected
+      if (selectedSubcategory) {
+        items.push({
+          label: selectedSubcategory.charAt(0).toUpperCase() + selectedSubcategory.slice(1),
+          path: `/signature/${selectedCollection}/${selectedSubcategory}`
+        });
+      }
+    }
+
+    return items;
+  };
+
   return (
     <Container maxWidth="xl" sx={{
       pt: 1, // Reduced top padding
@@ -118,8 +145,11 @@ const SignaturePage = () => {
       width: '100%',
       maxWidth: { xs: '100%', sm: '100%', md: '100%', lg: '1440px', xl: '1920px' }
     }}>
+      {/* Breadcrumb navigation */}
+      <Breadcrumb items={getBreadcrumbItems()} />
+
       <Paper elevation={0} sx={{ p: 3, borderRadius: 2, backgroundColor: 'rgba(255, 255, 255, 0.9)' }}>
-        <Typography variant="h4" component="h1" gutterBottom align="center">
+        <Typography variant="h4" component="h1" gutterBottom align="left">
           Signature Collections
         </Typography>
 
