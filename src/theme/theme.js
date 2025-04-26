@@ -145,10 +145,10 @@ let theme = createTheme({
           paddingRight: 24,
         },
         maxWidthXl: {
-          maxWidth: '1280px', // Reduced from 1920px to prevent stretching
+          maxWidth: '1800px', // Increased from 1280px for wider layout
         },
         maxWidthLg: {
-          maxWidth: '1024px', // Reduced from default
+          maxWidth: '1600px', // Increased from 1024px for wider layout
         },
       },
     },

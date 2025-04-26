@@ -177,12 +177,12 @@ const Footer = () => {
     <FooterContainer>
       <Container maxWidth="xl" sx={{
         width: '100%',
-        maxWidth: { xs: '100%', sm: '100%', md: '100%', lg: '1024px', xl: '1280px' }
+        maxWidth: { xs: '100%', sm: '100%', md: '100%', lg: '1600px', xl: '1800px' }
       }}>
         <Grid container spacing={4}>
           {/* Company Info */}
           <Grid item xs={12} sm={6} md={3}>
-            <FooterTitle variant="h6">OTTAWA OPAL SHOP</FooterTitle>
+            <FooterTitle variant="h6">Ottawa Opal Shop</FooterTitle>
             <CompanyDescription variant="body2">
               Exquisite jewelry for life's special moments. Since 1985.
             </CompanyDescription>
