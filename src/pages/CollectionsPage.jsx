@@ -126,7 +126,7 @@ const CollectionsPage = () => {
       pt: 1, // Reduced top padding
       pb: 4,
       width: '100%',
-      maxWidth: { xs: '100%', sm: '100%', md: '100%', lg: '1440px', xl: '1920px' }
+      maxWidth: { xs: '100%', sm: '100%', md: '100%', lg: '1024px', xl: '1280px' }
     }}>
       {/* Breadcrumb navigation */}
       <Breadcrumb items={getBreadcrumbItems()} />

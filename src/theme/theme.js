@@ -145,7 +145,10 @@ let theme = createTheme({
           paddingRight: 24,
         },
         maxWidthXl: {
-          maxWidth: '1920px', // Increased from default 1536px
+          maxWidth: '1280px', // Reduced from 1920px to prevent stretching
+        },
+        maxWidthLg: {
+          maxWidth: '1024px', // Reduced from default
         },
       },
     },
