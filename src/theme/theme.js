@@ -145,10 +145,10 @@ let theme = createTheme({
           paddingRight: 24,
         },
         maxWidthXl: {
-          maxWidth: '1400px', // Reduced from 1800px for a more manageable width
+          maxWidth: '1500px', // Increased to better match ashergems.com width
         },
         maxWidthLg: {
-          maxWidth: '1200px', // Reduced from 1600px for a more manageable width
+          maxWidth: '1400px', // Increased to better match ashergems.com width
         },
       },
     },

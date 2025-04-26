@@ -62,7 +62,7 @@ const HomePage = ({ contentOnly = false }) => {
       pt: 1, // Reduced top padding
       pb: 4,
       width: '100%',
-      maxWidth: { xs: '100%', sm: '100%', md: '100%', lg: '1200px', xl: '1400px' },
+      maxWidth: { xs: '100%', sm: '100%', md: '100%', lg: '1400px', xl: '1500px' },
       boxSizing: 'border-box' // Include padding in width calculation
     }}>
       <Grid container spacing={3} sx={{ width: '100%', m: 0 }}>
